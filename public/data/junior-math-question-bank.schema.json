@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ai-classroom/schemas/junior-math-question-bank.schema.json",
+  "title": "JuniorMathQuestionBankPublic",
+  "description": "学生端可读取的题面、题目属性、知识点映射与不泄答案的解题预览。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bank_id",
+    "version",
+    "items"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "assessment-item-public-bank@1.0"
+    },
+    "bank_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "stem",
+          "question_type",
+          "knowledge_point_mapping",
+          "provenance",
+          "quality"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^JMQ-M4-"
+          },
+          "stem": {
+            "type": "string",
+            "minLength": 8
+          },
+          "question_type": {
+            "enum": [
+              "single_choice",
+              "numeric_response",
+              "short_response",
+              "extended_response"
+            ]
+          },
+          "options": {
+            "type": "array"
+          },
+          "knowledge_point_mapping": {
+            "type": "array",
+            "minItems": 1
+          },
+          "solution_preview": {
+            "type": "object",
+            "description": "仅包含策略标签和首层提示，不包含答案或完整解法。"
+          },
+          "provenance": {
+            "type": "object"
+          },
+          "quality": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

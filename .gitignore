@@ -1,0 +1,39 @@
+# Local credentials (keep the documented templates)
+.env
+.env.*
+!.env.example
+
+# Installed dependencies and caches
+node_modules/
+.venv/
+venv/
+python_deps/
+__pycache__/
+*.py[cod]
+.DS_Store
+npm-debug.log*
+pnpm-debug.log*
+*.log
+
+# Runtime records, student data and imported documents
+data/education-imports/
+data/education-knowledge-publications/
+data/education-runtime/
+data/education-video-media/
+data/import-results/
+data/import-sources/
+data/user/
+source-bridges/deeptutor/data/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+infra/education-knowledge/.env
+
+# Local screenshots, diagnostics and browser sessions
+output/
+tmp/
+.playwright-cli/
+/design-*.png
+/design-qa.md
+docs/diagnostics/

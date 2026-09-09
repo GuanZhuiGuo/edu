@@ -1,0 +1,640 @@
+/* App-only workbench layouts. The existing DOM and actions remain authoritative. */
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-skills-shell, .ontology-workbench-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell
+) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .ontology-workbench-shell, .education-skills-shell
+) { padding: 16px 14px 28px; }
+
+body[data-display-mode="app"] :is(
+  .interactive-lesson-workspace, .technology-landscape-workspace,
+  .knowledge-material-workspace
+) { padding: 16px 14px 28px; background: #f4f7fb; }
+
+body[data-display-mode="app"] :is(
+  .teacher-page-head, .education-skills-head, .ontology-workbench-head,
+  .lesson-lab-head, .technology-landscape-head, .material-studio-head
+) {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+body[data-display-mode="app"] :is(
+  .teacher-page-head, .education-skills-head, .ontology-workbench-head,
+  .lesson-lab-head, .technology-landscape-head, .material-studio-head
+) h2 { font-size: 20px; line-height: 1.35; letter-spacing: -.025em; }
+
+body[data-display-mode="app"] :is(
+  .teacher-page-head, .education-skills-head, .ontology-workbench-head,
+  .lesson-lab-head, .technology-landscape-head, .material-studio-head
+) p { font-size: 13px; line-height: 1.7; color: #61718a; }
+
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-settings-workbench, .education-skills-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell,
+  .ontology-workbench-shell, .video-explanation-workbench
+) :is(button, summary, a, input, select, textarea) { touch-action: manipulation; }
+
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-settings-workbench, .education-skills-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell,
+  .ontology-workbench-shell, .video-explanation-workbench
+) :is(button, summary):focus-visible { outline: 3px solid #74a4f5; outline-offset: 2px; }
+
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-settings-workbench, .education-skills-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell,
+  .ontology-workbench-shell, .video-explanation-workbench
+) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), select, textarea) {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 44px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Teacher overview and course management. */
+body[data-display-mode="app"] :is(
+  .teacher-dashboard-grid, .teacher-student-layout, .teacher-course-grid,
+  .teacher-plan-layout, .teacher-config-toolkit
+) { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+
+body[data-display-mode="app"] .teacher-page-actions {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body[data-display-mode="app"] .teacher-page-actions :is(button, label) {
+  flex: 1 1 140px;
+  min-width: 0;
+  justify-content: center;
+}
+
+body[data-display-mode="app"] .teacher-page-actions :is(button, select) {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 13px;
+  white-space: normal;
+}
+
+body[data-display-mode="app"] .teacher-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin-bottom: 18px;
+}
+
+body[data-display-mode="app"] .teacher-metric-grid > article {
+  min-width: 0;
+  padding: 14px 10px;
+  gap: 8px;
+  border: 0;
+  border-bottom: 1px solid #e5ebf4;
+  border-right: 1px solid #e5ebf4;
+}
+
+body[data-display-mode="app"] .teacher-metric-grid > article:nth-child(2n) { border-right: 0; }
+body[data-display-mode="app"] .teacher-metric-grid > article:nth-child(n + 3) { border-bottom: 0; }
+body[data-display-mode="app"] .teacher-metric-icon { width: 30px; height: 30px; min-width: 30px; }
+body[data-display-mode="app"] .teacher-metric-grid b { font-size: 25px; }
+body[data-display-mode="app"] .teacher-metric-grid :is(small, em) { font-size: 12px; white-space: normal; }
+
+body[data-display-mode="app"] .teacher-panel { border-radius: 14px; }
+body[data-display-mode="app"] .teacher-panel > header { flex-wrap: wrap; gap: 8px; padding: 14px; }
+body[data-display-mode="app"] .teacher-panel > header button { min-height: 44px; font-size: 12px; }
+body[data-display-mode="app"] .teacher-panel > header h3 { font-size: 16px; }
+body[data-display-mode="app"] .teacher-quick-panel > div { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .teacher-quick-panel > div button { min-height: 64px; }
+body[data-display-mode="app"] .teacher-quick-panel :is(b, small) { white-space: normal; }
+
+body[data-display-mode="app"] .teacher-student-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 10px;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+body[data-display-mode="app"] .teacher-student-summary span { flex-wrap: wrap; gap: 4px; }
+body[data-display-mode="app"] .teacher-student-summary small { font-size: 12px; }
+body[data-display-mode="app"] .teacher-table-toolbar { display: grid; grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .teacher-table-toolbar label { width: 100%; min-width: 0; font-size: 12px; }
+body[data-display-mode="app"] .teacher-table-toolbar label select { flex: 1; }
+body[data-display-mode="app"] .teacher-search { box-sizing: border-box; }
+
+/* Keep all six fields and row selection, with readable labels on the phone. */
+body[data-display-mode="app"] .teacher-student-table { overflow: visible; padding: 0 12px 12px; }
+body[data-display-mode="app"] .teacher-student-row.is-head {
+  position: absolute;
+  width: 1px;
+  min-width: 0;
+  height: 1px;
+  min-height: 0;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) {
+  width: 100%;
+  min-width: 0;
+  margin-top: 12px;
+  padding: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 12px;
+  border: 1px solid #e3eaf3;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :first-child { grid-column: 1 / -1; }
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(n + 2) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(n + 2)::before {
+  color: #64758e;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(2)::before { content: "当前目标"; }
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(3)::before { content: "知识覆盖"; }
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(4)::before { content: "平均掌握"; }
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(5)::before { content: "本周学习"; }
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(6)::before { content: "学习状态"; }
+body[data-display-mode="app"] .teacher-student-row b { font-size: 15px; }
+body[data-display-mode="app"] .teacher-student-row b small { font-size: 12px; }
+body[data-display-mode="app"] .teacher-student-row em { font-size: 12px; width: auto; border-radius: 8px; }
+body[data-display-mode="app"] .teacher-student-row.is-selected { border-color: #83aaf0; background: #f0f6ff; }
+body[data-display-mode="app"] .teacher-student-inspector-actions button { min-height: 44px; font-size: 12px; }
+body[data-display-mode="app"] .teacher-student-inspector > header > button { width: 44px; }
+body[data-display-mode="app"] .teacher-student-inspector :is(p, small) { font-size: 12px; line-height: 1.6; }
+
+body[data-display-mode="app"] .teacher-course-filter { display: flex; flex-wrap: wrap; gap: 6px; }
+body[data-display-mode="app"] .teacher-course-filter > button { flex: 1 1 40%; min-height: 44px; font-size: 13px; }
+body[data-display-mode="app"] .teacher-course-filter label { width: 100%; min-width: 0; margin-left: 0; }
+body[data-display-mode="app"] .teacher-course-card :is(p, small) { font-size: 12px; line-height: 1.6; }
+body[data-display-mode="app"] .teacher-course-card footer { flex-wrap: wrap; }
+body[data-display-mode="app"] .teacher-course-card footer button { flex: 1; min-height: 44px; font-size: 13px; }
+body[data-display-mode="app"] .teacher-config-toolkit article { grid-template-columns: 34px minmax(0, 1fr); }
+body[data-display-mode="app"] .teacher-config-toolkit label { grid-column: 1 / -1; font-size: 12px; }
+body[data-display-mode="app"] .teacher-config-toolkit select { width: 100%; max-width: 100%; min-height: 44px; font-size: 16px; }
+
+/* Video project list, generation form, preview, timeline and scene inspector. */
+body[data-display-mode="app"] .video-explanation-workbench { height: auto; min-height: 100%; font-size: 13px; }
+body[data-display-mode="app"] .vex-head { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px 14px; }
+body[data-display-mode="app"] .vex-head-copy h2 { font-size: 20px; }
+body[data-display-mode="app"] .vex-head-copy p { display: block; white-space: normal; line-height: 1.6; }
+body[data-display-mode="app"] .vex-head-actions { flex-wrap: wrap; justify-content: flex-start; gap: 8px; }
+body[data-display-mode="app"] .vex-head-actions :is(.vex-quiet-button span, .vex-service-pill span) { display: inline; }
+body[data-display-mode="app"] .vex-head-actions .vex-service-pill { width: auto; padding: 8px 10px; }
+body[data-display-mode="app"] .vex-head-actions > button { flex: 1 1 auto; }
+body[data-display-mode="app"] .video-explanation-workbench :is(.vex-primary-button, .vex-quiet-button, .vex-icon-button) { min-height: 44px; font-size: 13px; border-radius: 10px; }
+body[data-display-mode="app"] .video-explanation-workbench .vex-icon-button { min-width: 44px; }
+body[data-display-mode="app"] .vex-layout { display: block; }
+body[data-display-mode="app"] .vex-project-rail { height: auto; min-height: 114px; }
+body[data-display-mode="app"] .vex-project-rail > header { min-height: 42px; }
+body[data-display-mode="app"] .vex-project-list { max-height: none; padding: 6px 12px 12px; overscroll-behavior-inline: contain; }
+body[data-display-mode="app"] .vex-project-item { flex-basis: 235px; min-height: 62px; }
+body[data-display-mode="app"] .vex-project-item b { font-size: 13px; }
+body[data-display-mode="app"] .vex-project-item small { font-size: 12px; }
+body[data-display-mode="app"] :is(.vex-stage, .vex-create-scroll, .vex-studio, .vex-preview-column, .vex-inspector-scroll) { height: auto; max-height: none; min-height: 0; overflow: visible; }
+body[data-display-mode="app"] .vex-create-scroll { padding: 14px; }
+body[data-display-mode="app"] .vex-create-head { gap: 14px; padding: 14px; }
+body[data-display-mode="app"] .vex-create-form { padding: 14px 14px 0; }
+body[data-display-mode="app"] .vex-source-tabs { flex-wrap: wrap; }
+body[data-display-mode="app"] .vex-source-tabs button { min-height: 44px; font-size: 13px; }
+body[data-display-mode="app"] :is(.vex-settings-grid, .vex-field-pair, .vex-studio-toolbar) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .vex-settings-grid label > span { font-size: 12px; }
+body[data-display-mode="app"] .vex-source-drop { min-height: 120px; padding: 14px; }
+body[data-display-mode="app"] .vex-source-drop :is(b, small) { white-space: normal; font-size: 12px; }
+body[data-display-mode="app"] .vex-source-text { min-height: 160px; }
+body[data-display-mode="app"] .vex-create-footer { padding: 14px 0; gap: 12px; }
+body[data-display-mode="app"] .vex-production-map { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 14px 8px; }
+body[data-display-mode="app"] .vex-production-map :is(b, small) { font-size: 12px; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .vex-studio { display: flex; flex-direction: column; }
+body[data-display-mode="app"] .vex-studio-toolbar { position: static; gap: 12px; padding: 14px; }
+body[data-display-mode="app"] .vex-studio-title { flex-wrap: wrap; }
+body[data-display-mode="app"] .vex-studio-title h3 { font-size: 17px; white-space: normal; }
+body[data-display-mode="app"] .vex-studio-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+body[data-display-mode="app"] .vex-studio-actions button { padding: 8px; }
+body[data-display-mode="app"] .vex-studio-actions button span { overflow: visible; white-space: normal; }
+body[data-display-mode="app"] .vex-studio-models { flex-wrap: wrap; }
+body[data-display-mode="app"] .vex-production-grid { display: flex; flex-direction: column; min-width: 0; }
+body[data-display-mode="app"] .vex-preview-column { display: grid; grid-template-rows: auto auto auto; padding: 14px; gap: 8px; }
+body[data-display-mode="app"] .vex-preview-head { flex-wrap: wrap; }
+body[data-display-mode="app"] .vex-preview-head :is(b, small, a) { font-size: 12px; }
+body[data-display-mode="app"] .vex-preview-head a { min-height: 44px; }
+body[data-display-mode="app"] .vex-preview-frame { width: 100%; max-height: none; }
+body[data-display-mode="app"] .vex-preview-frame[data-ratio="1:1"] { width: 100%; }
+body[data-display-mode="app"] .vex-preview-frame[data-ratio="9:16"] { width: min(100%, 260px); }
+body[data-display-mode="app"] .vex-task-current { flex-wrap: wrap; padding: 12px; }
+body[data-display-mode="app"] .vex-task-current :is(b, small) { font-size: 12px; white-space: normal; }
+body[data-display-mode="app"] .vex-task-recovery-actions { flex-basis: 100%; flex-wrap: wrap; }
+body[data-display-mode="app"] .vex-task-history > div { position: static; width: 100%; max-height: 340px; box-sizing: border-box; }
+body[data-display-mode="app"] .vex-task-history summary { min-height: 44px; font-size: 12px; }
+body[data-display-mode="app"] .vex-task-history-main { grid-template-columns: 8px minmax(0, 1fr) auto; }
+body[data-display-mode="app"] .vex-task-history-main > :last-child { grid-column: 2 / -1; }
+body[data-display-mode="app"] .vex-inspector { min-height: 0; }
+body[data-display-mode="app"] .vex-inspector-tabs { flex-wrap: wrap; padding: 8px; }
+body[data-display-mode="app"] .vex-inspector-tabs button { min-height: 44px; font-size: 13px; flex: 1; }
+body[data-display-mode="app"] .vex-inspector-scroll { padding-bottom: 14px; }
+body[data-display-mode="app"] .vex-project-settings-form > label { font-size: 13px; }
+body[data-display-mode="app"] .vex-scene-actions button { min-height: 44px; }
+body[data-display-mode="app"] .vex-timeline { order: 0; height: auto; min-height: 160px; }
+body[data-display-mode="app"] .vex-timeline > header { min-height: 48px; flex-wrap: wrap; }
+body[data-display-mode="app"] .vex-scene-track { min-height: 104px; overscroll-behavior-inline: contain; }
+body[data-display-mode="app"] .vex-scene-card { flex: 0 0 236px; min-height: 80px; }
+body[data-display-mode="app"] .vex-confirm-surface { padding: 16px; }
+body[data-display-mode="app"] .vex-confirm-surface footer { flex-wrap: wrap; }
+body[data-display-mode="app"] .vex-confirm-surface footer button { flex: 1; min-height: 44px; }
+
+/* Interactive lessons: touch controls and preserved record / replay / export. */
+body[data-display-mode="app"] :is(.lesson-lab-grid, .lesson-form-grid, .lesson-player-grid, .lesson-player-guide, .lesson-mindmap) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .lesson-composer { position: static; padding: 16px; }
+body[data-display-mode="app"] .lesson-composer > header > span { display: none; }
+body[data-display-mode="app"] .lesson-lab-head-actions { gap: 8px; }
+body[data-display-mode="app"] :is(.generation-guidance-trigger, .lesson-provider-status) { width: 100%; min-width: 0; min-height: 56px; box-shadow: none; }
+body[data-display-mode="app"] .generation-guidance-trigger { flex: 0 0 auto; min-height: 64px; height: auto; }
+body[data-display-mode="app"] .generation-guidance-trigger > svg:first-child { width: 20px; height: 20px; margin: auto; }
+body[data-display-mode="app"] .generation-guidance-trigger > svg:last-child { width: 16px; height: 16px; }
+body[data-display-mode="app"] .lesson-provider-status { flex: 0 0 auto; }
+body[data-display-mode="app"] .lesson-provider-status > span { min-width: 0; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .lesson-provider-status > svg { flex: 0 0 20px; width: 20px; height: 20px; }
+body[data-display-mode="app"] .lesson-provider-status::after { flex-shrink: 0; }
+body[data-display-mode="app"] :is(.generation-guidance-trigger b, .lesson-provider-status b) { font-size: 13px; }
+body[data-display-mode="app"] :is(.generation-guidance-trigger small, .lesson-provider-status small) { font-size: 12px; color: #61718a; }
+body[data-display-mode="app"] .lesson-form-field > span { font-size: 13px; }
+body[data-display-mode="app"] .lesson-form-field textarea { min-height: 104px; }
+body[data-display-mode="app"] .lesson-image-drop { min-height: 70px; }
+body[data-display-mode="app"] .lesson-image-drop :is(b, small) { font-size: 12px; }
+body[data-display-mode="app"] .lesson-image-drop button { width: 44px; height: 44px; }
+body[data-display-mode="app"] .lesson-generate-button { height: 48px; font-size: 15px; background: #2f6feb; box-shadow: none; }
+body[data-display-mode="app"] .lesson-generate-status { font-size: 12px; }
+body[data-display-mode="app"] .lesson-preview-toolbar { padding: 14px; }
+body[data-display-mode="app"] .lesson-preview-toolbar :is(b, small) { font-size: 12px; }
+body[data-display-mode="app"] .lesson-preview-actions { display: grid; width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+body[data-display-mode="app"] .lesson-preview-actions button { justify-content: center; min-height: 44px; height: auto; padding: 8px; font-size: 12px; }
+body[data-display-mode="app"] .lesson-event-count { grid-column: 1 / -1; font-size: 12px; }
+body[data-display-mode="app"] .lesson-player-stage { padding: 8px; }
+body[data-display-mode="app"] .lesson-player-canvas { min-width: 0; padding: 8px; }
+body[data-display-mode="app"] .lesson-range { grid-template-columns: 60px minmax(0, 1fr) 50px; min-height: 48px; }
+body[data-display-mode="app"] .lesson-range :is(span, output) { font-size: 12px; }
+body[data-display-mode="app"] .lesson-range input { min-width: 0; min-height: 44px; }
+body[data-display-mode="app"] .lesson-player-guide { padding: 14px; gap: 12px; }
+body[data-display-mode="app"] .lesson-key-points { grid-column: auto; }
+body[data-display-mode="app"] .lesson-key-points li { font-size: 12px; line-height: 1.6; }
+body[data-display-mode="app"] .lesson-mindmap button { min-height: 44px; font-size: 13px; }
+body[data-display-mode="app"] .lesson-agent-trace { min-width: 0; max-width: 100%; }
+
+body[data-display-mode="app"] :is(.generation-guidance-grid, .generation-guidance-controls, .generation-example > footer) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .generation-trait-grid { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .generation-guidance-head { padding: 16px; gap: 10px; }
+body[data-display-mode="app"] .generation-guidance-head h2 { font-size: 20px; }
+body[data-display-mode="app"] .generation-guidance-head button { width: 44px; height: 44px; flex-shrink: 0; }
+body[data-display-mode="app"] .generation-guidance-dialog :is(p, small) { font-size: 12px; line-height: 1.65; }
+body[data-display-mode="app"] .generation-trait-grid article b { font-size: 13px; }
+body[data-display-mode="app"] .generation-subject-filters button { min-height: 44px; font-size: 12px; }
+body[data-display-mode="app"] .generation-example button { min-height: 44px; height: auto; padding: 8px 10px; font-size: 12px; }
+body[data-display-mode="app"] .generation-example > footer > div { flex-wrap: wrap; }
+body[data-display-mode="app"] .generation-example h4 { font-size: 15px; }
+body[data-display-mode="app"] .generation-example-top > :is(span, em) { font-size: 12px; }
+
+/* The material studio preserves its real native, spatial and playback views. */
+body[data-display-mode="app"] .material-composer { padding: 16px; border-radius: 14px; }
+body[data-display-mode="app"] .material-technique-options { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+body[data-display-mode="app"] .material-technique-option > span { min-height: 82px; }
+body[data-display-mode="app"] .material-technique-option b { font-size: 14px; }
+body[data-display-mode="app"] .material-technique-option :is(small, em) { font-size: 12px; white-space: normal; overflow: visible; }
+body[data-display-mode="app"] .material-composer-label { align-items: flex-start; flex-direction: column; gap: 4px; }
+body[data-display-mode="app"] .material-composer-label label { font-size: 14px; }
+body[data-display-mode="app"] .material-composer-label span { font-size: 12px; }
+body[data-display-mode="app"] #materialSourceText { min-height: 150px; font-size: 16px; }
+body[data-display-mode="app"] .material-composer-foot { flex-direction: column; align-items: stretch; gap: 14px; }
+body[data-display-mode="app"] .material-samples button { min-height: 44px; height: auto; font-size: 12px; }
+body[data-display-mode="app"] .material-generate-actions { width: 100%; justify-content: space-between; }
+body[data-display-mode="app"] .material-generate-button { min-height: 48px; font-size: 14px; flex: 1; }
+body[data-display-mode="app"] .material-generate-button kbd { display: none; }
+body[data-display-mode="app"] .material-char-count { font-size: 12px; }
+body[data-display-mode="app"] .material-results-head { flex-direction: column; align-items: stretch; gap: 10px; }
+body[data-display-mode="app"] .material-generation-status { min-height: 36px; font-size: 12px; }
+body[data-display-mode="app"] :is(.material-native-manifest, .material-book-workspace, .material-book-chapter-head, .material-native-payload-row, .material-trace-grid, .material-spatial-explorer) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .knowledge-material-workspace .material-tech-grid { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .knowledge-material-workspace .material-spatial-explorer { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .material-tech-card-head { flex-wrap: wrap; gap: 10px; padding: 14px; }
+body[data-display-mode="app"] .material-tech-card-copy :is(h4, b) { font-size: 16px; }
+body[data-display-mode="app"] .material-tech-card-copy :is(p, small) { font-size: 12px; }
+body[data-display-mode="app"] .material-tech-body { padding: 14px; font-size: 13px; }
+body[data-display-mode="app"] :is(.material-local-tablist, .material-koji-triggers) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+body[data-display-mode="app"] :is(.material-local-tab, .material-koji-trigger, .material-koji-actions button, .material-scene-tab, .material-playback-button, .material-hotspot-button, .material-quiz-option) { min-height: 44px; height: auto; font-size: 12px; }
+body[data-display-mode="app"] :is(.material-flashcard-grid, .material-quiz-options, .material-scene-canvas, .material-source-anchors > div, .material-evidence-grid) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .material-book-chapters { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+body[data-display-mode="app"] .material-book-chapter { min-width: 220px; }
+body[data-display-mode="app"] :is(.material-scene-tabs, .material-page-tabs, .material-native-action-list) { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+body[data-display-mode="app"] .material-native-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+body[data-display-mode="app"] .material-native-action-controls { flex-wrap: wrap; align-items: flex-start; padding: 12px; gap: 10px; }
+body[data-display-mode="app"] .material-native-action-controls button { min-height: 44px; min-width: 44px; height: auto; }
+body[data-display-mode="app"] .material-native-action-controls > div:last-child { flex-wrap: wrap; }
+body[data-display-mode="app"] .material-native-quiz-actions { flex-wrap: wrap; }
+body[data-display-mode="app"] .material-native-quiz-actions button { min-height: 44px; font-size: 13px; }
+body[data-display-mode="app"] .material-native-table-wrap { max-width: 100%; overflow: auto; }
+body[data-display-mode="app"] .material-native-table { min-width: 480px; }
+body[data-display-mode="app"] .material-native-interactive-frame { min-height: 440px; }
+body[data-display-mode="app"] :is(.material-trace-timeline, .material-trace-streams) { max-width: 100%; max-height: 320px; }
+body[data-display-mode="app"] .material-trace > summary { min-height: 48px; }
+body[data-display-mode="app"] .material-trace-warning { grid-template-columns: auto minmax(0, 1fr); }
+body[data-display-mode="app"] .material-trace-warning button { grid-column: 1 / -1; min-height: 44px; }
+body[data-display-mode="app"] .material-provider-dialog-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+body[data-display-mode="app"] .material-provider-dialog-actions button { min-width: 0; min-height: 44px; }
+
+/* Agent Skills stay searchable by a swipeable selector and full detail below. */
+body[data-display-mode="app"] .education-skills-summary { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+body[data-display-mode="app"] .education-skills-summary > span { min-width: 144px; }
+body[data-display-mode="app"] .education-skills-layout { display: block; min-height: 0; border-radius: 14px; box-shadow: none; }
+body[data-display-mode="app"] .education-skills-list { display: flex; max-width: 100%; overflow-x: auto; gap: 8px; padding: 10px; scroll-snap-type: x proximity; overscroll-behavior-inline: contain; }
+body[data-display-mode="app"] .education-skill-list-item { flex: 0 0 250px; min-height: 90px; scroll-snap-align: start; }
+body[data-display-mode="app"] .education-skill-list-item b { font-size: 14px; }
+body[data-display-mode="app"] .education-skill-list-item small { font-size: 12px; }
+body[data-display-mode="app"] .education-skill-detail { padding: 18px 14px; }
+body[data-display-mode="app"] .education-skill-detail > header { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
+body[data-display-mode="app"] .education-skill-detail header em { grid-column: 2; }
+body[data-display-mode="app"] .education-skill-detail h2 { font-size: 21px; }
+body[data-display-mode="app"] .education-skill-detail :is(p, small, dd) { font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+body[data-display-mode="app"] :is(.education-skill-facts, .education-skill-permission-grid, .education-skill-tool) { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+body[data-display-mode="app"] .education-skill-tool em { justify-self: start; }
+body[data-display-mode="app"] .education-skill-tool b { font-size: 13px; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .education-skills-state { flex-wrap: wrap; padding: 16px; }
+body[data-display-mode="app"] .education-skills-state button { min-height: 44px; }
+
+/* Ontology remains a real pan / zoom canvas with its controls and inspector. */
+body[data-display-mode="app"] .ontology-workbench { background: #f4f7fb; }
+body[data-display-mode="app"] .ontology-workbench-layout { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+body[data-display-mode="app"] .ontology-control-panel { display: grid; grid-template-columns: minmax(0, 1fr); padding: 16px; gap: 14px; border-radius: 14px; box-shadow: none; }
+body[data-display-mode="app"] .ontology-control-panel :is(header, .ontology-source-note) { grid-column: auto; }
+body[data-display-mode="app"] .ontology-field > span { font-size: 12px; }
+body[data-display-mode="app"] .ontology-toggle { min-height: 44px; font-size: 13px; }
+body[data-display-mode="app"] .ontology-workbench-head-actions { flex-wrap: wrap; }
+body[data-display-mode="app"] .ontology-icon-button { min-width: 44px; width: 44px; height: 44px; }
+body[data-display-mode="app"] .ontology-canvas-panel { min-height: 440px; height: 440px; border-radius: 14px; box-shadow: none; touch-action: none; }
+body[data-display-mode="app"] .ontology-canvas-toolbar { left: 10px; right: 10px; top: 10px; flex-wrap: wrap; gap: 6px; }
+body[data-display-mode="app"] .ontology-canvas-toolbar span { font-size: 12px; }
+body[data-display-mode="app"] .ontology-canvas-toolbar .ontology-icon-button { width: 44px; height: 44px; margin-left: auto; }
+body[data-display-mode="app"] .ontology-detail-panel { grid-column: 1; max-height: none; padding: 16px; border-radius: 14px; box-shadow: none; }
+body[data-display-mode="app"] .ontology-detail-panel > header { position: static; margin: -16px -16px 14px; padding: 16px; }
+body[data-display-mode="app"] .ontology-detail-panel :is(p, li, dd) { font-size: 12px; line-height: 1.65; }
+body[data-display-mode="app"] .ontology-source-note { font-size: 12px; }
+
+/* Technology filters and settings use single-column forms without hidden fields. */
+body[data-display-mode="app"] :is(.technology-grid, .technology-controls) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .technology-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+body[data-display-mode="app"] .technology-summary-card { min-width: 0; padding: 14px 12px; box-shadow: none; }
+body[data-display-mode="app"] .technology-summary-card b { font-size: 20px; }
+body[data-display-mode="app"] .technology-summary-card :is(span, em) { font-size: 12px; white-space: normal; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .technology-controls { padding: 12px; }
+body[data-display-mode="app"] .technology-search { display: block; min-width: 0; }
+body[data-display-mode="app"] .technology-search > :is(svg, i) { position: absolute; top: 50%; left: 12px; width: 18px; height: 18px; transform: translateY(-50%); color: #61718a; pointer-events: none; }
+body[data-display-mode="app"] .technology-search input { width: 100%; padding-left: 38px; }
+body[data-display-mode="app"] .technology-card { padding: 16px; box-shadow: none; }
+body[data-display-mode="app"] .technology-card :is(p, small, li) { font-size: 12px; line-height: 1.65; }
+body[data-display-mode="app"] .technology-card a { min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; }
+body[data-display-mode="app"] .technology-card footer { flex-wrap: wrap; }
+
+body[data-display-mode="app"] .education-settings-workbench { display: block; padding: 0 14px 28px; }
+body[data-display-mode="app"] .education-settings-tabs { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 8px; margin-bottom: 16px; }
+body[data-display-mode="app"] .education-settings-tabs button { min-height: 46px; padding: 8px; font-size: 13px; white-space: normal; }
+body[data-display-mode="app"] .education-settings-advanced > div { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .education-settings-advanced > div button { justify-content: flex-start; padding-left: 14px; }
+body[data-display-mode="app"] .education-settings-advanced > summary { min-height: 52px; }
+body[data-display-mode="app"] .education-settings-advanced > summary small { font-size: 12px; }
+body[data-display-mode="app"] .settings-section-head { padding: 16px; gap: 10px; flex-wrap: wrap; background: #fff; }
+body[data-display-mode="app"] .settings-section-head h3 { font-size: 20px; }
+body[data-display-mode="app"] :is(.settings-summary-grid, .settings-contract-grid, .settings-storage-grid, .settings-protocol-row, .ontology-pipeline, .agent-proxy-fields, .runtime-model-fields, .mastery-policy-group > div) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .settings-contract-grid { display: grid; gap: 12px; }
+body[data-display-mode="app"] .settings-model-list article { grid-template-columns: 38px minmax(0, 1fr); }
+body[data-display-mode="app"] .settings-model-list article > div { min-width: 0; }
+body[data-display-mode="app"] .settings-model-list article em { grid-column: 2; justify-self: start; }
+body[data-display-mode="app"] .settings-model-list article code { grid-column: 1 / -1; white-space: normal; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .settings-storage-grid article { flex-wrap: wrap; }
+body[data-display-mode="app"] .settings-storage-grid article > div { min-width: 0; flex: 1; }
+body[data-display-mode="app"] .settings-storage-grid article code { flex-basis: 100%; white-space: normal; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .settings-library-list article code { white-space: normal; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .agent-proxy-heading { grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 16px; }
+body[data-display-mode="app"] .settings-switch-control { min-height: 44px; padding-top: 0; }
+body[data-display-mode="app"] .settings-switch-control b { display: inline; min-width: 0; font-size: 12px; }
+body[data-display-mode="app"] .runtime-model-item > summary { min-height: 74px; grid-template-columns: 36px minmax(0, 1fr) 18px; padding: 14px; }
+body[data-display-mode="app"] .runtime-model-item > summary em { grid-column: 2; }
+body[data-display-mode="app"] .runtime-model-chevron { grid-column: 3; grid-row: 1; }
+body[data-display-mode="app"] .runtime-setting-field.is-wide { grid-column: auto; }
+body[data-display-mode="app"] .runtime-setting-field :is(span, small) { font-size: 12px; line-height: 1.6; }
+body[data-display-mode="app"] :is(.runtime-settings-actions, .mastery-form-actions) { position: static; flex-direction: column; align-items: stretch; padding: 16px; gap: 10px; }
+body[data-display-mode="app"] :is(.runtime-settings-actions, .mastery-form-actions) button { width: 100%; min-height: 46px; font-size: 14px; white-space: normal; }
+body[data-display-mode="app"] .mastery-checkbox-field { min-height: 44px; }
+body[data-display-mode="app"] .mastery-authority-strip { flex-wrap: wrap; }
+body[data-display-mode="app"] .mastery-authority-strip small { font-size: 12px; }
+body[data-display-mode="app"] .mastery-policy-group { min-width: 0; }
+
+/* One control language across all fourteen teacher workspaces. Compound
+   buttons remain grids; toolbar actions remain centered icon/label pairs. */
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-settings-workbench, .education-skills-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell,
+  .ontology-workbench-shell, .video-explanation-workbench
+) button {
+  min-height: 44px;
+  height: auto;
+  font-size: 14px;
+  line-height: 1.3;
+  white-space: normal;
+}
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-settings-workbench, .education-skills-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell,
+  .ontology-workbench-shell, .video-explanation-workbench
+) button > span { font-size: inherit; line-height: inherit; }
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-settings-workbench, .education-skills-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell,
+  .ontology-workbench-shell, .video-explanation-workbench
+) :is(p, dd, li) { font-size: 15px; line-height: 1.7; }
+body[data-display-mode="app"] :is(
+  .teacher-page-shell, .education-settings-workbench, .education-skills-shell,
+  .lesson-lab-shell, .technology-landscape-shell, .material-studio-shell,
+  .ontology-workbench-shell, .video-explanation-workbench
+) :is(small, time, .page-eyebrow) { font-size: 12px; line-height: 1.5; letter-spacing: 0; }
+body[data-display-mode="app"] :is(
+  .teacher-page-head, .education-skills-head, .ontology-workbench-head,
+  .lesson-lab-head, .technology-landscape-head, .material-studio-head, .vex-head-copy
+) h2 { font-size: 20px; line-height: 1.4; }
+body[data-display-mode="app"] :is(
+  .teacher-page-actions, .teacher-panel > header, .teacher-course-card footer,
+  .teacher-student-inspector-actions, .lesson-preview-actions, .generation-example > footer,
+  .material-provider-dialog-actions, .vex-head-actions, .vex-studio-actions,
+  .vex-confirm-surface footer, .runtime-settings-actions, .mastery-form-actions
+) button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  height: auto;
+  padding: 11px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: center;
+}
+body[data-display-mode="app"] :is(
+  .teacher-page-actions, .teacher-panel > header, .teacher-course-card footer,
+  .teacher-student-inspector-actions, .lesson-preview-actions,
+  .material-provider-dialog-actions, .vex-head-actions, .vex-studio-actions,
+  .runtime-settings-actions, .mastery-form-actions
+) button > svg { width: 20px; height: 20px; flex-shrink: 0; }
+body[data-display-mode="app"] :is(
+  .teacher-course-filter, .vex-source-tabs, .vex-inspector-tabs,
+  .generation-subject-filters, .material-local-tablist, .material-scene-tabs,
+  .material-page-tabs, .education-settings-tabs
+) button { padding: 11px 12px; font-size: 14px; line-height: 1.3; }
+body[data-display-mode="app"] :is(
+  .teacher-course-filter, .vex-source-tabs, .vex-inspector-tabs,
+  .generation-subject-filters, .material-local-tablist, .material-scene-tabs,
+  .material-page-tabs, .education-settings-tabs
+) button > span { font-size: inherit; }
+
+body[data-display-mode="app"] .teacher-metric-grid b { font-size: 26px; font-variant-numeric: tabular-nums; }
+body[data-display-mode="app"] .teacher-metric-grid :is(small, em) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-panel > header h3 { font-size: 17px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-quick-panel > div { padding: 12px; gap: 8px; }
+body[data-display-mode="app"] .teacher-quick-panel > div button { height: auto; min-height: 80px; padding: 14px; gap: 12px; align-items: center; }
+body[data-display-mode="app"] .teacher-quick-panel > div button b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-quick-panel > div button small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-quick-panel > div button > svg { width: 22px; height: 22px; }
+body[data-display-mode="app"] .teacher-student-summary span { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-student-row:not(.is-head) > :nth-child(n + 2)::before { font-size: 12px; }
+body[data-display-mode="app"] .teacher-student-inspector > header > button { width: 44px; height: 44px; min-width: 44px; padding: 0; }
+body[data-display-mode="app"] .teacher-table-toolbar { gap: 12px; padding: 14px; }
+body[data-display-mode="app"] .teacher-table-toolbar label { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-course-card footer { padding-top: 14px; gap: 8px; }
+body[data-display-mode="app"] .teacher-course-card footer button { flex: 1 1 120px; }
+body[data-display-mode="app"] .teacher-config-toolkit label { font-size: 14px; }
+
+body[data-display-mode="app"] .vex-project-item { min-height: 84px; height: auto; padding: 14px; text-align: left; }
+body[data-display-mode="app"] .vex-project-item b { font-size: 15px; line-height: 1.5; white-space: normal; }
+body[data-display-mode="app"] .vex-project-item small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .video-explanation-workbench :is(.vex-primary-button, .vex-quiet-button, .vex-icon-button) { min-height: 44px; height: auto; font-size: 14px; }
+body[data-display-mode="app"] .video-explanation-workbench .vex-icon-button { width: 44px; min-width: 44px; height: 44px; padding: 0; }
+body[data-display-mode="app"] .vex-settings-grid label > span { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .vex-source-drop b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .vex-source-drop small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .vex-create-footer { flex-direction: column; align-items: stretch; }
+body[data-display-mode="app"] .vex-create-footer > button { min-height: 48px; }
+body[data-display-mode="app"] .vex-production-map { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 8px; padding: 16px; }
+body[data-display-mode="app"] .vex-production-map b { font-size: 14px; line-height: 1.4; }
+body[data-display-mode="app"] .vex-production-map small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .vex-scene-card { min-height: 100px; height: auto; padding: 12px; }
+body[data-display-mode="app"] .vex-scene-card :is(b, span) { font-size: 14px; line-height: 1.4; }
+body[data-display-mode="app"] .vex-scene-card small { font-size: 12px; line-height: 1.5; }
+
+body[data-display-mode="app"] .lesson-lab-head-actions { flex-direction: column; }
+body[data-display-mode="app"] :is(.generation-guidance-trigger, .lesson-provider-status) { height: auto; min-height: 76px; padding: 14px; gap: 12px; }
+body[data-display-mode="app"] .generation-guidance-trigger { grid-template-columns: 24px minmax(0, 1fr) 18px; }
+body[data-display-mode="app"] .generation-guidance-trigger > span { display: grid; gap: 4px; }
+body[data-display-mode="app"] :is(.generation-guidance-trigger, .lesson-provider-status) b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] :is(.generation-guidance-trigger, .lesson-provider-status) small { font-size: 12px; line-height: 1.5; white-space: normal; }
+body[data-display-mode="app"] .lesson-form-field > span { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .lesson-form-grid { gap: 14px; }
+body[data-display-mode="app"] .lesson-image-drop { min-height: 88px; padding: 14px; grid-template-columns: 24px minmax(0, 1fr) 44px; }
+body[data-display-mode="app"] .lesson-image-drop b { font-size: 14px; }
+body[data-display-mode="app"] .lesson-image-drop small { font-size: 12px; white-space: normal; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .lesson-image-drop button { width: 44px; height: 44px; padding: 0; }
+body[data-display-mode="app"] .lesson-generate-button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; font-size: 14px; padding: 12px 16px; }
+body[data-display-mode="app"] .lesson-preview-toolbar { flex-direction: column; align-items: stretch; gap: 14px; }
+body[data-display-mode="app"] .lesson-preview-toolbar b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .lesson-preview-toolbar small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .lesson-range :is(span, output) { font-size: 14px; }
+body[data-display-mode="app"] .lesson-key-points li { font-size: 15px; line-height: 1.7; }
+body[data-display-mode="app"] .generation-trait-grid article b { font-size: 15px; }
+body[data-display-mode="app"] .generation-example button { font-size: 14px; line-height: 1.3; }
+
+body[data-display-mode="app"] .material-technique-option > span { min-height: 88px; height: auto; padding: 14px; gap: 10px; }
+body[data-display-mode="app"] .material-technique-option b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .material-samples { display: flex; flex-wrap: wrap; gap: 8px; }
+body[data-display-mode="app"] .material-samples button { padding: 11px 12px; font-size: 14px; line-height: 1.3; }
+body[data-display-mode="app"] .material-generate-actions { flex-wrap: wrap; gap: 10px; }
+body[data-display-mode="app"] .material-generate-button { min-height: 48px; padding: 12px 16px; }
+body[data-display-mode="app"] .material-tech-body { font-size: 15px; line-height: 1.7; }
+body[data-display-mode="app"] :is(.material-local-tab, .material-koji-trigger, .material-koji-actions button, .material-scene-tab, .material-playback-button, .material-hotspot-button, .material-quiz-option) { min-height: 44px; height: auto; padding: 11px 12px; font-size: 14px; line-height: 1.4; }
+body[data-display-mode="app"] .material-book-chapter { min-height: 72px; height: auto; padding: 12px; }
+body[data-display-mode="app"] .material-book-chapter b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .material-book-chapter small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .material-native-action-controls button { font-size: 14px; padding: 11px 12px; }
+body[data-display-mode="app"] .material-trace > summary { padding-block: 12px; font-size: 14px; line-height: 1.4; }
+
+body[data-display-mode="app"] .education-skill-list-item { min-height: 104px; height: auto; padding: 14px; }
+body[data-display-mode="app"] .education-skill-list-item b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .education-skill-list-item small { font-size: 12px; line-height: 1.5; white-space: normal; }
+body[data-display-mode="app"] .education-skill-detail h2 { font-size: 20px; line-height: 1.4; }
+body[data-display-mode="app"] .education-skill-tool b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .ontology-field > span { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .ontology-icon-button { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; width: 44px; height: 44px; padding: 0; }
+body[data-display-mode="app"] .ontology-toggle { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .ontology-canvas-toolbar span { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .technology-summary-card :is(span, em) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .technology-card a { font-size: 14px; line-height: 1.4; gap: 8px; }
+
+body[data-display-mode="app"] .education-settings-tabs button { display: flex; align-items: center; justify-content: flex-start; gap: 8px; }
+body[data-display-mode="app"] .education-settings-tabs button > svg { width: 20px; height: 20px; flex-shrink: 0; }
+body[data-display-mode="app"] .education-settings-tabs button > span { font-size: 14px; line-height: 1.3; text-align: left; }
+body[data-display-mode="app"] .education-settings-advanced > summary { align-items: center; font-size: 14px; line-height: 1.5; padding-block: 12px; }
+body[data-display-mode="app"] .education-settings-workbench :is(label, dt) { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .education-settings-workbench :is(code, em) { font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+body[data-display-mode="app"] :is(.settings-summary-grid, .settings-storage-grid, .settings-contract-grid) article { min-width: 0; padding: 16px; }
+body[data-display-mode="app"] .runtime-model-item > summary { min-height: 88px; gap: 8px 12px; }
+body[data-display-mode="app"] .runtime-model-item > summary b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .runtime-model-item > summary small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .runtime-setting-field > span { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .runtime-setting-field small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .settings-switch-control { align-items: center; gap: 8px; }
+body[data-display-mode="app"] .settings-switch-control b { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .mastery-checkbox-field { align-items: center; gap: 10px; padding-block: 8px; }
+
+/* Captions and rich selectors found in the complete page review. */
+body[data-display-mode="app"] .teacher-page-shell span:is(.mastered, .learning, .weak, .unknown) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .teacher-student-row.is-head { font-size: 12px; }
+body[data-display-mode="app"] :is(.teacher-context-strip, .teacher-preview-notice) b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .ontology-control-panel > header > span { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] :is(.vex-service-pill > span, .vex-step) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] #materialProviderStatus .material-provider-copy > span { font-size: 14px; line-height: 1.5; white-space: normal; }
+body[data-display-mode="app"] #materialProviderStatus .material-provider-copy > small { font-size: 12px; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
+body[data-display-mode="app"] .education-skills-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
+body[data-display-mode="app"] .education-skills-summary > span,
+body[data-display-mode="app"] .education-skills-summary > span + span { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-width: 0; padding: 12px 5px; text-align: center; }
+body[data-display-mode="app"] .education-skills-summary b { font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] .education-skills-list { scrollbar-width: thin; scrollbar-color: #bdcbe0 transparent; }
+body[data-display-mode="app"] .education-skill-list-item { flex-basis: 278px; grid-template-columns: 34px minmax(0, 1fr); align-content: start; }
+body[data-display-mode="app"] .education-skill-list-item em { grid-column: 2; padding-top: 0; font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .education-skill-list-item small { display: block; max-height: none; overflow: visible; -webkit-line-clamp: unset; white-space: normal; }
+body[data-display-mode="app"] :is(.education-skill-tags span, .education-skill-facts dt, .education-skill-tool em) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .technology-controls > span { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .technology-card header em { font-size: 12px; line-height: 1.5; flex-shrink: 0; }
+body[data-display-mode="app"] :is(.education-settings-group-label, .settings-section-head > div > span) { font-size: 12px; line-height: 1.5; }

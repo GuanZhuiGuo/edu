@@ -1,0 +1,4 @@
+-- The migration runner adds sample_count only when it is absent. SQLite does
+-- not support `ADD COLUMN IF NOT EXISTS`, so the guarded DDL lives in
+-- ensureEducationSchemaCompatibility() and this file remains the versioned
+-- migration marker.

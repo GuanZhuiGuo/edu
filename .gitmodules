@@ -1,0 +1,6 @@
+[submodule "third_party/openmaic"]
+	path = third_party/openmaic
+	url = https://github.com/THU-MAIC/OpenMAIC.git
+[submodule "third_party/deeptutor"]
+	path = third_party/deeptutor
+	url = https://github.com/HKUDS/DeepTutor.git

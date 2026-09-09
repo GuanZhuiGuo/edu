@@ -1,0 +1,176 @@
+.education-skills-workspace {
+  min-width: 0;
+  overflow: auto;
+  background: #f7f9fc;
+}
+
+.education-skills-shell {
+  width: min(1180px, calc(100% - 56px));
+  margin: 0 auto;
+  padding: 34px 0 64px;
+}
+
+.education-skills-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.education-skills-head h1,
+.education-skills-head h2 {
+  margin: 0 0 7px;
+  color: #1f2d3d;
+  font-size: clamp(24px, 3vw, 34px);
+  letter-spacing: -0.025em;
+}
+
+.education-skills-head p {
+  max-width: 68ch;
+  margin: 0;
+  color: #627187;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.education-skills-head > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: #eaf7f1;
+  color: #17714f;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.education-skills-head svg,
+.education-skills-summary svg { width: 16px; height: 16px; }
+
+.education-skills-summary {
+  display: flex;
+  gap: 0;
+  margin-bottom: 18px;
+  border-block: 1px solid #e1e7ef;
+}
+
+.education-skills-summary > span {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 2px 8px;
+  min-width: 160px;
+  padding: 13px 26px 13px 0;
+  color: #315d96;
+}
+
+.education-skills-summary > span + span { padding-left: 26px; border-left: 1px solid #e1e7ef; }
+.education-skills-summary b { color: #25364a; font-size: 13px; }
+.education-skills-summary small { grid-column: 2; color: #738198; font-size: 11px; }
+
+.education-skills-layout {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.34fr) minmax(0, 1fr);
+  min-height: 570px;
+  overflow: hidden;
+  border: 1px solid #dce4ee;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(41, 61, 88, 0.08);
+}
+
+.education-skills-list { padding: 12px; border-right: 1px solid #e2e8f0; background: #f8fafc; }
+
+.education-skill-list-item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+  width: 100%;
+  padding: 13px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #304158;
+  text-align: left;
+  cursor: pointer;
+}
+
+.education-skill-list-item:hover { background: #eef3f9; }
+.education-skill-list-item:focus-visible { outline: 2px solid #2f6feb; outline-offset: 2px; }
+.education-skill-list-item.is-active { background: #e9f1ff; color: #194f9f; }
+.education-skill-list-item > span:first-child { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #fff; color: #315e9e; }
+.education-skill-list-item svg { width: 17px; height: 17px; }
+.education-skill-list-item b { display: block; margin: 1px 0 4px; font-size: 13px; }
+.education-skill-list-item small { display: -webkit-box; overflow: hidden; color: #738198; font-size: 11px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.education-skill-list-item em { padding-top: 4px; color: #8a97aa; font-size: 10px; font-style: normal; }
+
+.education-skill-detail { min-width: 0; padding: 26px 30px 22px; }
+.education-skill-detail > header { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding-bottom: 22px; border-bottom: 1px solid #e5eaf1; }
+.education-skill-detail-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 13px; background: #eaf2ff; color: #2460ad; }
+.education-skill-detail-icon svg { width: 23px; height: 23px; }
+.education-skill-detail header small { color: #748297; font-size: 11px; }
+.education-skill-detail h2 { margin: 3px 0 5px; color: #1f3045; font-size: 21px; letter-spacing: -0.02em; }
+.education-skill-detail header p { max-width: 68ch; margin: 0; color: #5f6f84; font-size: 13px; line-height: 1.65; }
+.education-skill-detail header em { display: inline-flex; align-items: center; gap: 5px; color: #17714f; font-size: 12px; font-style: normal; font-weight: 700; }
+.education-skill-detail header em svg { width: 15px; height: 15px; }
+
+.education-skill-detail h3 { margin: 0 0 10px; color: #2b3b50; font-size: 12px; }
+.education-skill-facts { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr); gap: 28px; padding: 22px 0; }
+.education-skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.education-skill-tags span { padding: 6px 9px; border-radius: 8px; background: #f0f4f9; color: #4e6077; font-size: 11px; }
+.education-skill-facts dl { display: grid; gap: 7px; margin: 0; }
+.education-skill-facts dl div { display: grid; grid-template-columns: 54px 1fr; gap: 8px; color: #53657b; font-size: 11px; }
+.education-skill-facts dt { color: #8290a3; }
+.education-skill-facts dd { margin: 0; }
+
+.education-skill-tools { padding: 20px 0; border-top: 1px solid #e5eaf1; }
+.education-skill-tools > div { display: grid; gap: 2px; }
+.education-skill-tool { display: grid; grid-template-columns: minmax(170px, 0.75fr) minmax(0, 1.5fr) auto; align-items: center; gap: 16px; padding: 11px 0; border-bottom: 1px solid #edf1f5; }
+.education-skill-tool > span { display: flex; align-items: center; gap: 8px; }
+.education-skill-tool svg { width: 15px; height: 15px; color: #3769aa; }
+.education-skill-tool b { color: #33455b; font-size: 12px; }
+.education-skill-tool p { margin: 0; color: #68788d; font-size: 11px; line-height: 1.5; }
+.education-skill-tool em { padding: 5px 7px; border-radius: 7px; background: #f0f5fb; color: #47617f; font-size: 10px; font-style: normal; }
+
+.education-skill-permissions { padding-top: 2px; }
+.education-skill-permission-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.education-skill-permission-grid > span { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; padding: 11px 12px; border-radius: 10px; background: #f5f8fb; }
+.education-skill-permission-grid b { margin-bottom: 2px; color: #42536a; font-size: 11px; }
+.education-skill-permission-grid small { color: #65768b; font-size: 10px; }
+.education-skill-permission-grid .is-denied { background: #fff4f3; }
+.education-skill-permission-grid .is-denied b,
+.education-skill-permission-grid .is-denied small { color: #8b4442; }
+
+.education-skill-detail > footer { display: flex; align-items: center; gap: 8px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5eaf1; color: #68788d; font-size: 11px; line-height: 1.5; }
+.education-skill-detail > footer svg { flex: 0 0 auto; width: 15px; height: 15px; color: #426897; }
+
+.education-skills-state { display: flex; align-items: center; gap: 12px; min-height: 180px; padding: 24px; border: 1px solid #dce4ee; border-radius: 14px; background: #fff; color: #465970; }
+.education-skills-state > svg { width: 22px; height: 22px; color: #3569aa; }
+.education-skills-state b, .education-skills-state small { display: block; }
+.education-skills-state small { margin-top: 3px; color: #78879a; }
+.education-skills-state button { margin-left: auto; min-height: 36px; padding: 0 13px; border: 1px solid #cfd9e6; border-radius: 9px; background: #fff; color: #3a526f; cursor: pointer; }
+.education-skills-state.is-error > svg { color: #b74949; }
+
+@media (max-width: 820px) {
+  .education-skills-shell { width: min(100% - 28px, 720px); padding-top: 22px; }
+  .education-skills-head { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .education-skills-summary { overflow-x: auto; }
+  .education-skills-summary > span { min-width: 145px; }
+  .education-skills-layout { display: block; }
+  .education-skills-list { display: flex; gap: 8px; overflow-x: auto; border-right: 0; border-bottom: 1px solid #e2e8f0; }
+  .education-skill-list-item { flex: 0 0 220px; }
+  .education-skill-detail { padding: 22px 18px; }
+  .education-skill-detail > header { grid-template-columns: 42px minmax(0, 1fr); }
+  .education-skill-detail header em { grid-column: 2; }
+  .education-skill-facts, .education-skill-permission-grid { grid-template-columns: 1fr; }
+  .education-skill-tool { grid-template-columns: 1fr; gap: 6px; }
+  .education-skill-tool em { justify-self: start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .education-skill-list-item { scroll-behavior: auto; }
+}

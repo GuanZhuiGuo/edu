@@ -1,0 +1,640 @@
+/* App presentation. The same application, handlers and data are retained.
+   Every rule is opt-in: resizing the desktop never applies this stylesheet. */
+body[data-display-mode="app"] {
+  --app-nav-height: 60px;
+  --app-font-title: 20px;
+  --app-font-section: 17px;
+  --app-font-body: 15px;
+  --app-font-control: 14px;
+  --app-font-caption: 12px;
+  --app-control-size: 44px;
+  --app-control-primary: 48px;
+  --app-control-radius: 12px;
+  --app-icon-size: 20px;
+  --ui-bg: #f3f6fa;
+  --ui-text: #1c2940;
+  --ui-text-secondary: #51637c;
+  --ui-text-muted: #60718a;
+  --ui-border: #dce4ee;
+  --ui-surface-accent: #eaf1fd;
+  background: var(--ui-bg);
+  font-size: var(--app-font-body);
+  line-height: 1.6;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body[data-display-mode="app"] *,
+body[data-display-mode="app"] *::before,
+body[data-display-mode="app"] *::after { box-sizing: border-box; }
+
+body[data-display-mode="app"] ::selection { background: #d7e6ff; color: #163666; }
+body[data-display-mode="app"] :where(input, textarea) { caret-color: #2f6feb; }
+body[data-display-mode="app"] :where(button, [role="button"], summary) { touch-action: manipulation; }
+/* Reset inherited desktop microtype without flattening rich menu/card layouts.
+   Semantic controls keep their own display and content-driven height. */
+body[data-display-mode="app"] button {
+  min-height: var(--app-control-size);
+  height: auto;
+  max-width: 100%;
+  font-family: inherit;
+  font-size: var(--app-font-control);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0;
+  white-space: normal;
+  vertical-align: middle;
+}
+body[data-display-mode="app"] button > span {
+  min-width: 0;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+body[data-display-mode="app"] button :where(b, strong) {
+  font-size: var(--app-font-control);
+  line-height: 1.4;
+}
+body[data-display-mode="app"] button small {
+  font-size: var(--app-font-caption);
+  line-height: 1.5;
+}
+body[data-display-mode="app"] :is(.workspace, dialog) :where(p, li, dd) {
+  font-size: var(--app-font-body);
+  line-height: 1.7;
+}
+body[data-display-mode="app"] :is(.workspace, dialog) :where(small, time, figcaption) {
+  font-size: var(--app-font-caption);
+  line-height: 1.5;
+}
+body[data-display-mode="app"] :is(.workspace, dialog) :where(h2) {
+  font-size: var(--app-font-title);
+  line-height: 1.4;
+}
+body[data-display-mode="app"] :is(.workspace, dialog) :where(h3) {
+  font-size: var(--app-font-section);
+  line-height: 1.5;
+}
+body[data-display-mode="app"] :is(.workspace, dialog) :where(h4) {
+  font-size: var(--app-font-body);
+  line-height: 1.5;
+}
+body[data-display-mode="app"] :where(button, summary) > svg {
+  width: var(--app-icon-size);
+  height: var(--app-icon-size);
+  flex-shrink: 0;
+}
+body[data-display-mode="app"] :is(.primary-btn, .secondary-btn, .outline-btn, .ghost-btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--app-control-size);
+  height: auto;
+  padding: 11px 14px;
+  border-radius: var(--app-control-radius);
+  font-size: var(--app-font-control);
+  line-height: 1.3;
+  text-align: center;
+}
+body[data-display-mode="app"] :is(.primary-btn, .secondary-btn, .outline-btn, .ghost-btn) > span {
+  font-size: inherit;
+  line-height: inherit;
+}
+body[data-display-mode="app"] :where(input, select, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]) { min-height: 44px; font-size: 16px; max-width: 100%; }
+body[data-display-mode="app"] :where(input, textarea)::placeholder { color: #66768c; opacity: 1; }
+body[data-display-mode="app"] :where(button, [role="button"], a, input, select, textarea, summary):focus-visible { outline: 2px solid #2f6feb !important; outline-offset: 2px !important; }
+body[data-display-mode="app"] :where(button, [role="button"]):active:not(:disabled) { filter: brightness(.97); }
+body[data-display-mode="app"] :where(button, input, select, textarea):disabled { cursor: not-allowed; }
+body[data-display-mode="app"] :where(p, h1, h2, h3, h4, label) { overflow-wrap: anywhere; }
+body[data-display-mode="app"] :where(.learning-page, .voice-config-workspace, .ai-dialogue-body, .knowledge-shelf-view) { overscroll-behavior-y: contain; scrollbar-width: none; }
+body[data-display-mode="app"] :where(.learning-page, .voice-config-workspace, .ai-dialogue-body, .knowledge-shelf-view)::-webkit-scrollbar { width: 0; }
+
+/* The device status bar belongs to the host; this is the application header. */
+body[data-display-mode="app"] .workspace { width: 100%; height: 100dvh; min-height: 0; grid-template-rows: 52px minmax(0, 1fr); }
+body[data-display-mode="app"] .global-header { height: 52px; min-height: 52px; padding: 0 12px; gap: 6px; background: #f8fafd; }
+body[data-display-mode="app"] .global-brand { min-width: 0; gap: 6px; flex: 0 1 auto; }
+body[data-display-mode="app"] .product-wordmark { gap: 0; flex: 0 0 auto; }
+body[data-display-mode="app"] .product-wordmark-mark { display: none; }
+body[data-display-mode="app"] .platform-name { font-size: 16px; font-weight: 750; letter-spacing: -.025em; white-space: nowrap; }
+body[data-display-mode="app"] .global-actions { min-width: 0; margin-left: auto; gap: 4px; flex: 0 0 auto; }
+body[data-display-mode="app"] .global-icon-button { width: 44px; height: 44px; min-width: 44px; padding: 0; border-radius: 12px; }
+body[data-display-mode="app"] .launcher-button { width: 44px; min-width: 44px; margin-left: -5px; }
+body[data-display-mode="app"] .system-version-button { min-width: 0; min-height: 44px; height: 44px; margin: 0; padding: 0 6px; border-color: transparent; background: transparent; font-size: 12px; white-space: nowrap; }
+body[data-display-mode="app"] #appViewToggle { min-width: 60px; min-height: 44px; padding: 0 7px; gap: 4px; border: 1px solid #dae4f1; border-radius: 10px; background: #fff; color: #285ca6; font-size: 12px; white-space: nowrap; }
+body[data-display-mode="app"] #appViewToggle svg { width: 16px; height: 16px; }
+body[data-display-mode="app"] .learning-user-switcher { margin-left: 0; }
+body[data-display-mode="app"] .learning-user-trigger { width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 4px; grid-template-columns: 34px; justify-content: center; }
+body[data-display-mode="app"] .learning-user-avatar,
+body[data-display-mode="app"] .teacher-account-avatar { width: 34px; height: 34px; border-radius: 50%; }
+body[data-display-mode="app"] .teacher-account-indicator { min-width: 40px; padding: 3px; }
+body[data-display-mode="app"] .learning-user-menu { position: fixed; top: 62px; left: 12px; right: 12px; width: auto; max-height: calc(100dvh - 150px); overflow-y: auto; border-radius: 16px; box-shadow: 0 16px 40px rgba(21, 40, 70, .17); }
+body[data-display-mode="app"] .learning-user-list { max-height: 50dvh; }
+body[data-display-mode="app"] .learning-user-menu :where(b, button) { font-size: 13px; }
+body[data-display-mode="app"] .learning-user-menu small { font-size: 12px; line-height: 1.5; color: #60718a; }
+
+body[data-display-mode="app"] .app,
+body[data-display-mode="app"][data-portal-role="student"] .app,
+body[data-display-mode="app"][data-portal-role="teacher"] .app { min-width: 0; min-height: 0; grid-template-columns: minmax(0, 1fr); padding-bottom: var(--app-nav-height); }
+body[data-display-mode="app"] .app:not(.is-agent-view):not(.is-graph-immersive) { grid-template-rows: 48px minmax(0, 1fr); }
+body[data-display-mode="app"] .app:not(.is-agent-view):not(.is-graph-immersive) > .page-toolbar { display: grid; min-height: 48px; height: 48px; padding-inline: 14px; grid-column: 1; grid-row: 1; background: #f8fafd; }
+body[data-display-mode="app"] .page-identity { display: flex; align-items: center; min-width: 0; gap: 8px; }
+body[data-display-mode="app"] .page-identity h1 { font-size: 20px; font-weight: 750; }
+body[data-display-mode="app"] .app-back-button { display: inline-grid; place-items: center; width: 44px; min-width: 44px; height: 44px; padding: 0; margin-left: -8px; border: 0; border-radius: 11px; background: transparent; color: #253a56; }
+body[data-display-mode="app"] .app-back-button svg { width: 20px; height: 20px; }
+body[data-display-mode="app"] .workspace-panel { max-width: 100%; min-width: 0; }
+
+/* Persistent navigation retains the existing four student tabs and More menu. */
+body[data-display-mode="app"] :where(.mobile-student-nav, .app-teacher-nav):not([hidden]) { position: fixed; z-index: 70; inset: auto 0 0; display: grid; min-height: var(--app-nav-height); height: var(--app-nav-height); padding: 3px 6px 5px; border-top: 1px solid #dce4ee; background: #fff; box-shadow: none; }
+body[data-display-mode="app"] .mobile-student-nav:not([hidden]) { grid-template-columns: minmax(0, 4fr) minmax(0, 1fr); }
+body[data-display-mode="app"] .app-teacher-nav:not([hidden]) { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+body[data-display-mode="app"] .app-teacher-nav:has(.app-teacher-primary-tabs):not([hidden]) { grid-template-columns: minmax(0, 4fr) minmax(0, 1fr); }
+body[data-display-mode="app"] .app-teacher-primary-tabs { display: grid; min-width: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+body[data-display-mode="app"] :where(.mobile-student-nav, .app-teacher-nav) button { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: auto; min-width: 0; height: 52px; min-height: 52px; padding: 4px 1px; border: 0; border-radius: 10px; background: transparent; box-shadow: none; color: #5f718d; font-size: 12px; font-weight: 600; line-height: 1.2; }
+body[data-display-mode="app"] :where(.mobile-student-nav, .app-teacher-nav) button > span { font-size: 12px; }
+body[data-display-mode="app"] :where(.mobile-student-nav, .app-teacher-nav) button svg { width: 23px; height: 23px; stroke-width: 1.8; }
+body[data-display-mode="app"] :where(.mobile-student-nav, .app-teacher-nav) button:is(.is-active, [aria-selected="true"]) { color: #215fbc; background: transparent; }
+body[data-display-mode="app"] :where(.mobile-student-nav, .app-teacher-nav) button::after { display: none; }
+
+/* Native dialogs become contained, scrollable bottom sheets. */
+body[data-display-mode="app"] dialog { max-width: 100%; }
+body[data-display-mode="app"] dialog[open] { position: fixed; inset: auto 0 0; width: 100%; max-width: 100%; height: auto; max-height: calc(100dvh - 28px); margin: 0; border: 0; border-radius: 20px 20px 0 0; background: #fff; overflow-y: auto; overscroll-behavior: contain; box-shadow: 0 -12px 40px rgba(20, 38, 65, .18); }
+body[data-display-mode="app"] dialog::backdrop { background: rgba(18, 32, 53, .42); backdrop-filter: none; }
+body[data-display-mode="app"] dialog :where(button, select, input):not([type="checkbox"]):not([type="radio"]) { min-height: 44px; }
+body[data-display-mode="app"] dialog :where(h2, h3) { line-height: 1.4; }
+body[data-display-mode="app"] :where(.mobile-nav-dialog, .teacher-mobile-nav-dialog, .student-mobile-more-dialog)[open] { padding: 0; height: auto; max-height: calc(100dvh - 28px); overflow: hidden; }
+body[data-display-mode="app"] .mobile-nav-dialog-shell { height: auto; max-height: calc(100dvh - 28px); grid-template-rows: auto minmax(0, 1fr) auto; }
+body[data-display-mode="app"] .teacher-mobile-nav-dialog .mobile-nav-dialog-shell { height: calc(100dvh - 28px); }
+body[data-display-mode="app"] .mobile-nav-dialog-head { min-height: 72px; padding: 14px 18px; gap: 12px; }
+body[data-display-mode="app"] .mobile-nav-dialog-head h2 { margin: 0; font-size: 20px; font-weight: 750; }
+body[data-display-mode="app"] .mobile-nav-dialog-head small { color: #51637c; font-size: 12px; }
+body[data-display-mode="app"] .mobile-nav-dialog-close { width: 44px; height: 44px; min-width: 44px; border: 0; border-radius: 12px; background: #f0f4f9; }
+body[data-display-mode="app"] .mobile-nav-menu { gap: 4px; }
+body[data-display-mode="app"] .student-mobile-more-menu { padding: 8px 12px 16px; overflow-y: auto; }
+body[data-display-mode="app"] .mobile-nav-menu > button { min-height: 65px; padding: 10px 12px; grid-template-columns: 24px minmax(0, 1fr); gap: 13px; border: 0; border-radius: 12px; }
+body[data-display-mode="app"] .mobile-nav-menu > button b { font-size: 15px; }
+body[data-display-mode="app"] .mobile-nav-menu > button small { margin-top: 3px; color: #60718a; font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .mobile-nav-menu > button > svg { width: 23px; height: 23px; }
+body[data-display-mode="app"] .teacher-mobile-nav-scroll { padding: 6px 12px 16px; }
+body[data-display-mode="app"] .teacher-mobile-nav-scroll h3 { padding: 14px 12px 6px; color: #596c86; font-size: 12px; letter-spacing: 0; }
+body[data-display-mode="app"] .mobile-nav-dialog-foot { padding: 12px 16px 20px; background: #f5f7fb; }
+body[data-display-mode="app"] .mobile-nav-dialog-foot > button { min-height: 48px; font-size: 14px; }
+body[data-display-mode="app"] .system-release-dialog[open] { height: calc(100dvh - 28px); padding: 0; overflow: hidden; }
+body[data-display-mode="app"] .system-release-shell { height: 100%; min-height: 0; }
+body[data-display-mode="app"] .system-release-head { padding: 16px; gap: 12px; }
+body[data-display-mode="app"] .system-release-head h2 { font-size: 18px; }
+body[data-display-mode="app"] .system-release-close { width: 44px; height: 44px; }
+body[data-display-mode="app"] .system-release-tabs { padding-inline: 16px; }
+body[data-display-mode="app"] .system-release-tabs button { min-height: 48px; font-size: 14px; }
+body[data-display-mode="app"] .system-release-body { min-height: 0; }
+body[data-display-mode="app"] .system-release-panel { padding: 16px; }
+body[data-display-mode="app"] .system-release-item p,
+body[data-display-mode="app"] .system-release-item ul { font-size: 12px; line-height: 1.75; }
+body[data-display-mode="app"] .system-component-status b { font-size: 13px; }
+body[data-display-mode="app"] .system-component-status small { font-size: 12px; color: #60718a; white-space: normal; }
+body[data-display-mode="app"] .simulated-user-dialog[open] { padding: 22px 18px; }
+body[data-display-mode="app"] .simulated-user-form-grid { gap: 16px; grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .simulated-user-dialog form > footer { position: sticky; bottom: -22px; padding-block: 14px 22px; background: #fff; }
+body[data-display-mode="app"] :where(.catalog-create-dialog, .education-import-dialog, .generation-guidance-dialog) { max-width: 100%; }
+
+/* Conversation and composition keep every existing classroom action. */
+body[data-display-mode="app"] .teacher-dual-workspace,
+body[data-display-mode="app"] .teacher-dual-workspace.is-voice-open { grid-template-columns: minmax(0, 1fr) !important; }
+body[data-display-mode="app"] .teacher-dual-workspace > .ai-dialogue-panel,
+body[data-display-mode="app"] .teacher-dual-workspace > .teacher-voice-overlay { grid-column: 1 / -1; min-width: 0; width: 100%; }
+body[data-display-mode="app"] .ai-dialogue-panel { min-height: 0; grid-template-rows: auto minmax(0, 1fr) auto; }
+body[data-display-mode="app"] .ai-dialogue-panel:has(> .teacher-preview-notice:not([hidden])) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+body[data-display-mode="app"] .ai-dialogue-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-rows: 20px 32px; min-height: 64px; padding: 6px 16px; gap: 0 4px; background: #fff; }
+body[data-display-mode="app"] .ai-dialogue-identity { grid-column: 1 / 3; grid-row: 1; min-width: 0; gap: 8px; }
+body[data-display-mode="app"] .ai-dialogue-avatar { display: none; }
+body[data-display-mode="app"] .ai-dialogue-title-copy b { font-size: 16px; line-height: 1.4; }
+body[data-display-mode="app"] .ai-dialogue-title-copy small { font-size: 12px; }
+body[data-display-mode="app"] .ai-dialogue-actions { grid-column: 3; grid-row: 1 / 3; align-self: center; justify-self: end; gap: 0; }
+body[data-display-mode="app"] .ai-dialogue-head .loaded-learning-materials { grid-column: 2; grid-row: 2; align-self: center; margin: 0; }
+body[data-display-mode="app"] .ai-dialogue-actions button,
+body[data-display-mode="app"] .ai-dialogue-head .classroom-compact-mastery,
+body[data-display-mode="app"] .loaded-learning-materials > summary { width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 0; justify-content: center; border-color: transparent; background: transparent; }
+body[data-display-mode="app"] .ai-dialogue-head .classroom-compact-mastery { grid-column: 1; grid-row: 2; align-self: center; justify-self: start; justify-content: flex-start; width: auto; padding-inline: 0; gap: 6px; background: transparent; border-radius: 8px; }
+body[data-display-mode="app"] .ai-dialogue-head .classroom-compact-mastery > span { display: inline; min-width: 0; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body[data-display-mode="app"] .ai-dialogue-body { min-width: 0; padding: 18px 16px 16px; background: #f5f7fb; }
+body[data-display-mode="app"] .ai-conversation-mount .conversation-log { gap: 22px; }
+body[data-display-mode="app"] .ai-conversation-mount .conversation-turn.assistant .message-bubble { padding: 14px; border: 0; border-radius: 4px 16px 16px 16px; background: #fff; box-shadow: none; }
+body[data-display-mode="app"] .ai-conversation-mount .assistant-text,
+body[data-display-mode="app"] .ai-conversation-mount #liveUserMessage { font-size: 15px; line-height: 1.8; }
+body[data-display-mode="app"] .ai-conversation-mount .conversation-turn.user .message-bubble { max-width: 88%; border: 0; border-radius: 16px 4px 16px 16px; background: #e5efff; }
+body[data-display-mode="app"] .ai-conversation-mount .student-learning-start-actions { gap: 8px; margin-top: 16px; }
+body[data-display-mode="app"] .ai-conversation-mount .student-learning-start-actions button { min-height: 44px; height: auto; padding: 9px 11px; border-radius: 10px; font-size: 12px; }
+body[data-display-mode="app"] .ai-conversation-mount .teacher-turn-actions { flex-wrap: wrap; gap: 4px; }
+body[data-display-mode="app"] .ai-conversation-mount .teacher-turn-actions button { width: 44px; min-width: 44px; height: 44px; min-height: 44px; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-suggestions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; padding: 0 0 3px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-suggestions button { display: flex; align-items: center; justify-content: center; flex-direction: row; gap: 6px; width: 100%; min-width: 0; height: auto; min-height: 46px; padding: 10px 6px; border: 1px solid #e1e8f2; border-radius: 10px; background: #f8fafd; color: #4b6080; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-suggestions button > span:last-child { display: inline; font-size: 12px; font-weight: 650; white-space: nowrap; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-tool-icon { display: inline-grid; width: 18px; height: 20px; flex: 0 0 18px; place-items: center; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-tool-icon svg { width: 18px; height: 18px; }
+body[data-display-mode="app"] .ai-dialogue-footer { padding: 0 12px 8px; background: #fff; }
+body[data-display-mode="app"] .ai-dialogue-footer .ai-composer-row { min-height: 90px; grid-template-columns: auto minmax(0, 1fr) 44px; grid-template-rows: minmax(36px, auto) 44px; padding: 5px 6px 3px; gap: 0 4px; }
+body[data-display-mode="app"] .ai-dialogue-footer .ai-composer-tools { gap: 2px; }
+body[data-display-mode="app"] .ai-dialogue-footer :is(.ai-composer-tools button, .ai-send-button, #textQuestionBtn) { width: 44px; min-width: 44px; max-width: none; height: 44px; min-height: 44px; border-radius: 12px; }
+body[data-display-mode="app"] .ai-dialogue-footer .ai-teacher-composer .text-input-field textarea { min-height: 36px; max-height: 112px; padding: 4px 8px; font-size: 16px; line-height: 1.5; }
+body[data-display-mode="app"] .loaded-learning-materials-popover { top: 116px; right: 12px; width: calc(100vw - 24px); max-height: calc(100dvh - 200px); overflow-y: auto; }
+body[data-display-mode="app"] .loaded-learning-materials-popover :where(small, p) { font-size: 12px; }
+body[data-display-mode="app"] .teacher-dialogue-menu { right: 10px; min-width: 196px; max-width: calc(100vw - 20px); padding: 6px; border-radius: 12px; }
+body[data-display-mode="app"] .ai-dialogue-head .teacher-dialogue-menu { top: calc(100% - 4px); }
+body[data-display-mode="app"] .teacher-dialogue-menu button { min-height: 46px; font-size: 13px; }
+body[data-display-mode="app"] :where(.curriculum-picker, .english-practice-picker):not([hidden]) { position: fixed; top: auto; right: 0; bottom: var(--app-nav-height); left: 0; width: 100%; max-width: 100%; max-height: calc(100dvh - 165px); border-radius: 18px 18px 0 0; overflow-y: auto; box-shadow: 0 -12px 36px rgba(20, 38, 65, .15); }
+
+/* Mobile learning pages use one readable column and horizontal tab strips. */
+body[data-display-mode="app"] :where(.learning-page, .voice-config-workspace) { padding: 18px 16px 28px; background: var(--ui-bg); scroll-padding-bottom: 20px; }
+body[data-display-mode="app"] .learning-page-shell { min-width: 0; width: 100%; }
+body[data-display-mode="app"] :where(.learning-page, .voice-config-workspace) h2 { font-size: 20px; line-height: 1.4; letter-spacing: -.025em; }
+body[data-display-mode="app"] :where(.learning-page, .voice-config-workspace) h3 { line-height: 1.5; }
+body[data-display-mode="app"] :where(.course-page-head p, .plan-goal-copy p, .buddy-hero-copy p, .voice-config-page-head p) { font-size: 13px; line-height: 1.7; color: #60718a; }
+body[data-display-mode="app"] :where(.learning-hero-card, .summary-metric-card, .learning-record-card, .question-bank-card, .student-practice-start, .plan-goal-card, .weekly-plan-card, .plan-insight-card, .buddy-hero-card, .focus-room-card, .buddy-task-card, .buddy-message-card) { border-radius: 16px; box-shadow: none; }
+body[data-display-mode="app"] :where(.record-tabs, .question-bank-tabs, .event-filter-row, .focus-ambient-row) { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+body[data-display-mode="app"] :where(.record-tabs, .question-bank-tabs, .event-filter-row, .focus-ambient-row) button { flex: 0 0 auto; min-height: 46px; font-size: 13px; white-space: nowrap; }
+body[data-display-mode="app"] .user-empty-learning-state { padding: 24px 16px; min-height: 150px; }
+body[data-display-mode="app"] .user-empty-learning-state b { font-size: 15px; }
+body[data-display-mode="app"] .user-empty-learning-state p { max-width: 30ch; font-size: 13px; line-height: 1.75; color: #60718a; }
+body[data-display-mode="app"] .course-page-head { gap: 16px; margin-bottom: 18px; }
+body[data-display-mode="app"] .course-page-summary { padding: 12px 0; gap: 20px; }
+body[data-display-mode="app"] .course-page-summary b { font-size: 20px; }
+body[data-display-mode="app"] .course-page-summary small { font-size: 12px; }
+body[data-display-mode="app"] .course-workbench-layout { gap: 16px; }
+body[data-display-mode="app"] .course-library-panel { border-radius: 14px; }
+body[data-display-mode="app"] .course-library-panel > header { padding: 12px 14px; }
+body[data-display-mode="app"] .course-library-panel > header small { font-size: 12px; }
+body[data-display-mode="app"] .course-list { gap: 10px; padding: 4px 12px 14px; scroll-snap-type: x proximity; }
+body[data-display-mode="app"] .course-list-item { width: 265px; min-width: 265px; padding: 14px; scroll-snap-align: start; }
+body[data-display-mode="app"] .course-list-item b { font-size: 14px; }
+body[data-display-mode="app"] .course-detail-panel { padding: 0; border-radius: 16px; }
+body[data-display-mode="app"] .course-detail-hero { padding: 16px; gap: 12px; }
+body[data-display-mode="app"] .course-detail-copy h2 { font-size: 19px; }
+body[data-display-mode="app"] .course-detail-copy p { font-size: 12px; line-height: 1.65; }
+body[data-display-mode="app"] .course-continue-card { gap: 8px; flex-wrap: wrap; border-radius: 12px; }
+body[data-display-mode="app"] .course-continue-card button { min-height: 44px; padding-inline: 12px; font-size: 12px; }
+body[data-display-mode="app"] .course-chapter-section { padding: 16px; }
+body[data-display-mode="app"] .course-chapter-row { grid-template-columns: 24px minmax(0, 1fr) 52px; min-height: 74px; gap: 8px; }
+body[data-display-mode="app"] .course-chapter-row b { font-size: 13px; }
+body[data-display-mode="app"] .course-chapter-row > button { grid-column: 3; grid-row: 1 / 4; min-width: 48px; min-height: 44px; font-size: 12px; }
+body[data-display-mode="app"] .course-chapter-row > small,
+body[data-display-mode="app"] .course-chapter-row > em { display: block; grid-column: 2; font-size: 12px; }
+
+body[data-display-mode="app"] .student-practice-start { width: 100%; margin: 0 0 18px; padding: 20px 18px; }
+body[data-display-mode="app"] .student-practice-intro { margin-bottom: 20px; }
+body[data-display-mode="app"] .student-practice-intro h2 { margin-top: 0; font-size: 20px; }
+body[data-display-mode="app"] .student-practice-intro p { color: #60718a; font-size: 13px; }
+body[data-display-mode="app"] .student-practice-options { gap: 10px; }
+body[data-display-mode="app"] .student-practice-options > button { height: auto; min-height: 82px; padding: 14px; border-radius: 12px; }
+body[data-display-mode="app"] .student-practice-options > button.primary-btn b { color: #fff; }
+body[data-display-mode="app"] .student-practice-options > button.primary-btn small { color: #f0f5ff; }
+body[data-display-mode="app"] .student-practice-options > button b { font-size: 15px; }
+body[data-display-mode="app"] .student-practice-options > button small { color: #5d708b; font-size: 12px; line-height: 1.5; white-space: normal; }
+body[data-display-mode="app"] .student-question-browser-toggle { min-height: 52px; padding: 10px 0 0; }
+body[data-display-mode="app"] .student-question-browser-toggle b { font-size: 14px; }
+body[data-display-mode="app"] .student-question-browser-toggle small { font-size: 12px; }
+body[data-display-mode="app"] .question-bank-filter-bar { padding: 14px; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+body[data-display-mode="app"] .question-bank-filter-bar > * { min-width: 0; }
+body[data-display-mode="app"] .question-tree-mobile-toggle { width: 100%; justify-content: flex-start; font-size: 13px; }
+body[data-display-mode="app"] .question-search { min-height: 44px; }
+body[data-display-mode="app"] .question-bank-layout { min-height: 0; }
+body[data-display-mode="app"] .question-bank-layout > section { min-height: 240px; }
+body[data-display-mode="app"] .question-list-head { height: auto; min-height: 48px; flex-wrap: wrap; padding: 12px 14px; gap: 4px; font-size: 12px; }
+body[data-display-mode="app"] .question-bank-list { padding: 8px 12px 16px; }
+body[data-display-mode="app"] .question-history-row { padding: 14px 10px; gap: 9px; border-radius: 12px; }
+body[data-display-mode="app"] .question-history-row :where(b, p) { font-size: 13px; line-height: 1.65; }
+body[data-display-mode="app"] .question-history-row time { display: block; grid-column: 2; color: #60718a; font-size: 12px; }
+body[data-display-mode="app"] .question-source-tag { display: inline-flex; width: fit-content; font-size: 12px; }
+body[data-display-mode="app"] .question-detail-panel { min-height: 280px; padding: 16px; }
+body[data-display-mode="app"] .question-detail-panel :where(p, .question-stem, .question-answer) { font-size: 14px; line-height: 1.8; }
+body[data-display-mode="app"] .question-detail-panel :where(.question-solution-errors span, .question-solution-alternatives span) { font-size: 12px; }
+body[data-display-mode="app"] .question-knowledge-tree-pane.is-mobile-open { max-height: 420px; }
+body[data-display-mode="app"] :where(.question-tree-theme-row, .question-tree-point) { min-height: 44px; font-size: 12px; }
+body[data-display-mode="app"] :where(.question-tree-theme-row, .question-tree-point) :where(small, em) { font-size: 12px; }
+body[data-display-mode="app"] .question-attribute-form-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+body[data-display-mode="app"] .question-attribute-form-grid .is-wide { grid-column: auto; }
+body[data-display-mode="app"] .question-authoring-form { padding: 18px 16px; }
+body[data-display-mode="app"] .question-authoring-form > header { align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+body[data-display-mode="app"] .question-authoring-form footer { gap: 10px; }
+
+body[data-display-mode="app"] .learning-summary-grid { gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 18px; }
+body[data-display-mode="app"] .learning-hero-card { grid-column: 1 / -1; padding: 18px; }
+body[data-display-mode="app"] .summary-metric-card { padding: 12px 9px; display: flex; align-items: flex-start; flex-direction: column; gap: 5px; background: #eaf1fc; border: 0; }
+body[data-display-mode="app"] .summary-metric-card svg { width: 18px; height: 18px; }
+body[data-display-mode="app"] .summary-metric-card span { color: #596c87; font-size: 12px; }
+body[data-display-mode="app"] .summary-metric-card b { font-size: 24px; font-variant-numeric: tabular-nums; }
+body[data-display-mode="app"] .summary-metric-card small { color: #5e6f86; font-size: 12px; line-height: 1.4; }
+body[data-display-mode="app"] .learner-identity-row p { font-size: 12px; }
+body[data-display-mode="app"] .learner-tags span { font-size: 12px; }
+body[data-display-mode="app"] .learning-record-card { min-height: 0; }
+body[data-display-mode="app"] .record-tabs { height: 54px; padding-inline: 8px; }
+body[data-display-mode="app"] .record-tab-panel { padding: 16px; }
+body[data-display-mode="app"] .memory-section-card { padding: 0; min-height: 0; border: 0; background: transparent; }
+body[data-display-mode="app"] .memory-section-card + .memory-section-card { padding-top: 20px; border-top: 1px solid #e4eaf2; }
+body[data-display-mode="app"] .memory-section-card > header { align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+body[data-display-mode="app"] .memory-section-card > header span { font-size: 14px; }
+body[data-display-mode="app"] .memory-section-card > header small { font-size: 12px; color: #60718a; }
+body[data-display-mode="app"] :where(.memory-boundary-note, .import-service-note) { font-size: 12px; line-height: 1.7; }
+body[data-display-mode="app"] :where(.learning-import-layout, .learning-import-meta, .mastery-current-summary) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .plan-goal-card { padding: 20px 18px; gap: 16px; }
+body[data-display-mode="app"] .plan-main-grid { gap: 16px; grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .plan-calendar-card { padding: 16px 12px; }
+body[data-display-mode="app"] .plan-calendar-layout { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .plan-calendar-header { flex-wrap: wrap; gap: 10px; }
+body[data-display-mode="app"] .plan-calendar-grid { gap: 3px; }
+body[data-display-mode="app"] .plan-calendar-grid button { min-width: 0; min-height: 44px; padding-inline: 1px; }
+body[data-display-mode="app"] .plan-calendar-legend { flex-wrap: wrap; gap: 10px; font-size: 12px; }
+body[data-display-mode="app"] .plan-insight-card { padding: 18px; }
+body[data-display-mode="app"] .plan-insight-card :where(p, li) { color: #60718a; font-size: 13px; line-height: 1.75; }
+body[data-display-mode="app"] .buddy-hero-card { padding: 22px 18px; gap: 18px; }
+body[data-display-mode="app"] .buddy-hero-copy h2 { font-size: 20px; }
+body[data-display-mode="app"] .buddy-main-grid { gap: 16px; }
+body[data-display-mode="app"] .buddy-timer { font-variant-numeric: tabular-nums; }
+body[data-display-mode="app"] .buddy-timer-actions button { min-height: 48px; font-size: 14px; }
+
+/* Preference forms retain all sections and open them as full-width controls. */
+body[data-display-mode="app"] .voice-config-page-head { padding: 18px; gap: 16px; margin-bottom: 16px; border-radius: 16px; }
+body[data-display-mode="app"] .voice-config-page-head > div:last-child { width: 100%; align-items: center; justify-content: space-between; gap: 10px; }
+body[data-display-mode="app"] .voice-config-page-head > div:last-child span { max-width: 170px; font-size: 12px; line-height: 1.6; }
+body[data-display-mode="app"] #voiceConfigApplyBtn { min-width: 100px; min-height: 46px; font-size: 14px; }
+body[data-display-mode="app"] .voice-config-mount .config-section { border-radius: 14px; box-shadow: none; margin-bottom: 14px; }
+body[data-display-mode="app"] .voice-config-mount .config-section > summary { min-height: 56px; padding: 15px; font-size: 15px; }
+body[data-display-mode="app"] .voice-config-mount .section-body { padding: 16px; }
+body[data-display-mode="app"] .voice-config-mount :where(.two-col, .three-col, .basic-profile, .basic-fields, .voice-config-row, .advanced-grid, .mode-cards, .dialog-option-row, .teacher-config-toolkit) { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .voice-config-mount :where(.field-title, .model-field > span:first-child, .dialog-textarea-field > span) { font-size: 13px; line-height: 1.5; }
+body[data-display-mode="app"] .voice-config-mount .model-picker { min-height: 44px; height: auto; }
+body[data-display-mode="app"] .voice-config-mount :where(.hint, .mode-desc, .dialog-textarea-field small) { font-size: 12px; line-height: 1.65; color: #60718a; }
+body[data-display-mode="app"] .voice-config-mount .voice-range-control { grid-template-columns: minmax(0, 1fr) 88px; gap: 12px; }
+body[data-display-mode="app"] .voice-config-mount :where(.dialog-toggle-row, .switch-row, .check-row, .feature-toggle-row) { min-height: 48px; gap: 12px; }
+body[data-display-mode="app"] .voice-config-mount .dialog-radio-group { flex-wrap: wrap; gap: 8px; }
+body[data-display-mode="app"] .voice-config-mount .dialog-radio-group label { min-height: 44px; padding: 10px; font-size: 13px; }
+body[data-display-mode="app"] .voice-config-mount .wide { grid-column: auto; }
+
+/* The graph keeps pan/zoom and all three views available at phone width. */
+body[data-display-mode="app"] .knowledge-graph-workspace { background: var(--ui-bg); }
+body[data-display-mode="app"] .knowledge-shelf-view { padding: 16px; }
+body[data-display-mode="app"] .knowledge-shelf-head { top: -16px; gap: 14px; padding: 8px 0 14px; background: var(--ui-bg); }
+body[data-display-mode="app"] .knowledge-graph-head { min-height: 56px; padding: 8px 12px; align-items: center; flex-direction: row; gap: 8px; }
+body[data-display-mode="app"] .knowledge-breadcrumb { min-width: 0; flex-wrap: wrap; font-size: 12px; }
+body[data-display-mode="app"] .graph-filter-bar { padding: 12px; gap: 8px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px; }
+body[data-display-mode="app"] .graph-filter-bar .graph-search-field { grid-column: 1 / -1; min-height: 44px; }
+body[data-display-mode="app"] .graph-filter-bar > label { min-width: 0; }
+body[data-display-mode="app"] .graph-filter-bar select { width: 100%; padding-inline: 8px; font-size: 12px; }
+body[data-display-mode="app"] .graph-filter-bar > button { width: 44px; min-width: 44px; }
+body[data-display-mode="app"] .knowledge-presentation-layout { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] .knowledge-slide-nav { display: flex; gap: 6px; padding: 10px 12px; overflow-x: auto; border-right: 0; border-bottom: 1px solid #dfe6f0; }
+body[data-display-mode="app"] .knowledge-slide-item { flex: 1 0 auto; min-width: 104px; min-height: 48px; padding: 9px 10px; border-radius: 10px; }
+body[data-display-mode="app"] .knowledge-slide-preview { display: none; }
+body[data-display-mode="app"] .knowledge-slide-item b { font-size: 12px; }
+body[data-display-mode="app"] .knowledge-slide-item small { font-size: 12px; }
+body[data-display-mode="app"] .knowledge-map-panel { min-width: 0; min-height: 510px; border-radius: 0; }
+body[data-display-mode="app"] .knowledge-canvas-toolbar { min-height: 52px; padding-inline: 12px; gap: 8px; }
+body[data-display-mode="app"] .knowledge-map-title-row { min-width: 0; flex-wrap: wrap; gap: 5px; }
+body[data-display-mode="app"] .knowledge-map-title-row b { font-size: 13px; }
+body[data-display-mode="app"] .knowledge-canvas-fit { width: 44px; min-width: 44px; height: 44px; }
+body[data-display-mode="app"] .knowledge-detail-view { padding: 14px; }
+body[data-display-mode="app"] .knowledge-detail-head-actions button { min-height: 44px; font-size: 12px; }
+body[data-display-mode="app"] .knowledge-detail-question-row { min-height: 64px; }
+body[data-display-mode="app"] .knowledge-detail-question-row :where(b, p) { font-size: 12px; line-height: 1.65; }
+body[data-display-mode="app"] .knowledge-source-card blockquote { font-size: 14px; }
+
+/* Shared phone rhythm: 16px page edges, readable captions and content-led cards.
+   A labeled action is 44–48px tall; a rich card grows with its title and detail. */
+body[data-display-mode="app"] :is(.learning-page, .voice-config-workspace, .knowledge-shelf-view) .page-eyebrow {
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+body[data-display-mode="app"] :is(.learning-page, .voice-config-workspace) :is(p, li) { font-size: 15px; line-height: 1.7; }
+body[data-display-mode="app"] :is(.learning-page, .voice-config-workspace) :is(small, time) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] :is(.learning-page, .voice-config-workspace) button {
+  min-height: 44px;
+  height: auto;
+  font-size: 14px;
+  line-height: 1.3;
+}
+body[data-display-mode="app"] :is(.learning-page, .voice-config-workspace) button > span { font-size: inherit; line-height: inherit; }
+body[data-display-mode="app"] :is(.mobile-student-nav, .app-teacher-nav) button,
+body[data-display-mode="app"] .mobile-student-nav .workspace-menu-button > span,
+body[data-display-mode="app"] .app-teacher-nav button > span { font-size: 12px; line-height: 1.3; }
+body[data-display-mode="app"] :is(.mobile-student-nav, .app-teacher-nav) button { height: 52px; min-height: 52px; padding: 4px 1px; gap: 3px; }
+body[data-display-mode="app"] :is(.mobile-student-nav, .app-teacher-nav) button svg { width: 22px; height: 22px; }
+body[data-display-mode="app"] .mobile-nav-menu > button { height: auto; min-height: 72px; padding: 14px 12px; }
+body[data-display-mode="app"] .mobile-nav-menu > button > span { line-height: 1.5; }
+body[data-display-mode="app"] .mobile-nav-menu > button b { display: block; font-size: 15px; }
+body[data-display-mode="app"] .mobile-nav-menu > button small { display: block; font-size: 12px; }
+body[data-display-mode="app"] :is(.global-icon-button, .app-back-button, .mobile-nav-dialog-close) { display: inline-flex; align-items: center; justify-content: center; }
+
+/* Classroom quick actions keep icon and label as one centered unit. */
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-suggestions button > span:last-child { font-size: 13px; line-height: 1.3; white-space: nowrap; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-suggestions button { width: 100%; min-width: 0; max-width: 100%; min-height: 44px; height: 44px; padding: 0 4px; gap: 6px; border: 0; background: transparent; box-shadow: none; white-space: nowrap; }
+body[data-display-mode="app"] .ai-conversation-mount .student-learning-start-actions { display: flex; flex-wrap: wrap; gap: 4px 8px; }
+body[data-display-mode="app"] .ai-conversation-mount .student-learning-start-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; padding: 6px 10px; border-color: transparent; background: #f3f6fb; box-shadow: none; }
+body[data-display-mode="app"] .ai-dialogue-head .classroom-compact-mastery > span { font-size: 12px; }
+body[data-display-mode="app"] .ai-dialogue-head .classroom-compact-mastery { max-width: 100%; }
+body[data-display-mode="app"] .ai-conversation-mount .teacher-turn-actions { gap: 6px; }
+body[data-display-mode="app"] :is(.teacher-dialogue-menu, .loaded-learning-materials-popover) button { font-size: 14px; line-height: 1.3; }
+body[data-display-mode="app"] .teacher-attachment-preview { max-width: 100%; }
+body[data-display-mode="app"] .teacher-attachment-preview button { width: 44px; height: 44px; flex-shrink: 0; }
+body[data-display-mode="app"] .teacher-attachment-preview :is(b, small) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .ai-conversation-mount .agent-turn-trace summary :is(span, b, small),
+body[data-display-mode="app"] .ai-conversation-mount .agent-turn-trace li :is(b, small) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .ai-conversation-mount .agent-turn-trace > ol { grid-template-columns: minmax(0, 1fr); max-height: 240px; }
+
+/* Course discovery and detail: a horizontal chooser, then full-width actions. */
+body[data-display-mode="app"] .course-page-head { align-items: stretch; }
+body[data-display-mode="app"] .course-page-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px; gap: 12px; }
+body[data-display-mode="app"] .course-page-summary > div { min-width: 0; padding: 0 10px; }
+body[data-display-mode="app"] .course-list-item { height: auto; text-align: left; }
+body[data-display-mode="app"] .course-list-item :is(b, strong) { font-size: 15px; white-space: normal; }
+body[data-display-mode="app"] .course-list-item :is(small, em) { font-size: 12px; line-height: 1.5; white-space: normal; }
+body[data-display-mode="app"] .course-detail-copy h2 { font-size: 20px; }
+body[data-display-mode="app"] .course-continue-card { align-items: stretch; padding: 14px; }
+body[data-display-mode="app"] .course-continue-card > div { min-width: 0; flex: 1 1 180px; }
+body[data-display-mode="app"] .course-continue-card button { flex: 1 1 100%; justify-content: center; min-height: 48px; font-size: 14px; }
+body[data-display-mode="app"] .course-chapter-row { grid-template-columns: 24px minmax(0, 1fr) 60px; padding-block: 12px; }
+body[data-display-mode="app"] .course-chapter-row b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .course-chapter-row > :is(small, em) { font-size: 12px; }
+body[data-display-mode="app"] .course-chapter-row > button { font-size: 14px; padding: 10px 8px; }
+
+/* Practice filters and selectable question cards retain every field. */
+body[data-display-mode="app"] .student-practice-options > button { display: grid; grid-template-columns: 40px minmax(0, 1fr) 18px; align-items: center; gap: 12px; text-align: left; min-height: 88px; }
+body[data-display-mode="app"] .student-practice-options > button > svg:first-child { width: 40px; height: 40px; padding: 9px; border-radius: 12px; }
+body[data-display-mode="app"] .student-practice-options > button > svg:last-child { width: 18px; height: 18px; padding: 0; }
+body[data-display-mode="app"] .student-practice-options > button > span { display: grid; gap: 5px; }
+body[data-display-mode="app"] .student-practice-options > button b { font-size: 15px; }
+body[data-display-mode="app"] .student-practice-options > button small { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .student-question-browser-toggle { height: auto; min-height: 56px; align-items: center; gap: 12px; }
+body[data-display-mode="app"] .question-bank-summary { gap: 12px; }
+body[data-display-mode="app"] .question-bank-summary span,
+body[data-display-mode="app"] .question-bank-filter-bar label > span,
+body[data-display-mode="app"] .question-list-head span { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .question-bank-filter-bar label:not(.question-search) { grid-template-columns: minmax(0, 1fr); gap: 5px; align-items: start; }
+body[data-display-mode="app"] .question-bank-filter-bar > .question-search { grid-column: 1 / -1; }
+body[data-display-mode="app"] .question-bank-filter-bar :is(input, select) { width: 100%; font-size: 16px; }
+body[data-display-mode="app"] .question-bank-layout > section { grid-template-rows: auto minmax(0, 1fr); }
+body[data-display-mode="app"] .question-history-row { grid-template-columns: 24px minmax(0, 1fr) auto; align-items: start; padding: 14px 10px; }
+body[data-display-mode="app"] .question-history-main { grid-column: 2 / -1; gap: 5px; }
+body[data-display-mode="app"] .question-history-main b { font-size: 15px; line-height: 1.5; white-space: normal; overflow: visible; }
+body[data-display-mode="app"] .question-history-main small { font-size: 12px; white-space: normal; overflow: visible; }
+body[data-display-mode="app"] .question-history-row > :is(.question-type-tag, .question-source-tag) { font-size: 12px; line-height: 1.4; padding: 4px 7px; }
+body[data-display-mode="app"] .question-history-row > .question-type-tag { grid-column: 2; justify-self: start; }
+body[data-display-mode="app"] .question-history-row > .question-source-tag { grid-column: 3; }
+body[data-display-mode="app"] .question-history-row time { grid-column: 2 / -1; font-size: 12px; text-align: left; }
+body[data-display-mode="app"] .question-detail-panel h3 { font-family: inherit; font-size: 17px; line-height: 1.6; }
+body[data-display-mode="app"] .question-detail-panel :is(.question-detail-result, section > span) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .question-detail-actions { gap: 8px; }
+body[data-display-mode="app"] .question-detail-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 11px; }
+body[data-display-mode="app"] .question-kp-list button { padding: 12px; font-size: 14px; line-height: 1.5; }
+body[data-display-mode="app"] :is(.question-tree-theme-row, .question-tree-point) { font-size: 14px; padding-block: 10px; }
+body[data-display-mode="app"] :is(.question-tree-theme-row, .question-tree-point) :is(small, em) { font-size: 12px; }
+
+/* Plans and companion cards are composed for a narrow viewport, not squeezed. */
+body[data-display-mode="app"] .plan-goal-card { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+body[data-display-mode="app"] .plan-goal-copy { min-width: 0; }
+body[data-display-mode="app"] .plan-goal-card > button { grid-column: 1 / -1; width: 100%; min-height: 48px; }
+body[data-display-mode="app"] .plan-goal-progress { align-self: center; }
+body[data-display-mode="app"] .plan-goal-progress small { font-size: 12px; }
+body[data-display-mode="app"] .plan-calendar-header { padding: 4px 4px 14px; align-items: stretch; }
+body[data-display-mode="app"] .plan-calendar-header > div { min-width: 0; }
+body[data-display-mode="app"] .plan-calendar-controls { width: 100%; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px auto; gap: 6px; align-items: center; }
+body[data-display-mode="app"] .plan-calendar-controls button { width: auto; min-width: 44px; padding: 10px; font-size: 14px; }
+body[data-display-mode="app"] .plan-calendar-controls strong { min-width: 0; text-align: center; font-size: 14px; }
+body[data-display-mode="app"] .plan-calendar-weekdays span { font-size: 12px; }
+body[data-display-mode="app"] .plan-calendar-main { padding: 12px 0; overflow-x: auto; }
+body[data-display-mode="app"] :is(.plan-calendar-grid, .plan-calendar-weekdays) { min-width: 308px; gap: 3px; }
+body[data-display-mode="app"] .plan-calendar-grid button { min-height: 48px; padding: 5px 2px; }
+body[data-display-mode="app"] .plan-calendar-day-head { justify-content: center; }
+body[data-display-mode="app"] .plan-calendar-day-number { font-size: 14px; line-height: 1.4; }
+body[data-display-mode="app"] .plan-calendar-day-count { font-size: 12px; white-space: normal; }
+body[data-display-mode="app"] .plan-calendar-legend { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .plan-calendar-detail-status { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .plan-calendar-detail-list :is(b, small) { white-space: normal; }
+body[data-display-mode="app"] .plan-calendar-detail-list b,
+body[data-display-mode="app"] .plan-day-list b { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .plan-day-list :is(small, em, strong) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .plan-day-list article { grid-template-columns: 44px minmax(0, 1fr); padding: 12px; gap: 10px; }
+body[data-display-mode="app"] .plan-day-list article > .primary-btn { grid-column: 2; justify-self: start; }
+body[data-display-mode="app"] .plan-check { width: 44px; min-width: 44px; height: 44px; }
+body[data-display-mode="app"] .plan-insight-card.boundary b { font-size: 15px; }
+body[data-display-mode="app"] .buddy-hero-card { grid-template-columns: 64px minmax(0, 1fr); gap: 14px; padding: 18px; }
+body[data-display-mode="app"] .buddy-character { width: 64px; height: 64px; border-radius: 18px; }
+body[data-display-mode="app"] .buddy-hero-copy { min-width: 0; }
+body[data-display-mode="app"] .buddy-hero-copy h2 { font-size: 20px; line-height: 1.4; }
+body[data-display-mode="app"] .buddy-hero-card > button { grid-column: 1 / -1; width: 100%; min-height: 48px; }
+body[data-display-mode="app"] .buddy-status-row { flex-wrap: wrap; gap: 6px; }
+body[data-display-mode="app"] .buddy-status-row span { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .buddy-main-grid { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode="app"] :is(.focus-room-card, .buddy-task-card, .buddy-message-card) { min-height: 0; padding: 18px; }
+body[data-display-mode="app"] :is(.focus-room-card, .buddy-task-card) > header span { font-size: 15px; line-height: 1.5; }
+body[data-display-mode="app"] .buddy-timer { margin: 30px 0 10px; font-size: 52px; }
+body[data-display-mode="app"] .focus-ambient-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+body[data-display-mode="app"] .focus-ambient-row button { min-height: 44px; padding: 10px 8px; }
+body[data-display-mode="app"] .buddy-task-card label { font-size: 15px; line-height: 1.5; min-height: 52px; }
+body[data-display-mode="app"] .buddy-task-card input { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* Records, import and settings use the same label and action scale. */
+body[data-display-mode="app"] .learning-hero-card { padding: 18px; }
+body[data-display-mode="app"] .learner-identity-row { flex-wrap: wrap; gap: 12px; }
+body[data-display-mode="app"] .learner-tags { flex-wrap: wrap; gap: 6px; }
+body[data-display-mode="app"] .learner-tags span { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .summary-metric-card span { font-size: 12px; }
+body[data-display-mode="app"] .summary-metric-card small { font-size: 12px; }
+body[data-display-mode="app"] :is(.record-tabs, .question-bank-tabs) { height: auto; min-height: 54px; gap: 4px; }
+body[data-display-mode="app"] :is(.record-tabs, .question-bank-tabs) button { padding: 12px 10px; }
+body[data-display-mode="app"] .learning-import-card { padding: 0 0 20px; }
+body[data-display-mode="app"] .learning-import-result { padding: 20px 0 0; }
+body[data-display-mode="app"] .learning-import-meta label { font-size: 14px; line-height: 1.5; gap: 6px; }
+body[data-display-mode="app"] .learning-import-actions { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+body[data-display-mode="app"] .learning-import-actions button { min-height: 48px; font-size: 14px; }
+body[data-display-mode="app"] .import-review-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+body[data-display-mode="app"] .import-review-metrics span { font-size: 12px; }
+body[data-display-mode="app"] .import-service-note { font-size: 12px !important; line-height: 1.65; }
+body[data-display-mode="app"] .learning-workbench-toast { max-width: calc(100vw - 32px); min-width: 0; font-size: 14px; line-height: 1.5; padding: 12px 16px; }
+body[data-display-mode="app"] .voice-config-mount :is(.field-title, .model-field > span:first-child, .dialog-textarea-field > span) { font-size: 14px; }
+body[data-display-mode="app"] .voice-config-mount .dialog-radio-group label { font-size: 14px; }
+body[data-display-mode="app"] .voice-config-mount :is(.dialog-toggle-row, .switch-row, .check-row, .feature-toggle-row) { align-items: center; padding-block: 8px; }
+body[data-display-mode="app"] .voice-config-mount :is(input[type="checkbox"], input[type="radio"]) { flex-shrink: 0; }
+body[data-display-mode="app"] :is(.ai-dialogue-avatar, .bubble-role) { font-size: 12px; line-height: 1.5; }
+
+/* Touch bookshelf: covers participate in layout instead of relying on a
+   desktop hover transform outside a short button's box. */
+body[data-display-mode="app"] .knowledge-shelf-view { display: block; padding: 16px; overflow-y: auto; overflow-x: hidden; }
+body[data-display-mode="app"] .knowledge-shelf-head { position: static; display: flex; flex-direction: column; align-items: stretch; gap: 16px; padding: 0 0 20px; text-align: left; }
+body[data-display-mode="app"] .knowledge-shelf-head h2 { font-size: 20px; }
+body[data-display-mode="app"] .knowledge-shelf-head p { font-size: 15px; line-height: 1.7; }
+body[data-display-mode="app"] .knowledge-shelf-actions { display: flex; width: 100%; flex-wrap: wrap; gap: 8px; }
+body[data-display-mode="app"] :is(.shelf-create-button, .shelf-task-center-button) { display: inline-flex; align-items: center; justify-content: center; flex: 1 1 130px; width: auto; min-width: 44px; min-height: 44px; height: auto; padding: 11px 12px; gap: 8px; border: 1px solid #dce4ee; border-radius: 12px; background: #fff; font-size: 14px; line-height: 1.3; }
+body[data-display-mode="app"] :is(.shelf-create-button, .shelf-task-center-button) > svg { width: 20px; height: 20px; }
+body[data-display-mode="app"] .shelf-task-center-button > em { min-width: 22px; font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .knowledge-library-wall { display: grid; grid-template-rows: none; grid-auto-rows: auto; gap: 20px; padding: 0; }
+body[data-display-mode="app"] .knowledge-shelf-tier { display: block; margin: 0; min-height: 0; }
+body[data-display-mode="app"] .knowledge-shelf-compartments,
+body[data-display-mode="app"] .knowledge-shelf-tier.is-split .knowledge-shelf-compartments { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+body[data-display-mode="app"] .shelf-compartment { display: grid; grid-template-rows: auto auto; min-height: 0; gap: 12px; }
+body[data-display-mode="app"] .knowledge-shelf-tier.is-split .shelf-compartment + .shelf-compartment { padding: 0; margin: 0; border: 0; box-shadow: none; }
+body[data-display-mode="app"] .knowledge-shelf-tier-label { flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 0; overflow: visible; }
+body[data-display-mode="app"] .knowledge-shelf-tier-label b { font-size: 17px; line-height: 1.5; }
+body[data-display-mode="app"] .knowledge-shelf-tier-label span { font-size: 12px; line-height: 1.5; white-space: normal; }
+body[data-display-mode="app"] .knowledge-book-shelf,
+body[data-display-mode="app"] .knowledge-book-shelf.is-grouped { display: flex; align-items: stretch; justify-content: flex-start; padding: 0 0 12px; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #c0ccdc transparent; }
+body[data-display-mode="app"] .shelf-book-group { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: max-content; }
+body[data-display-mode="app"] .shelf-book-group-label { width: auto; height: auto; padding: 6px 10px; font-size: 12px; line-height: 1.5; writing-mode: horizontal-tb; text-align: left; }
+body[data-display-mode="app"] .shelf-book-group-volumes { align-items: stretch; gap: 12px; }
+body[data-display-mode="app"] .knowledge-book-slot,
+body[data-display-mode="app"] .knowledge-book-slot:nth-child(even) { flex: 0 0 170px; width: 170px; height: 272px; margin: 0; padding: 0; scroll-snap-align: start; }
+body[data-display-mode="app"] .knowledge-book,
+body[data-display-mode="app"] .knowledge-book:nth-child(even) { display: block; width: 100%; height: 272px; min-height: 272px; padding: 0; transform: none; border-radius: 12px; }
+body[data-display-mode="app"] .knowledge-book .book-model,
+body[data-display-mode="app"] .knowledge-book-slot:nth-child(even) .book-model { display: block; position: relative; width: 100%; height: 100%; padding: 0; border: 0; background: none; box-shadow: none; transform: none; animation: none; filter: none; }
+body[data-display-mode="app"] .knowledge-book .book-model > :not(.book-cover) { display: none; }
+body[data-display-mode="app"] .knowledge-book .book-cover { position: relative; inset: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 100%; height: 100%; margin: 0; padding: 16px 12px; gap: 8px; opacity: 1; transform: none; border-radius: 12px; box-shadow: none; text-align: center; }
+body[data-display-mode="app"] .knowledge-book .book-cover > strong { font-size: 20px; line-height: 1.4; }
+body[data-display-mode="app"] .knowledge-book .book-cover > svg { flex-shrink: 0; width: 26px; height: 26px; }
+body[data-display-mode="app"] .knowledge-book .book-cover :is(small, .book-cover-standard, .book-cover-standard b, .book-cover-publisher, .book-cover-status) { font-size: 12px; line-height: 1.5; letter-spacing: 0; }
+body[data-display-mode="app"] .knowledge-book .book-cover-publisher { margin-top: auto; }
+body[data-display-mode="app"] .knowledge-book .book-cover-status { padding-top: 8px; }
+body[data-display-mode="app"] .shelf-plank { display: none; }
+body[data-display-mode="app"] .knowledge-shelf-foot { position: static; padding: 12px 0 0; font-size: 12px; line-height: 1.5; }
+
+body[data-display-mode="app"] .course-library-panel > header button { display: inline-flex; align-items: center; justify-content: center; width: 44px; min-width: 44px; height: 44px; padding: 0; }
+body[data-display-mode="app"] :is(.course-detail-cover > span, .course-controlled-references > span) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .course-controlled-references button { font-size: 14px; line-height: 1.3; padding: 11px 12px; gap: 7px; }
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-display-mode="app"] *,
+  body[data-display-mode="app"] *::before,
+  body[data-display-mode="app"] *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* Phone composition: light visual controls within full-size touch targets. */
+.ai-send-stop-icon { display: none; }
+body[data-display-mode="app"] .ai-dialogue-footer #textQuestion { min-height: 36px; overflow-y: auto; overscroll-behavior: contain; }
+body[data-display-mode="app"] .ai-dialogue-footer #textQuestionBtn {
+  display: grid; place-items: center; width: 44px; min-width: 44px; max-width: 44px;
+  height: 44px; min-height: 44px; padding: 0; border: 6px solid transparent;
+  border-radius: 50%; background: #2f6feb; background-clip: padding-box;
+  box-shadow: none;
+}
+body[data-display-mode="app"] .ai-dialogue-footer #textQuestionBtn:hover:not(:disabled) {
+  border-color: transparent; background: #245dcc; background-clip: padding-box;
+}
+body[data-display-mode="app"] .ai-dialogue-footer #textQuestionBtn:disabled { opacity: .45; }
+body[data-display-mode="app"] .ai-dialogue-footer #textQuestionBtn svg { width: 18px; height: 18px; stroke-width: 2; }
+body[data-display-mode="app"] #textQuestionBtn[data-request-active="true"] svg:not(.ai-send-stop-icon) { display: none; }
+body[data-display-mode="app"] .ai-dialogue-footer #textQuestionBtn[data-request-active="true"] .ai-send-stop-icon { display: block; width: 12px; height: 12px; fill: currentColor; stroke-width: 0; }
+body[data-display-mode="app"] .ai-dialogue-footer .ai-composer-tools button { padding: 0; border: 0; background: transparent; box-shadow: none; color: #637187; }
+body[data-display-mode="app"] .ai-dialogue-footer .ai-composer-tools button svg { width: 20px; height: 20px; }
+body[data-display-mode="app"] .ai-dialogue-footer .ai-composer-tools button:is(.is-active, .has-attachment, [aria-pressed="true"]) { color: #245dcc; background: #edf4ff; }
+body[data-display-mode="app"] .ai-dialogue-footer .ai-teacher-composer { border-radius: 18px; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-suggestions { padding: 0; gap: 4px; }
+body[data-display-mode="app"] .teacher-suggestion-mount .teacher-suggestions button:is(.is-selected, .is-awaiting-upload) { color: #245dcc; background: #edf4ff; }
+body[data-display-mode="app"] .ai-dialogue-head .classroom-compact-mastery svg { width: 15px; height: 15px; }
+body[data-display-mode="app"] .ai-dialogue-head .classroom-compact-mastery > span { font-weight: 500; }
+body[data-display-mode="app"] .ai-dialogue-actions button svg { width: 20px; height: 20px; }
+body[data-display-mode="app"] .ai-conversation-mount .teacher-turn-actions button { border: 0; background: transparent; box-shadow: none; }
+body[data-display-mode="app"] .ai-conversation-mount .teacher-turn-actions button svg { width: 18px; height: 18px; }
+body[data-display-mode="app"] :is(.mobile-student-nav, .app-teacher-nav) button:not(.is-active):not([aria-selected="true"]) { font-weight: 500; }
+body[data-display-mode="app"] :is(.mobile-student-nav, .app-teacher-nav) button:is(.is-active, [aria-selected="true"]) { background: transparent; color: #215fbc; }
+body[data-display-mode="app"] .curriculum-picker > header b { font-size: 16px; }
+body[data-display-mode="app"] .curriculum-picker :is(small, em, footer) { font-size: 12px; line-height: 1.5; }
+body[data-display-mode="app"] .curriculum-picker > footer { padding: 10px 16px; }

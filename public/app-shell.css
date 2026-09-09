@@ -1,0 +1,100 @@
+/* The outer shell owns device chrome. The iframe remains mounted in both modes. */
+html[data-app-host="true"] body > .workspace,
+html[data-app-host="true"] body > .skip-link { display: none; }
+.app-view-toggle {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  min-height: 36px; padding: 7px 12px; white-space: nowrap;
+  border: 1px solid #dce5f3; border-radius: 8px; background: #f1f6ff;
+  color: #245dca; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.app-view-toggle svg { width: 18px; height: 18px; flex-shrink: 0; }
+.app-view-toggle:hover { background: #e5eeff; }
+.app-device-menu { position: fixed; z-index: 220; width: 236px; max-width: calc(100vw - 24px); padding: 8px; border: 1px solid #dce3ec; border-radius: 14px; background: #fff; box-shadow: 0 12px 40px #23304426; color: #233044; }
+.app-device-menu[hidden] { display: none; }
+.app-device-menu p { margin: 8px 10px; font-size: 13px; color: #637087; }
+.app-device-menu button { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 46px; padding: 10px; border: 0; border-radius: 8px; background: transparent; font: inherit; font-size: 14px; color: inherit; cursor: pointer; }
+.app-device-menu button[aria-checked="true"] { background: #edf4ff; color: #245dca; font-weight: 600; }
+.app-device-menu button:hover { background: #f1f5fb; }
+.app-device-menu .app-mode-check { margin-left: auto; visibility: hidden; }
+.app-device-menu button[aria-checked="true"] .app-mode-check { visibility: visible; }
+.app-device-menu small { display: block; padding: 10px; font-size: 12px; line-height: 1.5; color: #637087; }
+.app-preview-controls, .app-preview-modes { display: flex; align-items: center; gap: 6px; }
+.app-preview-modes { padding: 4px; border: 1px solid #dce3ec; border-radius: 12px; background: #fff; }
+.app-preview-modes button, .app-pad-rotate { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 8px 12px; border: 0; border-radius: 8px; background: transparent; color: #536176; font: inherit; font-size: 13px; cursor: pointer; }
+.app-preview-modes button[aria-pressed="true"] { color: #245dca; background: #eaf1ff; font-weight: 600; }
+.app-preview-modes button:hover, .app-pad-rotate:hover { background: #eaf1ff; }
+.app-pad-rotate { border: 1px solid #d5dce6; background: #fff; }
+.app-preview-host:not([data-display-mode="pad"]) .app-pad-rotate { display: none; }
+.app-startup-error { position: fixed; z-index: 1000; inset: 0; display: grid; align-content: center; justify-items: center; padding: 24px; background: #f4f6fa; color: #233044; text-align: center; }
+.app-startup-error h1 { font-size: 22px; margin: 0; }
+.app-startup-error button { min-height: 44px; padding: 8px 20px; border: 0; border-radius: 8px; background: #2f6feb; color: #fff; font: inherit; cursor: pointer; }
+body:not([data-display-mode="app"]) .app-back-button,
+body:not([data-display-mode="app"]) .app-teacher-nav { display: none !important; }
+html[data-app-host="true"], html[data-app-host="true"] body { width: 100%; height: 100%; min-width: 0; margin: 0; padding: 0; overflow: hidden; }
+.app-preview-host { --shell-bg: #eef1f5; --shell-text: #233044; --device-width: 402px; background: var(--shell-bg); color: var(--shell-text); }
+.app-preview-stage { height: 100dvh; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 62px minmax(0, 1fr) 32px; }
+.app-preview-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 0 32px; gap: 12px; }
+.app-preview-brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.app-preview-brand > svg { color: #2f6feb; }
+.app-preview-brand strong { font-size: 16px; }
+.app-preview-brand span { margin-left: 6px; padding-left: 16px; border-left: 1px solid #cbd3de; color: #637087; font-size: 13px; }
+.app-preview-exit { display: flex; align-items: center; gap: 8px; min-height: 40px; border: 1px solid #d4dce7; border-radius: 9px; background: #fff; padding: 8px 14px; color: #46566f; font: inherit; font-size: 13px; cursor: pointer; }
+.app-preview-exit:hover { border-color: #2f6feb; color: #245dca; }
+.app-device-wrap { position: relative; display: flex; min-width: 0; min-height: 0; justify-content: center; align-items: center; padding: 0 12px 4px; }
+.app-device {
+  display: grid; grid-template-rows: 42px minmax(0, 1fr) 24px;
+  width: var(--device-width); max-width: 100%; height: 100%; max-height: 850px;
+  min-width: 0; min-height: 0; flex-shrink: 0; overflow: hidden;
+  border: 6px solid #181b21; border-radius: 48px; background: #f5f7fb;
+  box-shadow: 0 18px 46px rgba(32, 44, 61, .15);
+}
+.app-device-status { display: flex; align-items: center; justify-content: space-between; padding: 9px 26px 0; color: #101317; font-size: 15px; font-weight: 700; }
+.app-device-status time { font-variant-numeric: tabular-nums; }
+.app-device-indicators { display: flex; align-items: center; gap: 6px; }
+#teacherAppFrame { display: block; width: 100%; height: 100%; min-height: 0; border: 0; background: #f5f7fb; }
+.app-device-home { display: grid; place-items: center; background: #fff; }
+.app-device-home span { width: 128px; height: 5px; border-radius: 3px; background: #252930; }
+.app-preview-caption { margin: 0; display: grid; place-items: center; color: #66748a; font-size: 11px; }
+.app-preview-host[data-display-mode="desktop"] .app-preview-stage { display: block; }
+.app-preview-host[data-display-mode="desktop"] :is(.app-preview-toolbar, .app-preview-caption, .app-device-status, .app-device-home) { display: none; }
+.app-preview-host[data-display-mode="desktop"] .app-device-wrap { display: block; height: 100%; padding: 0; }
+.app-preview-host[data-display-mode="desktop"] .app-device { display: block; width: 100%; height: 100%; max-height: none; border: 0; border-radius: 0; box-shadow: none; }
+.app-preview-host[data-display-mode="pad"] .app-device { position: absolute; left: 50%; top: 50%; box-sizing: border-box; width: var(--pad-width, 1064px); height: var(--pad-height, 798px); max-width: none; max-height: none; border: 10px solid #252930; border-radius: 36px; grid-template-rows: 30px minmax(0, 1fr) 20px; transform: translate(-50%, -50%) scale(var(--device-scale, 1)); transform-origin: center; }
+.app-preview-host[data-display-mode="pad"] .app-device-status { padding: 3px 24px 0; font-size: 13px; }
+.app-preview-host[data-display-mode="pad"] .app-device-home span { height: 4px; width: 150px; }
+@media (max-width: 520px) {
+  .app-preview-toolbar { padding-inline: 15px; }
+  .app-preview-stage { grid-template-rows: 52px minmax(0, 1fr) 14px; }
+  .app-preview-brand span, .app-preview-caption { display: none; }
+  .app-preview-brand strong { font-size: 14px; }
+  .app-preview-brand > svg { display: none; }
+  .app-preview-modes button { min-width: 40px; padding: 7px; }
+  .app-preview-modes button span { display: none; }
+  .app-pad-rotate { padding-inline: 8px; font-size: 12px; }
+  .app-device-wrap { padding-inline: 6px; }
+  .app-device { border-width: 4px; border-radius: 36px; }
+  .app-preview-exit { min-height: 40px; padding: 6px 10px; }
+}
+@media (max-height: 600px) {
+  .app-preview-stage { grid-template-rows: 44px minmax(0, 1fr) 8px; }
+  .app-preview-caption { display: none; }
+  .app-device { border-radius: 30px; grid-template-rows: 26px minmax(0, 1fr) 14px; }
+  .app-device-status { padding-top: 3px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .app-preview-exit, .app-view-toggle { transition: background-color 160ms ease, color 160ms ease; }
+}
+
+/* A stable phone viewport, including 44px status and 24px home areas.
+   Host breakpoints scale the device without changing its logical layout. */
+.app-preview-host[data-display-mode="app"] .app-device {
+  position: absolute; left: 50%; top: 50%; box-sizing: border-box;
+  width: 402px; height: 856px; max-width: none; max-height: none;
+  grid-template-rows: 44px minmax(0, 1fr) 24px;
+  border: 6px solid #181b21; border-radius: 48px;
+  transform: translate(-50%, -50%) scale(var(--device-scale, 1));
+  transform-origin: center;
+}
+.app-preview-host[data-display-mode="app"] .app-device-status {
+  padding: 9px 26px 0; font-size: 15px; background: #f8fafd;
+}

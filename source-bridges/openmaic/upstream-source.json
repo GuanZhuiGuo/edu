@@ -1,0 +1,23 @@
+{
+  "upstream_repo": "https://github.com/THU-MAIC/OpenMAIC",
+  "revision": "fcdb6d62b380c066de2a4733910669c9e697b83a",
+  "revision_date": "2026-07-03T14:19:38+08:00",
+  "revision_subject": "feat(dsl): own element-level normalization & defaults; wire the generator (#787) (#832)",
+  "repository_version": "0.3.0",
+  "npm_provenance": {
+    "package": "@openmaic/dsl",
+    "version": "0.3.0",
+    "revision": "fcdb6d62b380c066de2a4733910669c9e697b83a"
+  },
+  "license_at_revision": "MIT",
+  "license_file": "LICENSE",
+  "upstream_source_modified": false,
+  "official_generation_entry": "lib/generation/generation-pipeline.ts#runGenerationPipeline",
+  "official_renderer_entry": "packages/@openmaic/renderer/src/index.ts#SlideCanvas",
+  "local_bridge": "source-bridges/openmaic",
+  "compatibility_build": {
+    "script": "source-bridges/openmaic/build-official-worker.mjs",
+    "format": "esm",
+    "reason": "The upstream root package has no ESM type while @openmaic/dsl is ESM-only; bundle without modifying upstream source."
+  }
+}

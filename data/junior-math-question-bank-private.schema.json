@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ai-classroom/schemas/junior-math-question-bank-private.schema.json",
+  "title": "JuniorMathQuestionBankPrivate",
+  "description": "仅服务端读取的答案、完整解题计划、常见错误、评分与课程依据。不得由静态目录直接提供。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "storage_classification",
+    "public_bank_ref",
+    "items"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "assessment-key-private-bank@1.0"
+    },
+    "storage_classification": {
+      "const": "server_private"
+    },
+    "public_bank_ref": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "question_id",
+          "key",
+          "solution_plan",
+          "scoring",
+          "review"
+        ],
+        "properties": {
+          "question_id": {
+            "type": "string",
+            "pattern": "^JMQ-M4-"
+          },
+          "key": {
+            "type": "object"
+          },
+          "solution_plan": {
+            "type": "object",
+            "required": [
+              "steps",
+              "key_turning_point",
+              "common_errors",
+              "alternative_solutions"
+            ]
+          },
+          "scoring": {
+            "type": "object"
+          },
+          "review": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
