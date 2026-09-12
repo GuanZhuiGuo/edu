@@ -145,7 +145,7 @@ export function mountCoursewareLibrary() {
         <div class="cwl-results-bar"><p data-cwl-count aria-live="polite"></p><button type="button" class="btn btn-ghost" data-cwl-clear hidden>清除筛选</button></div>
         <div class="cwl-message" data-cwl-status role="status" aria-live="polite"></div>
         <div class="cwl-grid" data-cwl-grid></div>
-        <p class="cwl-storage-note">保存内容仅在当前浏览器中保留。</p>
+        <p class="cwl-storage-note">已保存课件会写入本机课件库，服务重启后仍可使用。</p>
       </section>
     </div>
   </div>`;
@@ -166,7 +166,7 @@ export function mountCoursewareLibrary() {
   syncTreeDisclosure(); narrowTree.addEventListener('change', syncTreeDisclosure);
   const dialog = element('dialog', 'courseware-preview-dialog');
   dialog.setAttribute('aria-labelledby', 'coursewarePreviewTitle');
-  dialog.innerHTML = `<div class="cwl-preview-shell"><header class="cwl-preview-header"><div><span data-cwl-preview-meta></span><h2 id="coursewarePreviewTitle"></h2></div><button type="button" class="btn btn-ghost btn-icon" data-cwl-close aria-label="关闭课件预览">×</button></header><div class="cwl-preview-scroll"><p class="cwl-preview-description" data-cwl-description></p><div data-cwl-preview-status role="status" aria-live="polite"></div><div class="cwl-preview-stage" data-cwl-preview-stage></div></div><footer class="cwl-preview-footer"><span data-cwl-save-note>保存到此设备后可继续复用</span><div><button type="button" class="btn btn-ghost" data-cwl-delete hidden>删除课件</button><button type="button" class="btn" data-cwl-save>保存到此设备</button><button type="button" class="btn btn-primary" data-cwl-reuse>在助手中复用</button></div></footer></div>`;
+  dialog.innerHTML = `<div class="cwl-preview-shell"><header class="cwl-preview-header"><div><span data-cwl-preview-meta></span><h2 id="coursewarePreviewTitle"></h2></div><button type="button" class="btn btn-ghost btn-icon" data-cwl-close aria-label="关闭课件预览">×</button></header><div class="cwl-preview-scroll"><p class="cwl-preview-description" data-cwl-description></p><div data-cwl-preview-status role="status" aria-live="polite"></div><div class="cwl-preview-stage" data-cwl-preview-stage></div></div><footer class="cwl-preview-footer"><span data-cwl-save-note>保存到本机课件库后，服务重启仍可继续复用</span><div><button type="button" class="btn btn-ghost" data-cwl-delete hidden>删除课件</button><button type="button" class="btn" data-cwl-save>保存到课件库</button><button type="button" class="btn btn-primary" data-cwl-reuse>在助手中复用</button></div></footer></div>`;
   document.body.append(dialog);
   const previewStage = dialog.querySelector('[data-cwl-preview-stage]');
   const previewStatus = dialog.querySelector('[data-cwl-preview-status]');
