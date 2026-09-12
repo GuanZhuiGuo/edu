@@ -112,6 +112,7 @@ import { createCoursewareDeepAgent } from "./courseware-deep-agent.js";
 import { createCoursewareDeepAgentHttpHandler } from "./courseware-deep-agent-http.js";
 import { createCoursewareLibraryRepository } from "./courseware-library-repository.js";
 import { createCoursewareLibraryHttpHandler } from "./courseware-library-http.js";
+import { createComposerAttachmentHttpHandler } from "./composer-attachment-http.js";
 import {
   createRuntimeArkClient,
   createRuntimeArkMediaClient,
@@ -292,6 +293,9 @@ const handleEducationImportHttp = createEducationImportHttpHandler({
     tenant_id: educationDataRuntime.tenantId,
     reviewer_id: "local-loopback-reviewer",
   }),
+});
+const handleComposerAttachmentHttp = createComposerAttachmentHttpHandler({
+  authorizeRequest: isLoopbackRequest,
 });
 const handleEducationDataHttp = createEducationDataHttpHandler({
   service: educationDataService,
@@ -587,6 +591,10 @@ const server = createServer(async (req, res) => {
   }
 
   if (await handleEducationImportHttp(req, res, requestUrl)) {
+    return;
+  }
+
+  if (await handleComposerAttachmentHttp(req, res, requestUrl)) {
     return;
   }
 

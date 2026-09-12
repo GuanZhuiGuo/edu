@@ -2,6 +2,7 @@ import { getInteractiveLessonLab } from "./interactive-lesson-lab.js";
 import { getVideoExplanationWorkbench } from "./video-explanation-workbench.js";
 import { saveCourseware } from "./courseware-store.js";
 import { buildGeometryCourseware, mountGeometryCourseware, GEOMETRY_SCOPE } from "./courseware-geometry.js";
+import { createComposerAttachmentController } from "./composer-attachments.js";
 
 const mounts = new WeakMap();
 const TYPES = [
@@ -20,6 +21,14 @@ const TYPES = [
   ["cell_studio", "细胞空间探索", "materials"],
 ];
 const LABELS = Object.fromEntries(TYPES.map(([key, title]) => [key, title]));
+const DELIVERY_CONSTRAINTS = Object.freeze([
+  ["auto", "自动匹配（推荐）"],
+  ["interactive", "互动演示"],
+  ["handout", "图文讲义"],
+  ["course", "整套课件"],
+  ["video", "讲解视频"],
+]);
+const DELIVERY_LABELS = Object.fromEntries(DELIVERY_CONSTRAINTS);
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
 const icon = (name) => `<i data-lucide="${name}" aria-hidden="true"></i>`;
 const COURSEWARE_AGENT_CONFIG_URL = "/api/courseware-agent/config";
@@ -35,6 +44,28 @@ export function suggestCoursewareType(prompt = "") {
   if (/函数|抛物线|二次|一次|正弦|余弦|斜率/.test(value)) return { type: "function_graph", subject: "数学", reason: "拖动参数可以直接比较函数图像变化。" };
   if (/记忆|单词|词汇|辨析|翻转|概念卡/.test(value)) return { type: "concept_cards", subject: /英语|单词|词汇/.test(value) ? "英语" : "通用", reason: "适合先回忆，再翻卡核对概念和例子。" };
   return { type: "mindmap", subject: "通用", reason: "可先用知识结构组织概念，也可手动选择其他已有类型。" };
+}
+
+export function resolveCoursewareConstraint(constraint = "auto", prompt = "") {
+  const value = String(constraint || "auto").trim();
+  if (value === "handout") return "deeptutor";
+  if (value === "course") return "openmaic";
+  if (value === "video") return "video";
+  const suggestion = suggestCoursewareType(prompt);
+  if (value === "interactive") {
+    return ["interactive", "geometry"].includes(TYPES.find(([type]) => type === suggestion.type)?.[2])
+      ? suggestion.type
+      : "mindmap";
+  }
+  return suggestion.type;
+}
+
+function constraintForType(type = "auto") {
+  if (type === "video") return "video";
+  if (type === "openmaic") return "course";
+  if (["deeptutor", "koji", "concept_cards"].includes(type)) return "handout";
+  if (type === "auto") return "auto";
+  return "interactive";
 }
 
 export function mountCoursewareAssistant({ root = document.querySelector("#coursewareAssistantWorkspace"), materials = null } = {}) {
@@ -66,7 +97,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
         <div class="ca-thread" data-ca-thread aria-live="polite"></div>
         <form class="ca-composer" data-ca-form>
           <label class="ca-prompt-label" for="coursewareAssistantPrompt">告诉课件助手你的目标</label>
-          <div class="ca-prompt-box"><textarea id="coursewareAssistantPrompt" rows="3" maxlength="4000" placeholder="例如：给八年级做一个斜面摩擦实验，让学生先预测，再调参数观察，最后完成一道迁移题。"></textarea><div class="ca-composer-tools"><button class="btn btn-ghost" type="button" data-ca-voice aria-pressed="false" title="语音输入">${icon("mic")}<span>语音</span></button><details class="ca-production-options"><summary>${icon("sliders-horizontal")}<span>制作约束</span></summary><div><label class="ca-type-field" for="coursewareAssistantType"><span>指定交付方式</span><select id="coursewareAssistantType" class="form-select">${TYPES.map(([key, label]) => `<option value="${key}">${label}</option>`).join("")}</select></label><p>自动规划会先匹配已接入能力；手动指定只在你有明确交付约束时使用。</p></div></details><button class="btn btn-primary ca-submit" type="submit" data-ca-submit>${icon("arrow-up")}<span>开始制作</span></button></div></div>
+          <div class="ca-prompt-box" data-ca-drop-target><textarea id="coursewareAssistantPrompt" rows="3" maxlength="4000" placeholder="描述制作目标，或直接粘贴图片、PDF、DOCX、PPTX…"></textarea><div class="composer-attachment-tray ca-attachment-tray" data-ca-attachments role="list" aria-label="制作参考附件" hidden></div><div class="ca-composer-tools"><button class="btn btn-ghost" type="button" data-ca-attach title="添加图片或文档">${icon("paperclip")}<span>附件</span></button><input type="file" data-ca-attachment-input hidden multiple accept="image/png,image/jpeg,image/webp,application/pdf,.docx,.pptx,text/plain,text/markdown,.md,.markdown" /><button class="btn btn-ghost" type="button" data-ca-voice aria-pressed="false" title="语音输入">${icon("mic")}<span>语音</span></button><details class="ca-production-options"><summary>${icon("sliders-horizontal")}<span>制作约束</span></summary><div><label class="ca-type-field" for="coursewareAssistantType"><span>希望得到什么</span><select id="coursewareAssistantType" class="form-select">${DELIVERY_CONSTRAINTS.map(([key, label]) => `<option value="${key}">${label}</option>`).join("")}</select></label><p>约束只选择产物目标；学科、知识点和底层技术由课件助手从需求与附件中判断。</p></div></details><button class="btn btn-primary ca-submit" type="submit" data-ca-submit>${icon("arrow-up")}<span>开始制作</span></button></div></div>
           <div class="ca-example-actions" aria-label="需求示例"><button class="btn btn-ghost" type="button" data-ca-example="制作二次函数参数实验，让学生拖动 a、b、c 观察图像开口和位置的变化。">函数实验</button><button class="btn btn-ghost" type="button" data-ca-example="给八年级学生制作斜面与摩擦实验，比较倾角和摩擦系数对运动的影响。">物理实验</button><button class="btn btn-ghost" type="button" data-ca-example="直角三角形勾股关系：调节两条直角边，比较斜边与面积。">几何探究</button><button class="btn btn-ghost" type="button" data-ca-example="制作英语一般过去时概念翻转卡，比较规则动词与不规则动词，并配上例句。">概念卡片</button></div>
           <p class="ca-suggestion" data-ca-suggestion></p>
           <p class="ca-form-status" data-ca-status role="status" aria-live="polite"></p>
@@ -85,9 +116,10 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
     save: root.querySelector("[data-ca-save]"), saveStatus: root.querySelector("[data-ca-save-status]"), mount: root.querySelector("[data-ca-engine-mount]"),
     resultTitle: root.querySelector("#coursewareAssistantResultTitle"), resultKicker: root.querySelector("[data-ca-result-kicker]"), thread: root.querySelector("[data-ca-thread]"),
     threadTitle: root.querySelector("[data-ca-thread-title]"), voice: root.querySelector("[data-ca-voice]"), agentBadge: root.querySelector("[data-ca-agent-badge]"),
+    attachmentInput: root.querySelector("[data-ca-attachment-input]"), attachments: root.querySelector("[data-ca-attachments]"), attach: root.querySelector("[data-ca-attach]"), dropTarget: root.querySelector("[data-ca-drop-target]"),
   };
   const fetchImpl = typeof doc.defaultView?.fetch === "function" ? doc.defaultView.fetch.bind(doc.defaultView) : null;
-  const state = { tool: "interactive", tasks: [], selectedId: "", active: {}, saving: false, planning: false, listening: false, recognition: null, materialBundle: null, videoDraftId: "", geometryItem: null, geometryPlayer: null, agentConfig: null };
+  const state = { tool: "interactive", tasks: [], selectedId: "", active: {}, saving: false, planning: false, listening: false, recognition: null, materialBundle: null, videoDraftId: "", geometryItem: null, geometryPlayer: null, agentConfig: null, attachmentController: null };
   Object.entries(panels).forEach(([tool, panel]) => {
     if (!panel) return;
     panel.dataset.coursewareEmbedded = "true";
@@ -134,7 +166,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
   const taskById = (id) => state.tasks.find((task) => task.id === id);
   const statusText = { running: "处理中", waiting: "待继续制作", completed: "已生成", failed: "失败" };
   const phaseText = { pending: "等待", running: "进行中", completed: "完成", failed: "失败", waiting: "待确认" };
-  const chosenType = () => nodes.type.value === "auto" ? suggestCoursewareType(nodes.prompt.value).type : nodes.type.value;
+  const chosenType = () => resolveCoursewareConstraint(nodes.type.value, nodes.prompt.value);
   const toolForType = (type) => TYPES.find(([key]) => key === type)?.[2] || "interactive";
   const capabilityNote = (type, tool) => tool === "video" ? "视频项目、分镜与合成链路"
     : tool === "geometry" ? "本地 SVG 几何模板与参数播放器"
@@ -192,7 +224,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
       return null;
     }
   }
-  async function requestAgentPlan(prompt) {
+  async function requestAgentPlan(prompt, requestedType = "auto", image = null) {
     if (!fetchImpl) return null;
     const AbortControllerImpl = doc.defaultView?.AbortController;
     const controller = AbortControllerImpl ? new AbortControllerImpl() : null;
@@ -204,7 +236,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
         method: "POST",
         cache: "no-store",
         headers: { accept: "application/json", "content-type": "application/json" },
-        body: JSON.stringify({ prompt, requested_type: "auto" }),
+        body: JSON.stringify({ prompt, requested_type: requestedType, image: image || undefined }),
         signal: controller?.signal,
       });
       const payload = await response.json().catch(() => ({}));
@@ -224,7 +256,8 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
     }
     const messages = task.messages || [];
     const deepPlanned = task.plannerEngine === "langchain_deepagents_js";
-    nodes.thread.innerHTML = `<div class="ca-messages">${messages.map((message) => `<article class="ca-message" data-role="${esc(message.role)}"><span>${message.role === "user" ? "你" : icon("sparkles")}</span><div><b>${message.role === "user" ? "制作要求" : "课件助手"}</b><p>${esc(message.text)}</p></div></article>`).join("")}</div>
+    const attachmentMarkup = (task.attachments || []).length ? `<div class="ca-message-attachments" aria-label="制作参考附件">${task.attachments.map((attachment) => `<span>${icon(attachment.kind === "image" ? "image" : attachment.format === "pptx" ? "presentation" : "file-text")}<b>${esc(attachment.name)}</b></span>`).join("")}</div>` : "";
+    nodes.thread.innerHTML = `<div class="ca-messages">${messages.map((message) => `<article class="ca-message" data-role="${esc(message.role)}"><span>${message.role === "user" ? "你" : icon("sparkles")}</span><div><b>${message.role === "user" ? "制作要求" : "课件助手"}</b><p>${esc(message.text)}</p>${message.role === "user" ? attachmentMarkup : ""}</div></article>`).join("")}</div>
       <section class="ca-plan" aria-label="执行计划"><header><div><span>${deepPlanned ? "Deep Agents JS 规划" : "本地执行计划"}</span><b>${task.plan?.filter((item) => item.status === "completed").length || 0}/${task.plan?.length || 4}</b></div><small>${deepPlanned ? "Agent 负责受控选型，项目内执行器负责生成和校验" : "项目内确定性路由与领域执行器"}</small></header><ol>${(task.plan || []).map((step) => `<li data-state="${esc(step.status)}"><i>${step.status === "completed" ? icon("check") : step.status === "failed" ? icon("x") : step.status === "running" ? icon("loader-circle") : icon("circle")}</i><div><b>${esc(step.label)}</b><p>${esc(step.detail)}</p></div><em>${phaseText[step.status] || step.status}</em></li>`).join("")}</ol></section>
       <div class="ca-followups" aria-label="继续修改"><span>继续修改</span><button class="btn btn-ghost" type="button" data-ca-followup="保留当前结构，降低文字密度并增加课堂提问。">降低文字密度</button><button class="btn btn-ghost" type="button" data-ca-followup="基于当前主题再做一个难度更高的迁移活动。">增加迁移活动</button></div>`;
     nodes.thread.scrollTop = nodes.thread.scrollHeight;
@@ -237,9 +270,9 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
     renderThread();
     syncSave();
   }
-  function createTask({ id = globalThis.crypto?.randomUUID?.() || `courseware-${Date.now()}`, title, type, tool, status = "running", message = "", prompt = "", plannerEngine = "deterministic_domain_router", agentPlan = null, fallbackNotice = "", subject = "" }) {
+  function createTask({ id = globalThis.crypto?.randomUUID?.() || `courseware-${Date.now()}`, title, type, tool, status = "running", message = "", prompt = "", plannerEngine = "deterministic_domain_router", agentPlan = null, fallbackNotice = "", subject = "", attachments = [] }) {
     const existing = taskById(id);
-    const task = Object.assign(existing || {}, { id, title, type, tool, status, message, plannerEngine, agentPlan, fallbackNotice, subject, createdAt: existing?.createdAt || new Date().toISOString() });
+    const task = Object.assign(existing || {}, { id, title, type, tool, status, message, plannerEngine, agentPlan, fallbackNotice, subject, attachments, createdAt: existing?.createdAt || new Date().toISOString() });
     task.plan ||= buildPlan(type, tool, status, agentPlan);
     task.messages ||= prompt ? [
       { role: "user", text: prompt },
@@ -259,16 +292,18 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
     const hasResult = !savedPreview.hidden && Boolean(selected?.courseware) || (state.tool === "interactive" ? Boolean(interactive?.getLesson())
       : state.tool === "video" ? Boolean(video?.getCourseware()) : state.tool === "geometry" ? Boolean(state.geometryItem) : Boolean(state.materialBundle || materials?.getBundle?.()));
     nodes.save.disabled = state.saving || Boolean(state.active[state.tool]) || pending || !hasResult;
-    nodes.submit.disabled = state.planning || Boolean(state.active[toolForType(chosenType())]);
+    nodes.submit.disabled = state.planning || state.attachmentController?.isProcessing?.() || Boolean(state.active[toolForType(chosenType())]);
   }
-  function selectTool(tool, { type = "", showResults = false } = {}) {
+  function selectTool(tool, { type = "", showResults = false, preserveConstraint = false } = {}) {
     if (!Object.hasOwn(panels, tool) || !panels[tool]) return false;
     state.tool = tool;
     savedPreview.hidden = true;
     savedPreview.replaceChildren();
     Object.entries(panels).forEach(([name, panel]) => { if (panel) panel.hidden = name !== tool; });
-    if (type && LABELS[type]) nodes.type.value = type;
-    else if (toolForType(chosenType()) !== tool) nodes.type.value = tool === "video" ? "video" : tool === "geometry" ? "geometry" : tool === "materials" ? "deeptutor" : "auto";
+    if (!preserveConstraint) {
+      if (type && LABELS[type]) nodes.type.value = constraintForType(type);
+      else if (toolForType(chosenType()) !== tool) nodes.type.value = tool === "video" ? "video" : tool === "materials" ? "handout" : "interactive";
+    }
     nodes.saveStatus.hidden = true;
     const selected = taskById(state.selectedId);
     nodes.note.textContent = selected?.tool === tool ? selected.message || statusText[selected.status]
@@ -281,10 +316,10 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
   function syncSuggestion() {
     const suggestion = suggestCoursewareType(nodes.prompt.value);
     const type = chosenType();
-    nodes.suggestion.textContent = nodes.type.value === "auto" ? `关键词建议：${LABELS[suggestion.type]}。${suggestion.reason}`
+    nodes.suggestion.textContent = nodes.type.value === "auto" ? `将自动匹配：${LABELS[suggestion.type]}。${suggestion.reason}`
       : type === "video" ? "先准备视频项目，再上传或选择教材；成片完成后可保存。"
         : type === "geometry" ? `${GEOMETRY_SCOPE}本地模板搭建，不调用模型。`
-        : toolForType(type) === "materials" ? "使用现有素材流水线；请提供至少 20 个字符的知识内容。" : `将使用${LABELS[type]}制作，具体参数仍可在结果区调整。`;
+        : toolForType(type) === "materials" ? `${DELIVERY_LABELS[nodes.type.value]}将由课件助手匹配已接入的内容流水线。` : `将制作${DELIVERY_LABELS[nodes.type.value]}，并自动选择${LABELS[type]}执行器。`;
     nodes.submit.querySelector("span").textContent = type === "video" ? "准备视频项目" : type === "geometry" ? "搭建几何模板" : "开始制作";
   }
 
@@ -301,27 +336,46 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
   }
 
   async function submit() {
-    const prompt = nodes.prompt.value.trim();
-    if (!prompt) { setStatus("请先描述课件主题与教学目标。", "error"); nodes.prompt.focus(); return; }
-    const requestedType = nodes.type.value;
-    const localSuggestion = suggestCoursewareType(prompt);
-    let type = requestedType === "auto" ? localSuggestion.type : requestedType;
+    const typedPrompt = nodes.prompt.value.trim();
+    let preparedAttachments = { image: null, documents: [], context: "", summary: [] };
+    if (state.attachmentController?.hasErrors?.()) {
+      setStatus("有附件读取失败，请移除或重新添加后再制作。", "error");
+      return;
+    }
+    try {
+      preparedAttachments = await state.attachmentController?.prepare?.({ maxDocumentCharacters: 3_000 }) || preparedAttachments;
+    } catch (error) {
+      setStatus(error?.message || "附件尚未准备完成。", "error");
+      return;
+    }
+    if (!typedPrompt && !preparedAttachments.summary.length) { setStatus("请描述课件目标，或添加一份参考附件。", "error"); nodes.prompt.focus(); return; }
+    const prompt = typedPrompt || "请根据参考附件判断主题，制作一份适合课堂使用的课件。";
+    const executionPrompt = [prompt, preparedAttachments.context].filter(Boolean).join("\n\n").slice(0, 12_000);
+    const planningPrompt = executionPrompt.slice(0, 4_000);
+    const deliveryConstraint = nodes.type.value;
+    const localSuggestion = suggestCoursewareType(executionPrompt);
+    let type = resolveCoursewareConstraint(deliveryConstraint, executionPrompt);
+    const requestedType = deliveryConstraint === "auto" ? "auto" : type;
     let plannerEngine = "deterministic_domain_router";
     let agentPlan = null;
     let fallbackNotice = "";
-    if (requestedType === "auto" && fetchImpl) {
+    if ((requestedType === "auto" || preparedAttachments.image) && fetchImpl) {
       state.planning = true;
       root.setAttribute("aria-busy", "true");
-      setStatus("正在判断任务复杂度并选择制作能力…", "busy");
+      setStatus(preparedAttachments.image ? "正在理解参考图片并选择制作能力…" : "正在判断任务复杂度并选择制作能力…", "busy");
       syncSave();
       try {
-        const result = await requestAgentPlan(prompt);
+        const result = await requestAgentPlan(planningPrompt, requestedType, preparedAttachments.image);
         plannerEngine = result?.engine || plannerEngine;
         agentPlan = result?.plan || null;
         if (agentPlan?.recommended_type && LABELS[agentPlan.recommended_type]) type = agentPlan.recommended_type;
       } catch (error) {
         fallbackNotice = `Deep Agents JS 规划未完成，已回退到“${LABELS[type]}”执行器。${error?.message ? `原因：${error.message}` : ""}`;
         updateAgentBadge(state.agentConfig, "error");
+        if (preparedAttachments.image && !typedPrompt) {
+          setStatus("参考图片尚未完成理解，请补充一句制作目标后重试。", "error");
+          return;
+        }
       } finally {
         state.planning = false;
         root.removeAttribute("aria-busy");
@@ -329,8 +383,8 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
     }
     let tool = toolForType(type);
     if (state.active[tool]) { setStatus("当前类型还有任务在运行，请等待完成。", "error"); return; }
-    if (tool === "materials" && prompt.length < 20) { setStatus("素材生成需要至少 20 个字符，请补充概念、规律或教学要求。", "error"); return; }
-    selectTool(tool, { type, showResults: true });
+    if (tool === "materials" && executionPrompt.length < 20) { setStatus("图文讲义或整套课件需要更完整的主题资料，请补充目标或上传文档。", "error"); return; }
+    selectTool(tool, { type, showResults: true, preserveConstraint: true });
     const task = createTask({
       title: agentPlan?.title || prompt.split(/\n/)[0].slice(0, 70),
       type,
@@ -340,23 +394,25 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
       agentPlan,
       fallbackNotice,
       subject: agentPlan?.subject || localSuggestion.subject,
+      attachments: preparedAttachments.summary,
       status: tool === "video" ? "waiting" : "running",
       message: tool === "video" ? "请在结果区上传或选择教材，再创建项目。" : tool === "geometry" ? "正在搭建已有几何交互模板。" : "正在调用现有生成服务；下方可能仍显示上一次结果。",
     });
+    if (preparedAttachments.summary.length) state.attachmentController?.clear?.();
     state.active[tool] = tool === "video" ? null : task.id;
     nodes.note.textContent = task.message;
     setStatus(task.message, "busy");
     renderTasks();
     try {
       if (tool === "geometry") {
-        task.courseware = buildGeometryCourseware(prompt);
+        task.courseware = buildGeometryCourseware(executionPrompt);
         showGeometry(task.courseware, task);
         task.title = task.courseware.title;
         task.status = "completed";
         task.message = "本地几何模板已搭建，可调整参数并保存。";
       } else if (tool === "interactive") {
         if (!interactive) throw new Error("互动教材尚未初始化，请刷新后重试。");
-        const lesson = await interactive.generateCourseware({ prompt: agentPlan?.goal_summary || prompt, type, subject: task.subject });
+        const lesson = await interactive.generateCourseware({ prompt: agentPlan?.goal_summary || executionPrompt, type, subject: task.subject });
         task.lesson = structuredClone(lesson);
         task.status = "completed";
         task.title = lesson.title;
@@ -368,7 +424,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
         if (!choice) throw new Error("当前素材技术不可用。");
         choice.checked = true;
         choice.dispatchEvent(new Event("change", { bubbles: true }));
-        input.value = prompt;
+        input.value = executionPrompt;
         input.dispatchEvent(new Event("input", { bubbles: true }));
         const bundle = await materials.generate();
         if (!bundle) throw new Error(panels.materials.querySelector("#materialGenerationStatus")?.textContent?.trim() || "素材生成未完成。");
@@ -381,7 +437,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
       } else {
         if (!video) throw new Error("视频工作台尚未初始化。");
         state.videoDraftId = task.id;
-        video.prepareDraft(prompt);
+        video.prepareDraft(executionPrompt);
       }
       if (task.status === "completed") {
         updatePlan(task, "produce", "completed", task.message);
@@ -393,7 +449,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
       }
       setStatus([fallbackNotice, task.message].filter(Boolean).join(" "), task.status === "completed" ? "success" : "idle");
     } catch (error) {
-      const fallbackType = requestedType === "auto" && tool === "materials" ? localSuggestion.type : "";
+      const fallbackType = deliveryConstraint === "auto" && tool === "materials" ? localSuggestion.type : "";
       const fallbackTool = toolForType(fallbackType);
       if (fallbackType && fallbackTool === "interactive" && interactive) {
         try {
@@ -405,11 +461,11 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
           task.type = fallbackType;
           task.tool = fallbackTool;
           state.active[tool] = task.id;
-          selectTool(tool, { type, showResults: true });
+          selectTool(tool, { type, showResults: true, preserveConstraint: true });
           appendTaskMessage(task, "assistant", `“${LABELS[failedType]}”未完成（${failedMessage}），已自动改用“${LABELS[fallbackType]}”继续制作。`);
           updatePlan(task, "route", "completed", `${LABELS[failedType]}不可用，已切换到${capabilityNote(fallbackType, fallbackTool)}`);
           updatePlan(task, "produce", "running", `正在通过“${LABELS[fallbackType]}”完成可交付产物`);
-          const lesson = await interactive.generateCourseware({ prompt: agentPlan?.goal_summary || prompt, type, subject: task.subject });
+          const lesson = await interactive.generateCourseware({ prompt: agentPlan?.goal_summary || executionPrompt, type, subject: task.subject });
           task.lesson = structuredClone(lesson);
           task.status = "completed";
           task.title = lesson.title;
@@ -455,7 +511,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
       let item = !savedPreview.hidden && task?.courseware ? task.courseware : state.tool === "interactive" ? await interactive.getCourseware()
         : state.tool === "video" ? video.getCourseware()
           : state.tool === "geometry" ? state.geometryPlayer?.getCourseware()
-          : task?.tool === "materials" && task.courseware ? task.courseware : materialCourseware(state.materialBundle || materials?.getBundle?.(), panels.materials, nodes.type.value);
+          : task?.tool === "materials" && task.courseware ? task.courseware : materialCourseware(state.materialBundle || materials?.getBundle?.(), panels.materials, task?.type || chosenType());
       if (!item) throw new Error("尚无可保存的真实成果，请完成制作后重试。");
       if (task?.savedId) item = { ...item, id: task.savedId };
       const saved = await saveCourseware(item);
@@ -468,9 +524,25 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
     } finally { state.saving = false; syncSave(); }
   }
 
+  state.attachmentController = typeof createComposerAttachmentController === "function" ? createComposerAttachmentController({
+    id: "courseware-assistant",
+    input: nodes.attachmentInput,
+    tray: nodes.attachments,
+    browseButton: nodes.attach,
+    pasteTarget: nodes.prompt,
+    dropTarget: nodes.dropTarget,
+    fetchImpl,
+    notify(message) {
+      const error = /失败|不支持|超过|损坏|无法/u.test(String(message));
+      setStatus(message, error ? "error" : "idle");
+    },
+    onChange() {
+      syncSave();
+    },
+  }) : null;
   root.querySelector("[data-ca-form]").addEventListener("submit", (event) => { event.preventDefault(); void submit(); });
   nodes.prompt.addEventListener("input", () => { syncSuggestion(); syncSave(); });
-  nodes.type.addEventListener("change", () => selectTool(toolForType(chosenType()), { type: nodes.type.value }));
+  nodes.type.addEventListener("change", () => selectTool(toolForType(chosenType()), { type: chosenType() }));
   nodes.save.addEventListener("click", () => void saveCurrent());
   root.addEventListener("click", async (event) => {
     const pane = event.target.closest("[data-ca-pane]");
@@ -482,7 +554,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
       const task = taskById(state.selectedId);
       const context = task?.title ? `继续修改“${task.title}”：` : "";
       nodes.prompt.value = `${context}${followup.dataset.caFollowup}`;
-      nodes.type.value = task?.type || "auto";
+      nodes.type.value = constraintForType(task?.type || "auto");
       setPane("compose");
       syncSuggestion();
       nodes.prompt.focus({ preventScroll: true });
@@ -491,6 +563,7 @@ export function mountCoursewareAssistant({ root = document.querySelector("#cours
       state.selectedId = "";
       nodes.prompt.value = "";
       nodes.type.value = "auto";
+      state.attachmentController?.clear?.();
       selectTool("interactive");
       setPane("compose");
       setStatus();

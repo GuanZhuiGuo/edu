@@ -56,6 +56,7 @@ import {
   resolvePortalWorkspace
 } from "./portal-runtime.js";
 import { refreshCurrentEducationStudent } from "./education-data-client.js";
+import { getComposerAttachmentController } from "./composer-attachments.js";
 
 document.documentElement.dataset.platformProfile = PLATFORM_CONTEXT.activeProfile;
 
@@ -2616,17 +2617,30 @@ async function sendTextQuestion() {
     return;
   }
   const text = els.textQuestion.value.trim();
-  const attachment = els.teacherAttachmentInput?.files?.[0] || null;
-  if (!text && !attachment) return;
+  const attachmentController = getComposerAttachmentController("teacher");
+  const attachmentItems = attachmentController?.getItems?.() || [];
+  if (attachmentController?.isProcessing?.()) {
+    setStatus("附件仍在读取，请稍候再发送");
+    return;
+  }
+  if (attachmentController?.hasErrors?.()) {
+    setStatus("有附件读取失败，请移除或重新添加后再发送", true);
+    return;
+  }
+  if (!text && !attachmentItems.some((item) => item.status === "ready")) {
+    return;
+  }
   stopTextTts();
   stopComposerAsr({ abort: false });
-  const imageTaskMode = attachment ? getTeacherImageTaskMode() : "auto";
+  const hasImage = attachmentItems.some((item) => item.kind === "image" && item.status === "ready");
+  const imageTaskMode = hasImage ? getTeacherImageTaskMode() : "auto";
   const imagePrompt = imageTaskMode === "grade"
     ? "请批改这页作业，标出对错并给出订正建议。"
     : imageTaskMode === "solve"
       ? "请识别并解答这道图片题，给出关键解题思路。"
       : "请识别这张图片，判断是拍题解答还是作业批改，并按对应方式处理。";
-  await submitTextQuestion(text || imagePrompt);
+  const attachmentPrompt = hasImage ? imagePrompt : "请阅读我附上的文档，并结合当前课程回答。";
+  await submitTextQuestion(text || attachmentPrompt);
 }
 
 async function submitTextQuestion(text, { shortcut = null } = {}) {
@@ -2677,6 +2691,8 @@ async function submitTextQuestion(text, { shortcut = null } = {}) {
 async function sendEducationAgentQuestion(text, turn, {
   shortcut = null,
   attachmentOverride = null,
+  attachmentContextOverride = "",
+  attachmentSummaryOverride = null,
   imageTaskModeOverride = "",
   knowledgePointIdOverride = ""
 } = {}) {
@@ -2701,7 +2717,13 @@ async function sendEducationAgentQuestion(text, turn, {
 
   let responseStartTimer = null;
   try {
-    const attachment = attachmentOverride || await readTeacherQuestionImage();
+    const preparedAttachments = attachmentOverride
+      ? { image: attachmentOverride, context: attachmentContextOverride, summary: attachmentSummaryOverride || [] }
+      : await readTeacherAttachments();
+    const attachment = preparedAttachments.image || null;
+    const attachmentContext = String(preparedAttachments.context || "");
+    const attachmentSummary = Array.isArray(preparedAttachments.summary) ? preparedAttachments.summary : [];
+    const requestMessage = [String(text || "").trim(), attachmentContext].filter(Boolean).join("\n\n").slice(0, 12_000);
     const explicitImageTaskMode = normalizeImageTaskChoice(imageTaskModeOverride)?.id || "";
     const imageTaskMode = attachment
       ? explicitImageTaskMode || getTeacherImageTaskMode()
@@ -2712,10 +2734,14 @@ async function sendEducationAgentQuestion(text, turn, {
       turn.record.questionImageName = attachment.name || "";
       turn.record.imageTaskMode = imageTaskMode;
       renderTurnQuestionImage(turn);
-      // The data URL is now owned by this conversation turn, so the composer
-      // can be reset before the slower model request begins. A clarification
-      // retry passes attachmentOverride and must not clear a newly chosen file.
-      if (!attachmentOverride) {
+    }
+    turn.record.questionDocuments = attachmentSummary.filter((item) => item.kind === "document");
+    renderTurnQuestionDocuments(turn);
+    // Attachment content is now owned by this conversation turn, so the
+    // composer can reset before the slower model request begins. A photo-task
+    // clarification retry passes attachmentOverride and keeps new selections.
+    if (!attachmentOverride) {
+      if (attachment || turn.record.questionDocuments.length) {
         document.dispatchEvent(new CustomEvent("teacher-attachment:clear"));
       }
     }
@@ -2728,7 +2754,7 @@ async function sendEducationAgentQuestion(text, turn, {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         skill,
-        message: String(text || "").slice(0, 12_000),
+        message: requestMessage,
         conversation_id: textAgentState.conversations.get(getTextAgentSessionKey(sessionId)) || "",
         user_id: getTextAgentRequestUserId(),
         session_id: getTextAgentRequestSessionId(sessionId),
@@ -2902,28 +2928,10 @@ function resolvePiLearningSkill({ text, shortcut, hasImage }) {
   return "knowledge_tutor";
 }
 
-async function readTeacherQuestionImage() {
-  const file = els.teacherAttachmentInput?.files?.[0];
-  if (!file) return null;
-  if (!["image/png", "image/jpeg", "image/webp"].includes(String(file.type || "").toLowerCase())) {
-    throw new Error("图片仅支持 PNG、JPEG 或 WebP 格式");
-  }
-  if (file.size > 8 * 1024 * 1024) {
-    throw new Error("图片请不要超过 8 MB");
-  }
-  const dataUrl = await new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => resolve(String(reader.result || "")), { once: true });
-    reader.addEventListener("error", () => reject(new Error("图片读取失败")), { once: true });
-    reader.readAsDataURL(file);
-  });
-  const comma = dataUrl.indexOf(",");
-  if (comma < 0) throw new Error("图片编码失败");
-  return {
-    mime_type: String(file.type || "image/jpeg").slice(0, 80),
-    data: dataUrl.slice(comma + 1),
-    name: String(file.name || "question-image").slice(0, 180)
-  };
+async function readTeacherAttachments() {
+  const controller = getComposerAttachmentController("teacher");
+  if (!controller) return { image: null, documents: [], context: "", summary: [] };
+  return controller.prepare({ maxDocumentCharacters: 8_000 });
 }
 
 function initializeTextConversationThread() {
@@ -3074,6 +3082,7 @@ function appendTextConversationTurn(userText) {
     savedToMistakes: false,
     questionImageUrl: "",
     questionImageName: "",
+    questionDocuments: [],
     imageTask: null,
     imageTaskClarification: null,
     imageTaskChoicePending: "",
@@ -3132,6 +3141,7 @@ function mountTextConversationTurn(record, { attachCards = false } = {}) {
   if (attachCards) attachLearningContentToTurn(assistantElement);
   const runtime = { record, userElement, assistantElement, assistantContent };
   renderTurnQuestionImage(runtime);
+  renderTurnQuestionDocuments(runtime);
   renderTurnAnswerAttribution(runtime);
   renderTextConversationTrace(runtime);
   syncTeacherTurnActions(runtime);
@@ -3164,6 +3174,32 @@ function renderTurnQuestionImage(runtime) {
   figure.append(image);
   target.prepend(figure);
   runtime.userElement.classList.add("has-question-image");
+}
+
+function renderTurnQuestionDocuments(runtime) {
+  const target = runtime?.userElement?.querySelector?.(".message-content");
+  if (!target || !runtime?.record) return;
+  target.querySelector(".turn-question-documents")?.remove();
+  const documents = Array.isArray(runtime.record.questionDocuments)
+    ? runtime.record.questionDocuments.filter((item) => item?.name).slice(0, 4)
+    : [];
+  runtime.userElement.classList.toggle("has-question-documents", documents.length > 0);
+  if (!documents.length) return;
+  const list = document.createElement("div");
+  list.className = "turn-question-documents";
+  list.setAttribute("aria-label", "本轮参考文档");
+  documents.forEach((documentItem) => {
+    const chip = document.createElement("span");
+    const icon = document.createElement("i");
+    icon.dataset.lucide = documentItem.format === "pptx" ? "presentation" : "file-text";
+    icon.setAttribute("aria-hidden", "true");
+    const name = document.createElement("b");
+    name.textContent = String(documentItem.name || "参考文档");
+    chip.append(icon, name);
+    list.append(chip);
+  });
+  target.prepend(list);
+  window.lucide?.createIcons?.({ root: list, attrs: { "stroke-width": 1.8 } });
 }
 
 function attachLearningContentToTurn(assistantElement) {

@@ -2,7 +2,7 @@ import { CoursewareDeepAgentError } from "./courseware-deep-agent.js";
 
 const CONFIG_PATH = "/api/courseware-agent/config";
 const PLAN_PATH = "/api/courseware-agent/plan";
-const MAX_BODY_BYTES = 64 * 1024;
+const MAX_BODY_BYTES = 12 * 1024 * 1024;
 
 export function createCoursewareDeepAgentHttpHandler({ agent, authorizeRequest } = {}) {
   if (!agent || typeof agent.plan !== "function" || typeof agent.configSummary !== "function") {

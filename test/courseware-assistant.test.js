@@ -3,10 +3,18 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import vm from "node:vm";
 import { buildGeometryCourseware, GEOMETRY_SCOPE } from "../public/courseware-geometry.js";
-import { suggestCoursewareType } from "../public/courseware-assistant.js";
+import { resolveCoursewareConstraint, suggestCoursewareType } from "../public/courseware-assistant.js";
 
 test("automatic suggestions respect an explicit request to avoid video", () => {
   assert.equal(suggestCoursewareType("制作牛顿第二定律互动实验，不要视频。 ").type, "physics_lab");
+});
+
+test("production constraints describe outcomes while internal executors stay automatic", () => {
+  assert.equal(resolveCoursewareConstraint("interactive", "讲解斜面摩擦并让学生调节参数"), "physics_lab");
+  assert.equal(resolveCoursewareConstraint("handout", "牛顿第二定律"), "deeptutor");
+  assert.equal(resolveCoursewareConstraint("course", "牛顿第二定律"), "openmaic");
+  assert.equal(resolveCoursewareConstraint("video", "牛顿第二定律"), "video");
+  assert.equal(resolveCoursewareConstraint("auto", "[用户附件文本]\n一次函数课堂教案：让学生拖动斜率并观察图像变化"), "function_graph");
 });
 
 test("assistant submits geometry through its actual controller, enables save, and reuses current parameters", async () => {
@@ -42,7 +50,7 @@ test("assistant submits geometry through its actual controller, enables save, an
   root.querySelector("#coursewareAssistantType").value = "auto";
   await assistant.submit();
   assert.equal(assistant.getTool(), "geometry");
-  assert.equal(root.querySelector("#coursewareAssistantType").value, "geometry");
+  assert.equal(root.querySelector("#coursewareAssistantType").value, "auto");
   assert.equal(assistant.getTasks()[0].status, "completed", assistant.getTasks()[0].message);
   assert.equal(mounts.length, 1);
   assert.equal(mounts[0].item.visualArtifact.model.kind, "right_triangle");
@@ -161,8 +169,86 @@ test("a failed Agent-selected source pipeline falls back to the matching local e
   assert.equal(task.status, "completed");
   assert.equal(task.type, "physics_lab");
   assert.equal(assistant.getTool(), "interactive");
-  assert.equal(root.querySelector("#coursewareAssistantType").value, "physics_lab");
+  assert.equal(root.querySelector("#coursewareAssistantType").value, "auto");
   assert.match(task.message, /自动回退/u);
+});
+
+test("document-only courseware requests route and generate from extracted attachment text", async () => {
+  const source = await readFile(new URL("../public/courseware-assistant.js", import.meta.url), "utf8");
+  const doc = new ContractDocument();
+  const interactivePanel = new ContractNode(doc);
+  interactivePanel.querySelector = () => null;
+  doc.querySelector = (selector) => selector === "#interactiveLessonWorkspace" ? interactivePanel : null;
+  const planBodies = [];
+  doc.defaultView.fetch = async (url, options = {}) => {
+    if (url.endsWith("/config")) return { ok: true, json: async () => ({ mode: "auto", configured: true }) };
+    planBodies.push(JSON.parse(options.body));
+    return {
+      ok: true,
+      json: async () => ({
+        engine: "deterministic_domain_router",
+        plan: {
+          title: "一次函数互动课",
+          recommended_type: null,
+          subject: "",
+          goal_summary: planBodies.at(-1).prompt,
+          rationale: "现有函数执行器可直接完成。",
+        },
+      }),
+    };
+  };
+  const root = new ContractNode(doc);
+  let generationInput = null;
+  let clearCount = 0;
+  let currentLesson = null;
+  const interactive = {
+    async generateCourseware(input) {
+      generationInput = input;
+      currentLesson = { title: "一次函数斜率实验" };
+      return currentLesson;
+    },
+    getLesson() { return currentLesson; },
+    getCourseware() { return currentLesson; },
+  };
+  const context = vm.createContext({
+    document: doc, structuredClone, console,
+    crypto: { randomUUID: () => "document-contract" },
+    CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options?.detail; } },
+    createComposerAttachmentController() {
+      return {
+        isProcessing: () => false,
+        async prepare() {
+          return {
+            image: null,
+            documents: [{ name: "函数教案.docx", text: "一次函数课堂教案" }],
+            context: "[用户附件文本]\n文件：函数教案.docx\n一次函数课堂教案：让学生拖动斜率并观察图像变化\n[/用户附件文本]",
+            summary: [{ name: "函数教案.docx", kind: "document", format: "docx" }],
+          };
+        },
+        clear() { clearCount += 1; },
+      };
+    },
+    getInteractiveLessonLab: () => interactive,
+    getVideoExplanationWorkbench: () => null,
+    buildGeometryCourseware, GEOMETRY_SCOPE,
+    mountGeometryCourseware(_container, item) { return { getCourseware: () => item, destroy() {} }; },
+    async saveCourseware(item) { return item; },
+  });
+  const executable = source.replace(/^import[^\n]*\n/gmu, "").replace(/\bexport function /gu, "function ");
+  vm.runInContext(`${executable}\n globalThis.mountController = mountCoursewareAssistant;`, context);
+  const assistant = context.mountController({ root });
+  root.querySelector("#coursewareAssistantPrompt").value = "";
+  root.querySelector("#coursewareAssistantType").value = "auto";
+
+  await assistant.submit();
+
+  assert.equal(assistant.getTasks()[0].type, "function_graph");
+  assert.equal(assistant.getTasks()[0].attachments[0].name, "函数教案.docx");
+  assert.equal(generationInput.type, "function_graph");
+  assert.match(generationInput.prompt, /函数教案\.docx/u);
+  assert.match(generationInput.prompt, /拖动斜率/u);
+  assert.match(planBodies[0].prompt, /一次函数课堂教案/u);
+  assert.equal(clearCount, 1);
 });
 
 class ContractNode {

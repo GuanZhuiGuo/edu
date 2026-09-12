@@ -1,0 +1,130 @@
+.composer-attachment-tray {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.composer-attachment-tray[hidden] { display: none !important; }
+
+.composer-attachment {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 7px;
+  width: min(210px, 76vw);
+  min-width: 168px;
+  min-height: 46px;
+  padding: 5px 5px 5px 6px;
+  border: 1px solid var(--ds-border, #dce5f0);
+  border-radius: 8px;
+  background: var(--ds-surface-subtle, #f7f9fc);
+  color: var(--ds-text, #2f3b4d);
+}
+
+.composer-attachment[data-state="error"] { border-color: #efc4c4; background: #fff7f7; }
+.composer-attachment[data-state="processing"] { border-style: dashed; }
+.composer-attachment > img,
+.composer-attachment-file-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #e9eef6;
+  color: #4e6f9f;
+  object-fit: cover;
+}
+.composer-attachment-file-icon svg { width: 16px; height: 16px; }
+.composer-attachment[data-state="processing"] .composer-attachment-file-icon svg { animation: composer-attachment-spin 1s linear infinite; }
+.composer-attachment > span:not(.composer-attachment-file-icon) { display: grid; gap: 1px; min-width: 0; }
+.composer-attachment b { overflow: hidden; font-size: 11px; font-weight: 620; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.composer-attachment small { overflow: hidden; color: var(--ds-muted, #738197); font-size: 9px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.composer-attachment[data-state="error"] small { color: #a13d3d; }
+.composer-attachment > button {
+  display: grid;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ds-muted, #738197);
+}
+.composer-attachment > button:hover { background: #e8edf4; color: #2f5f9f; }
+.composer-attachment > button svg { width: 14px; height: 14px; }
+
+.teacher-attachment-preview.composer-attachment-tray {
+  margin: 8px 10px 0;
+  padding: 0 0 3px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  grid-template-columns: none;
+}
+
+.ca-attachment-tray { padding: 0 7px 5px; }
+.ca-prompt-box.is-attachment-dragover,
+.ai-teacher-composer.is-attachment-dragover {
+  border-color: var(--ds-color-primary, #2f6fe8) !important;
+  box-shadow: 0 0 0 3px rgba(47, 111, 232, .12) !important;
+}
+.ca-prompt-box.is-attachment-dragover::after,
+.ai-teacher-composer.is-attachment-dragover::after {
+  content: "松开即可添加到本轮";
+  display: block;
+  padding: 5px 9px;
+  color: var(--ds-color-primary, #2f6fe8);
+  background: #eef5ff;
+  font-size: 10px;
+  text-align: center;
+}
+
+.turn-question-documents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0 0 8px;
+}
+.turn-question-documents > span,
+.ca-message-attachments > span {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 240px;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 7px;
+  border: 1px solid rgba(74, 111, 164, .2);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .7);
+  color: #48617f;
+}
+.turn-question-documents svg,
+.ca-message-attachments svg { width: 13px; height: 13px; flex: 0 0 auto; }
+.turn-question-documents b,
+.ca-message-attachments b { overflow: hidden; font-size: 10px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.ca-message-attachments { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+
+@keyframes composer-attachment-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .composer-attachment[data-state="processing"] .composer-attachment-file-icon svg { animation: none; } }
+
+body[data-display-mode="app"] .composer-attachment {
+  min-width: 154px;
+  width: 180px;
+  min-height: 48px;
+}
+body[data-display-mode="app"] .composer-attachment > button {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  min-height: 34px;
+}
+body[data-display-mode="app"] .teacher-attachment-preview.composer-attachment-tray { margin-inline: 8px; }
+
+body[data-display-mode="pad"] .composer-attachment { width: 205px; }

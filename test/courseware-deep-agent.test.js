@@ -117,4 +117,97 @@ test("complexity routing requires automatic selection and multiple-task signals"
   assert.equal(shouldUseDeepAgent({ prompt: "制作一整套物理互动课堂与讲解视频。", requested_type: "auto" }), true);
   assert.equal(shouldUseDeepAgent({ prompt: "制作一整套物理互动课堂与讲解视频。", requested_type: "video" }), false);
   assert.equal(shouldUseDeepAgent({ prompt: "制作一个可调参数的二次函数实验。", requested_type: "auto" }), false);
+  assert.equal(shouldUseDeepAgent({
+    prompt: "请按照图片制作一个互动函数图。",
+    requested_type: "function_graph",
+    image: { mime_type: "image/png", data: Buffer.from("image-bytes").toString("base64") },
+  }), true);
+});
+
+test("an attached image uses multimodal Deep Agent planning even with a fixed executor", async () => {
+  let invocation;
+  const agent = createCoursewareDeepAgent({
+    runtimeSettings: runtimeSettings(),
+    env: { COURSEWARE_DEEP_AGENT_MODE: "auto" },
+    createModel: () => ({}),
+    createDeepAgentImpl(args) {
+      return {
+        async invoke(input) {
+          invocation = input;
+          await args.tools[0].invoke({
+            title: "函数图参考样式",
+            recommended_type: "function_graph",
+            subject: "数学",
+            goal_summary: "理解参考图的函数与视觉结构后生成互动函数图。",
+            rationale: "图片是必要的视觉参考。",
+            steps: ["识别图片", "生成交互", "检查结果"],
+          });
+          return { messages: [] };
+        },
+      };
+    },
+  });
+
+  const result = await agent.plan({
+    prompt: "请参考这张图的结构制作互动函数图。",
+    requested_type: "function_graph",
+    image: { mime_type: "image/png", data: Buffer.from("image-bytes").toString("base64"), name: "参考图.png" },
+  });
+
+  assert.equal(result.engine, "langchain_deepagents_js");
+  assert.equal(result.plan.recommended_type, "function_graph");
+  assert.ok(Array.isArray(invocation.messages[0].content));
+  assert.match(invocation.messages[0].content[1].image_url.url, /^data:image\/png;base64,/u);
+});
+
+test("fixed production constraints reject an Agent plan that changes the executor", async () => {
+  const agent = createCoursewareDeepAgent({
+    runtimeSettings: runtimeSettings(),
+    env: { COURSEWARE_DEEP_AGENT_MODE: "auto" },
+    createModel: () => ({}),
+    createDeepAgentImpl(args) {
+      return {
+        async invoke() {
+          await args.tools[0].invoke({
+            title: "不符合约束的计划",
+            recommended_type: "mindmap",
+            subject: "数学",
+            goal_summary: "试图改变教师选定的交付类型。",
+            rationale: "测试约束校验。",
+            steps: ["规划", "生成"],
+          });
+          return { messages: [] };
+        },
+      };
+    },
+  });
+
+  await assert.rejects(
+    agent.plan({
+      prompt: "请按参考图制作互动函数图。",
+      requested_type: "function_graph",
+      image: { mime_type: "image/png", data: Buffer.from("image-bytes").toString("base64") },
+    }),
+    (error) => error instanceof CoursewareDeepAgentError
+      && error.code === "courseware_plan_constraint_violated"
+      && error.status === 502,
+  );
+});
+
+test("image-only planning fails closed when multimodal planning is disabled", async () => {
+  const agent = createCoursewareDeepAgent({
+    runtimeSettings: runtimeSettings(),
+    env: { COURSEWARE_DEEP_AGENT_MODE: "off" },
+  });
+
+  await assert.rejects(
+    agent.plan({
+      prompt: "请根据这张参考图制作课件。",
+      requested_type: "auto",
+      image: { mime_type: "image/png", data: Buffer.from("image-bytes").toString("base64") },
+    }),
+    (error) => error instanceof CoursewareDeepAgentError
+      && error.code === "courseware_deep_agent_disabled_for_image"
+      && error.status === 503,
+  );
 });

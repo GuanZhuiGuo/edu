@@ -24,6 +24,7 @@
 @import url('./interactive-lesson-lab.css') layer(workspace);
 @import url('./question-bank-ux.css') layer(workspace);
 @import url('./knowledge-graph-ux.css') layer(workspace);
+@import url('./composer-attachments.css') layer(workspace);
 @import url('./courseware-assistant.css') layer(workspace);
 @import url('./courseware-library.css') layer(workspace);
 @import url('./skill-hub.css') layer(workspace);

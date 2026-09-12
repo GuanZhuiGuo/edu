@@ -4,6 +4,7 @@ import { loadLocalKnowledgeVisualCatalog } from "./local-knowledge-visuals.js";
 import { loadQuestionBankCatalog, revealQuestionSolution } from "./question-bank-catalog.js";
 import { bindEducationImportWorkspace } from "./education-import-client.js";
 import { getPortalRole } from "./portal-runtime.js";
+import { createComposerAttachmentController } from "./composer-attachments.js";
 import {
   bootstrapEducationData,
   getCurrentEducationEvents,
@@ -1951,72 +1952,54 @@ function bindTeacherStageControls() {
 
 function bindTeacherComposer() {
   const attachmentInput = document.querySelector("#teacherAttachmentInput");
-  const attachmentPreview = document.querySelector("#teacherAttachmentPreview");
-  const attachmentThumbnail = document.querySelector("#teacherAttachmentThumbnail");
-  const attachmentName = document.querySelector("#teacherAttachmentName");
-  const attachmentMode = document.querySelector("#teacherAttachmentMode");
+  const attachmentTray = document.querySelector("#teacherAttachmentTray");
+  const composer = document.querySelector("#textInputSheet");
+  const textInput = document.querySelector("#textQuestion");
   const photoModeButtons = [...document.querySelectorAll("[data-teacher-photo-mode]")];
   const imageTaskModes = Object.freeze({
-    auto: {
-      label: "上传图片（自动识别）",
-      preview: "将由AI识别",
-      alt: "待识别图片预览"
-    },
-    solve: {
-      label: "拍题解答",
-      preview: "将拍题解答",
-      alt: "待解答题目图片预览"
-    },
-    grade: {
-      label: "作业批改",
-      preview: "将批改整页作业",
-      alt: "待批改作业图片预览"
-    }
+    auto: { label: "添加图片或文档" },
+    solve: { label: "拍题解答" },
+    grade: { label: "作业批改" },
   });
   let activeImageTaskMode = imageTaskModes[attachmentInput?.dataset.imageTaskMode]
     ? attachmentInput.dataset.imageTaskMode
     : "auto";
-  let attachmentObjectUrl = "";
+  let attachmentController = null;
 
   const syncImageTaskMode = (mode, { choosing = false } = {}) => {
     activeImageTaskMode = imageTaskModes[mode] ? mode : "auto";
     if (attachmentInput) attachmentInput.dataset.imageTaskMode = activeImageTaskMode;
-    const hasAttachment = Boolean(attachmentInput?.files?.[0]);
-    const modeMeta = imageTaskModes[activeImageTaskMode];
+    const items = attachmentController?.getItems?.() || [];
+    const hasImage = items.some((item) => item.kind === "image");
     photoModeButtons.forEach((button) => {
-      const selected = button.dataset.teacherPhotoMode === activeImageTaskMode && (choosing || hasAttachment);
+      const selected = button.dataset.teacherPhotoMode === activeImageTaskMode && (choosing || hasImage);
       const buttonMeta = imageTaskModes[button.dataset.teacherPhotoMode] || imageTaskModes.auto;
       const stateLabel = selected && choosing
         ? `${buttonMeta.label}：请选择图片`
-        : selected && hasAttachment
+        : selected && hasImage
           ? `${buttonMeta.label}：已添加图片，点击可更换`
           : buttonMeta.label;
       button.classList.toggle("is-selected", selected);
       button.classList.toggle("is-awaiting-upload", selected && choosing);
-      button.classList.toggle("has-attachment", selected && hasAttachment && !choosing);
+      button.classList.toggle("has-attachment", selected && hasImage && !choosing);
       button.setAttribute("aria-pressed", String(selected));
       button.setAttribute("aria-label", stateLabel);
       button.title = stateLabel;
       button.dataset.uiTooltip = stateLabel;
     });
-    if (attachmentMode) attachmentMode.textContent = modeMeta.preview;
-    if (attachmentThumbnail) attachmentThumbnail.alt = modeMeta.alt;
   };
 
   const openAttachmentPicker = (mode) => {
     if (!attachmentInput) return;
+    if (mode !== "auto" && attachmentController?.getItems?.().some((item) => item.kind === "document")) {
+      showToast("拍题解答和作业批改只处理图片；文档仍作为本轮参考资料");
+    }
     syncImageTaskMode(mode, { choosing: true });
     attachmentInput.click();
   };
 
   const clearAttachment = () => {
-    if (attachmentObjectUrl) URL.revokeObjectURL(attachmentObjectUrl);
-    attachmentObjectUrl = "";
-    if (attachmentInput) attachmentInput.value = "";
-    if (attachmentThumbnail) attachmentThumbnail.removeAttribute("src");
-    if (attachmentThumbnail) attachmentThumbnail.hidden = true;
-    if (attachmentName) attachmentName.textContent = "图片";
-    if (attachmentPreview) attachmentPreview.hidden = true;
+    attachmentController?.clear?.();
     syncImageTaskMode("auto");
   };
   photoModeButtons.forEach((button) => {
@@ -2024,8 +2007,8 @@ function bindTeacherComposer() {
       const mode = imageTaskModes[button.dataset.teacherPhotoMode]
         ? button.dataset.teacherPhotoMode
         : "auto";
-      const hasAttachment = Boolean(attachmentInput?.files?.[0]);
-      if (hasAttachment && mode !== activeImageTaskMode) {
+      const hasImage = attachmentController?.getItems?.().some((item) => item.kind === "image");
+      if (hasImage && mode !== activeImageTaskMode) {
         syncImageTaskMode(mode);
         showToast(`已切换为${imageTaskModes[mode].label}，点击发送继续`);
         return;
@@ -2033,36 +2016,21 @@ function bindTeacherComposer() {
       openAttachmentPicker(mode);
     });
   });
-  attachmentInput?.addEventListener("change", () => {
-    const file = attachmentInput.files?.[0];
-    if (!file) return clearAttachment();
-    if (!["image/png", "image/jpeg", "image/webp"].includes(String(file.type || "").toLowerCase())) {
-      clearAttachment();
-      showToast("仅支持 PNG、JPEG 或 WebP 图片");
-      return;
-    }
-    if (file.size > 8 * 1024 * 1024) {
-      clearAttachment();
-      showToast("图片请不要超过 8 MB");
-      return;
-    }
-    if (attachmentObjectUrl) URL.revokeObjectURL(attachmentObjectUrl);
-    attachmentObjectUrl = URL.createObjectURL(file);
-    if (attachmentThumbnail) {
-      attachmentThumbnail.src = attachmentObjectUrl;
-      attachmentThumbnail.hidden = false;
-    }
-    if (attachmentName) attachmentName.textContent = file.name || "题目图片";
-    if (attachmentPreview) attachmentPreview.hidden = false;
-    syncImageTaskMode(activeImageTaskMode);
-    const modeLabel = activeImageTaskMode === "auto" ? "自动识别" : imageTaskModes[activeImageTaskMode].label;
-    showToast(`已添加 ${file.name || "图片"} · ${modeLabel}`);
+  attachmentController = createComposerAttachmentController({
+    id: "teacher",
+    input: attachmentInput,
+    tray: attachmentTray,
+    browseButton: null,
+    pasteTarget: textInput,
+    dropTarget: composer,
+    notify: showToast,
+    onChange(items) {
+      const hasImage = items.some((item) => item.kind === "image");
+      if (!hasImage && activeImageTaskMode !== "auto") activeImageTaskMode = "auto";
+      syncImageTaskMode(activeImageTaskMode);
+      document.dispatchEvent(new CustomEvent("teacher-attachments:changed", { detail: { count: items.length } }));
+    },
   });
-  attachmentInput?.addEventListener("cancel", () => {
-    if (attachmentInput.files?.[0]) syncImageTaskMode(activeImageTaskMode);
-    else syncImageTaskMode("auto");
-  });
-  document.querySelector("#teacherAttachmentRemoveBtn")?.addEventListener("click", clearAttachment);
   document.addEventListener("teacher-attachment:clear", clearAttachment);
   syncImageTaskMode(activeImageTaskMode);
   document.querySelector("#newTeacherConversationBtn")?.addEventListener("click", () => {

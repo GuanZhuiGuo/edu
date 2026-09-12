@@ -660,24 +660,20 @@
                       <button id="forceCommitBtn" type="button" class="runtime-hidden" hidden disabled>强制判停</button>
                     </div>
                     <div id="textInputSheet" class="text-input-sheet ai-teacher-composer" hidden>
-                      <div id="teacherAttachmentPreview" class="teacher-attachment-preview" hidden>
-                        <img id="teacherAttachmentThumbnail" src="./assets/knowledge/right-triangle-pythagoras.svg" alt="待解答题目图片预览" hidden />
-                        <span><b id="teacherAttachmentName">题目图片</b><small id="teacherAttachmentMode">将由AI识别</small></span>
-                        <button id="teacherAttachmentRemoveBtn" type="button" aria-label="移除图片" title="移除图片"><i data-lucide="x" aria-hidden="true"></i></button>
-                      </div>
+                      <div id="teacherAttachmentTray" class="composer-attachment-tray teacher-attachment-preview" role="list" aria-label="本轮附件" hidden></div>
                       <div class="teacher-composer-modes" aria-label="语音输入状态">
                         <span id="teacherSpeechStatus" class="teacher-speech-status" role="status" aria-live="polite"></span>
                       </div>
                       <div class="ai-composer-row">
                         <div class="ai-composer-tools">
-                          <button id="teacherMoreBtn" type="button" data-teacher-photo-mode="auto" data-ui-tooltip="上传图片（自动识别）" aria-label="上传图片（自动识别）" title="上传图片（自动识别）" aria-pressed="false"><span class="teacher-photo-auto-icon"><i data-lucide="plus" aria-hidden="true"></i><span class="teacher-photo-mode-status" aria-hidden="true"></span></span></button>
+                          <button id="teacherMoreBtn" type="button" data-teacher-photo-mode="auto" data-ui-tooltip="添加图片或文档" aria-label="添加图片或文档" title="添加图片或文档" aria-pressed="false"><span class="teacher-photo-auto-icon"><i data-lucide="paperclip" aria-hidden="true"></i><span class="teacher-photo-mode-status" aria-hidden="true"></span></span></button>
                           <button id="teacherMentionBtn" type="button" data-ui-tooltip="选择知识点" aria-label="选择知识点" title="选择知识点" aria-haspopup="dialog" aria-controls="curriculumPicker" aria-expanded="false"><i data-lucide="at-sign" aria-hidden="true"></i></button>
                           <button id="teacherAsrBtn" type="button" data-ui-tooltip="语音输入" aria-label="开始语音输入" title="语音输入" aria-pressed="false"><i data-lucide="mic" aria-hidden="true"></i></button>
-                          <input id="teacherAttachmentInput" type="file" hidden accept="image/png,image/jpeg,image/webp" data-image-task-mode="auto" />
+                          <input id="teacherAttachmentInput" type="file" hidden accept="image/png,image/jpeg,image/webp,application/pdf,.docx,.pptx,text/plain,text/markdown,.md,.markdown" multiple data-image-task-mode="auto" />
                         </div>
                         <label class="text-input-field">
                           <span class="sr-only">向AI教师提问</span>
-                          <textarea id="textQuestion" rows="1" placeholder="问AI教师，或 @ 一个知识点"></textarea>
+                          <textarea id="textQuestion" rows="1" placeholder="问AI教师，粘贴图片或文档，或 @ 一个知识点"></textarea>
                         </label>
                         <button id="a2uiPreviewBtn" type="button" hidden>预览学习内容</button>
                         <button id="textQuestionBtn" type="button" class="ai-send-button" data-ui-tooltip="发送问题" aria-label="发送问题" title="发送问题">
