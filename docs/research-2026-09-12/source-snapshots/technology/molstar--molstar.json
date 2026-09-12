@@ -1,0 +1,18 @@
+{
+  "full_name": "molstar/molstar",
+  "html_url": "https://github.com/molstar/molstar",
+  "description": "A comprehensive macromolecular library",
+  "homepage": "https://molstar.org",
+  "default_branch": "master",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/molstar/molstar",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

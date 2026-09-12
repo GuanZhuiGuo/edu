@@ -23,16 +23,22 @@ dialog.knowledge-connection-dialog { box-sizing: border-box; width: min(440px, c
 .knowledge-connection-dialog footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
 .knowledge-connection-dialog time { font-size: 12px; color: #69758a; }
 body[data-display-mode="app"] .global-actions { gap: 4px; }
-body[data-display-mode="app"] :is(.knowledge-connection-button, .app-view-toggle) { box-sizing: border-box; min-width: 44px; width: 44px; height: 44px; min-height: 44px; padding: 0; border-color: transparent; border-radius: 12px; background: transparent; flex-shrink: 0; }
-body[data-display-mode="app"] :is(.knowledge-connection-label, .app-view-toggle > span) { display: none; }
-body[data-display-mode="app"] .knowledge-connection-dot { width: 10px; height: 10px; flex-basis: 10px; box-shadow: 0 0 0 5px #9aa5b512; }
+body[data-display-mode="app"] :is(.knowledge-connection-button[data-connection-placement="content"], .app-view-toggle) { box-sizing: border-box; min-width: 44px; width: 44px; height: 44px; min-height: 44px; padding: 0; border-color: transparent; border-radius: 12px; background: transparent; flex-shrink: 0; }
+body[data-display-mode="app"] :is([data-connection-placement="content"] .knowledge-connection-label, .app-view-toggle > span) { display: none; }
+body[data-display-mode="app"] [data-connection-placement="content"] .knowledge-connection-dot { width: 10px; height: 10px; flex-basis: 10px; box-shadow: 0 0 0 5px #9aa5b512; }
 body[data-display-mode="app"] #appViewToggle { min-width: 44px; width: 44px; padding: 0; border-color: transparent; background: transparent; }
 body[data-display-mode="app"] #appViewToggle svg { width: 20px; height: 20px; }
 body[data-display-mode="app"] .global-brand:has(.app-back-button:not([hidden])) .launcher-button { display: none; }
 body[data-display-mode="app"] .system-version-button { min-width: 44px; }
 body[data-display-mode="pad"] :is(.knowledge-connection-button, .app-view-toggle) { min-height: 44px; }
 body[data-display-mode="pad"] :is(.system-version-button, .language-button) { min-width: 44px; min-height: 44px; }
-@media(max-width: 820px) { body[data-display-mode="pad"] .knowledge-connection-label { display: none; } body[data-display-mode="pad"] .knowledge-connection-button { min-width: 44px; } }
+@media(max-width: 820px) { body[data-display-mode="pad"] [data-connection-placement="content"] .knowledge-connection-label { display: none; } body[data-display-mode="pad"] .knowledge-connection-button { min-width: 44px; } }
 body[data-display-mode="app"] dialog.knowledge-connection-dialog { padding: 20px; border-radius: 20px; }
 @media(max-width: 370px) { body[data-display-mode="app"] .global-header { padding-inline: 8px; gap: 2px; } body[data-display-mode="app"] :is(.global-actions, .global-brand) { gap: 2px; } }
 :is(.knowledge-connection-button, .app-view-toggle, .app-device-menu button, .app-preview-modes button, .app-pad-rotate):focus-visible { outline: 3px solid #87b3ff; outline-offset: 2px; }
+.app-preview-controls .knowledge-connection-button { box-sizing: border-box; flex-shrink: 0; min-height: 44px; padding: 8px 12px; border-color: #d5dce6; font-size: 13px; }
+@media (max-width: 900px) {
+  .app-preview-controls .knowledge-connection-button { width: 44px; min-width: 44px; padding: 0; }
+  .app-preview-controls .knowledge-connection-label { display: none; }
+  .app-preview-controls .knowledge-connection-dot { width: 10px; height: 10px; flex-basis: 10px; }
+}

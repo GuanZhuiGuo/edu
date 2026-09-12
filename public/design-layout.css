@@ -1,0 +1,92 @@
+/* The shell allocates remaining space with Grid. Pages do not guess header
+   offsets. Content, list and form widths are independent of device shells. */
+.workspace { height: 100dvh; min-height: 0; grid-template-rows: var(--ds-header-height) minmax(0, 1fr); }
+.global-header { height: var(--ds-header-height); min-height: var(--ds-header-height); padding-inline: var(--ds-page-x); }
+.teacher-account-indicator b { color: var(--ds-text); font-size: var(--ds-font-body); }
+.teacher-account-indicator small { color: var(--ds-muted); font-size: var(--ds-font-xs); }
+.app { min-width: 0; min-height: 0; height: 100%; overflow: hidden; }
+.app > .workspace-panel { min-width: 0; min-height: 0; max-width: 100%; height: 100%; box-sizing: border-box; }
+.page-toolbar { height: var(--ds-toolbar-height); min-height: var(--ds-toolbar-height); padding-inline: var(--ds-page-x); }
+.page-identity h1 { font-size: var(--ds-font-md); font-weight: 650; }
+.learning-page { padding: var(--ds-page-y) var(--ds-page-x); overflow: auto; }
+.learning-page-shell { width: 100%; max-width: var(--ds-page-max); margin-inline: auto; padding: 0; }
+.learning-page-shell > :first-child { margin-top: 0; }
+.learning-page-shell > :last-child { margin-bottom: 0; }
+.plan-shell { max-width: 840px; }
+.buddy-shell { max-width: var(--ds-form-width); margin-inline: auto; }
+.voice-config-shell { width: 100%; max-width: none; margin-inline: 0; }
+body[data-portal-role='teacher'] .voice-config-workspace { padding: var(--ds-page-y) var(--ds-page-x); }
+body[data-portal-role='teacher'] .voice-config-page-head {
+  min-height: 40px;
+  margin: 0 0 var(--ds-space-4);
+  padding: 0 0 var(--ds-space-3);
+  border: 0;
+  border-bottom: 1px solid var(--ds-border);
+  border-radius: 0;
+  background: transparent;
+}
+body[data-portal-role='teacher'] .voice-config-page-head > div:first-child { display: none; }
+body[data-portal-role='teacher'] .voice-config-page-head > div:last-child { width: 100%; justify-content: flex-end; gap: var(--ds-space-3); }
+body[data-portal-role='teacher'] .voice-config-page-head > div:last-child span { color: var(--ds-muted); font-size: var(--ds-font-xs); }
+body[data-portal-role='teacher'] .voice-config-page-head button { min-height: var(--ds-control-height); height: auto; }
+:is(.course-workbench-layout, .teacher-course-layout, .education-skills-layout, .education-settings-layout) { grid-template-columns: var(--ds-grid-list-detail); gap: var(--ds-space-6); }
+:is(.course-library-panel, .teacher-student-inspector, .education-settings-tabs) { max-height: var(--ds-content-height, 80dvh); }
+.workspace-sidebar .workspace-menu-button { min-height: 44px; font-size: 14px; gap: 12px; padding: 10px 12px; border-radius: var(--ds-radius); }
+.workspace-sidebar .workspace-menu-button > span { font-size: inherit; }
+.workspace-sidebar .workspace-menu-button svg { width: 20px; height: 20px; flex: 0 0 auto; }
+.workspace-sidebar .workspace-menu-button.is-active { color: var(--ds-color-primary); background: var(--ds-color-primary-subtle); }
+.workspace-sidebar .workspace-menu-group-label { font-size: var(--ds-font-xs); color: var(--ds-muted); }
+body:not([data-display-mode='app']) .app {
+  display: grid;
+  grid-template-columns: var(--ds-sidebar-width) minmax(0, 1fr);
+  grid-template-rows: var(--ds-toolbar-height) minmax(0, 1fr);
+  padding-bottom: 0;
+}
+body:not([data-display-mode='app']) .workspace-sidebar {
+  display: flex; flex-direction: column; align-items: stretch;
+  grid-column: 1; grid-row: 1 / -1; width: 100%; min-height: 0;
+  position: relative; inset: auto; padding: 16px 12px 12px;
+  gap: 12px; overflow: hidden; border-right: 1px solid var(--ds-border);
+  background: #fafbfc;
+}
+body:not([data-display-mode='app']) .workspace-sidebar .workspace-menu:not([hidden]) {
+  display: flex; flex-direction: column; flex: 1 1 auto;
+  min-height: 0; width: 100%; gap: 3px; overflow-y: auto; padding: 0;
+}
+body:not([data-display-mode='app']) .app > .page-toolbar { grid-column: 2; grid-row: 1; }
+body:not([data-display-mode='app']) .app > .workspace-panel { grid-column: 2; grid-row: 2; }
+body:not([data-display-mode='app']) :is(.mobile-student-nav, .app-teacher-nav) { display: none; }
+body:not([data-display-mode='app']) .app:is(.is-agent-view, .is-graph-immersive, .is-authoring-view) { grid-template-rows: minmax(0, 1fr); }
+body:not([data-display-mode='app']) .app:is(.is-agent-view, .is-graph-immersive, .is-authoring-view) > .page-toolbar { display: none; }
+body:not([data-display-mode='app']) .app:is(.is-agent-view, .is-graph-immersive, .is-authoring-view) > .workspace-panel { grid-row: 1; }
+body[data-display-mode='app'] .app.is-authoring-view > .page-toolbar { display: none; }
+body[data-display-mode='app'] .app.is-authoring-view { grid-template-rows: minmax(0, 1fr); }
+body[data-display-mode='app'] .app.is-authoring-view > .workspace-panel { grid-row: 1; grid-column: 1; }
+body:not([data-display-mode='app']) .teacher-dual-workspace { grid-template-columns: var(--ds-tree-width) minmax(0, 1fr); }
+body:not([data-display-mode='app']) .teacher-dual-workspace > .classroom-session-sidebar { width: auto; min-width: 0; }
+.ai-dialogue-panel:has(> .teacher-preview-notice:not([hidden])) { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+.ai-dialogue-body { align-content: start; }
+.ai-dialogue-body > .ai-conversation-mount { align-self: start; }
+body[data-display-mode='app'] .app { grid-template-columns: minmax(0, 1fr); }
+body[data-display-mode='app'] .workspace-sidebar { display: none; }
+body[data-display-mode='app'] .app-student-home { inset-block-start: var(--ds-header-height); }
+body[data-display-mode='app'] :is(.course-workbench-layout, .teacher-course-layout, .education-skills-layout, .education-settings-layout) { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 1023px) {
+  body:not([data-display-mode='app']) { --ds-sidebar-width: var(--ds-sidebar-rail); --pad-sidebar-width: var(--ds-sidebar-rail); }
+  body:not([data-display-mode='app']) .workspace-sidebar { padding: 12px 4px; }
+  body:not([data-display-mode='app']) .workspace-sidebar :is(.workspace-sidebar-head, .workspace-sidebar-foot, .workspace-menu-group-label) { display: none; }
+  body:not([data-display-mode='app']) .workspace-sidebar .workspace-menu-button { width: 44px; padding: 12px; justify-content: center; }
+  body:not([data-display-mode='app']) .workspace-sidebar .workspace-menu-button > span { display: none; }
+  body:not([data-display-mode='app']) .workspace-sidebar .portal-role-switcher { grid-template-columns: 1fr; }
+  body:not([data-display-mode='app']) .workspace-sidebar .portal-role-switcher button { min-height: 44px; padding: 10px; }
+  body:not([data-display-mode='app']) .workspace-sidebar .portal-role-switcher button span { display: none; }
+  body:not([data-display-mode='app']) .teacher-toolbox > summary > span { display: none; }
+  body:not([data-display-mode='app']) .teacher-toolbox > summary { min-height: 44px; padding: 12px; }
+  body:not([data-display-mode='app']) .teacher-dual-workspace { grid-template-columns: minmax(0, 1fr); }
+  body:not([data-display-mode='app']) .teacher-dual-workspace > .classroom-session-sidebar { display: none; }
+  body:not([data-display-mode='app']) .teacher-dual-workspace > .ai-dialogue-panel { grid-column: 1; }
+  :is(.course-workbench-layout, .teacher-course-layout, .education-skills-layout, .education-settings-layout) { grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 1024px) and (max-width: 1439px) {
+  body:not([data-display-mode='app']) { --ds-tree-width: 224px; --pad-sidebar-width: var(--ds-sidebar-width); }
+}

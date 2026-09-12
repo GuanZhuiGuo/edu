@@ -1,0 +1,18 @@
+{
+  "full_name": "FFmpeg/FFmpeg",
+  "html_url": "https://github.com/FFmpeg/FFmpeg",
+  "description": "Mirror of https://git.ffmpeg.org/ffmpeg.git",
+  "homepage": "https://ffmpeg.org/",
+  "default_branch": "master",
+  "archived": false,
+  "license": {
+    "key": "other",
+    "name": "Other",
+    "spdx_id": "NOASSERTION",
+    "url": null,
+    "node_id": "MDc6TGljZW5zZTA="
+  },
+  "source_url": "https://api.github.com/repos/FFmpeg/FFmpeg",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

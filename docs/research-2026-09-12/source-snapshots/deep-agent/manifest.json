@@ -1,0 +1,731 @@
+{
+  "access_date": "2026-09-12",
+  "source_type": "official public repository, registry and documentation",
+  "files": [
+    {
+      "file": "js_readme.txt",
+      "bytes": 5559,
+      "sha256": "76c7466d16aaf8e484a154dfb89717239a1a481644ce8a5584b63031600cb5de"
+    },
+    {
+      "file": "js_manifest.txt",
+      "bytes": 2924,
+      "sha256": "4b5c063e4ad61cc2cc89bcbf4caa1d15e1f4ddfc928e48b40126ab64dfec432f"
+    },
+    {
+      "file": "js_npm.txt",
+      "bytes": 3942,
+      "sha256": "c63230c6819c03a35fc20b30b3e24ac44e09ef81eb4f87c2c2383b0ba2774429"
+    },
+    {
+      "file": "js_agent_source.txt",
+      "bytes": 19061,
+      "sha256": "1207db9f481c407a2fbecd8c488c93d3dd080981ca6492143083a11e1ad72667"
+    },
+    {
+      "file": "js_async_docs.txt",
+      "bytes": 20235,
+      "sha256": "ed38c95187031c80f55f6470bd2a52d0539268484eacf5d80a48eea3287ddce6"
+    },
+    {
+      "file": "js_async_source.txt",
+      "bytes": 27908,
+      "sha256": "b43e0a83f68f92e31f29890b2998a591b3be691428784c680a67facef1190c39"
+    },
+    {
+      "file": "js_backends.txt",
+      "bytes": 60029,
+      "sha256": "63bbc4c6943d7dc36ef8b1bee0c28bcfb70f7e87f8fd960aaafd3803b4cb92dc"
+    },
+    {
+      "file": "js_shell_source.txt",
+      "bytes": 13879,
+      "sha256": "6607480ceb483a7d05e0ed3aaa72558e7410174be1d1d7da5fc7ceb92c228011"
+    },
+    {
+      "file": "js_checkpointers.txt",
+      "bytes": 22800,
+      "sha256": "3da908a22c877d1aabc72fa333d87a186162454e3010e216e80f31f5757978a8"
+    },
+    {
+      "file": "js_hitl.txt",
+      "bytes": 15987,
+      "sha256": "bd6fe2139a73bd137441559ace6a2acda2e1b9cef57467950c452ebec30e6355"
+    },
+    {
+      "file": "lc_runnable_types.txt",
+      "bytes": 3116,
+      "sha256": "58b3e8186d09261a4538bf89f51e8db42fff3ff19c8e88278e5e0ddbb840e0b2"
+    },
+    {
+      "file": "lc_core_npm.txt",
+      "bytes": 20574,
+      "sha256": "2965f5f91d6b0ee8ec74fd54f1215e6de33277f2b7e76127cc76189826d412d4"
+    },
+    {
+      "file": "python_manifest.txt",
+      "bytes": 6427,
+      "sha256": "2d37953fd38b92f3ff23c55d60cbd9a38e2479f3987f221d96e6356e3dae67b1"
+    },
+    {
+      "file": "deepagents_README_md.txt",
+      "bytes": 6980,
+      "sha256": "c404867a799a46fc6b26ac0d3824eb61135007b0e93793b07819621b9405fda1"
+    },
+    {
+      "file": "deepagents_LICENSE.txt",
+      "bytes": 1067,
+      "sha256": "4ec67e4ca6e6721dba849b2ca82261597c86a61ee214bbf21416006b7b2d0478"
+    },
+    {
+      "file": "deepagentsjs_LICENSE.txt",
+      "bytes": 1070,
+      "sha256": "61e5e8faf0b76db76793ecd8aa0edca36a82bd8dba279d2a31972f026c132423"
+    },
+    {
+      "file": "pi_README_md.txt",
+      "bytes": 6789,
+      "sha256": "e0ca2fd607c5ce7c7646964ee1da7495ac1c4b68a2b1d05faad24f224df74c8b"
+    },
+    {
+      "file": "pi_agent_readme.txt",
+      "bytes": 17606,
+      "sha256": "04e44bb21db2894ed77b13c0fb63a5e9f619df633abd1b8f9fe4a04472040c3b"
+    },
+    {
+      "file": "pi_coding_readme.txt",
+      "bytes": 33107,
+      "sha256": "b5daa09877da34d122818e03436b51755bc1b5044ae8ab810df63f02888f1ebe"
+    },
+    {
+      "file": "pi_LICENSE.txt",
+      "bytes": 1069,
+      "sha256": "0457f5bcec3b3b211605dfb5d1a49042fd638f3686a410fe099c24a25af13c48"
+    },
+    {
+      "file": "openhands_README_md.txt",
+      "bytes": 10835,
+      "sha256": "95094c9745c7cc58136d4eaa1688fb6038aafefec2be05344293f6df7e55dbf8"
+    },
+    {
+      "file": "openhands_ts.txt",
+      "bytes": 17146,
+      "sha256": "39eaef67150703f8bc78415f54e6af6a556cf2c467fec78348b4514da30cef8c"
+    },
+    {
+      "file": "openhands_sdk_manifest.txt",
+      "bytes": 1530,
+      "sha256": "1cba0b824dbd2170ac0e475c4ee98529f055012b9cb25dced2c7a03d76d9e2cf"
+    },
+    {
+      "file": "openhands_tasks.txt",
+      "bytes": 12717,
+      "sha256": "50149f09547da997fb4dfb165b3b010bf478af34a81b1f4fa615bf0ee65a160d"
+    },
+    {
+      "file": "openhands_pause.txt",
+      "bytes": 5128,
+      "sha256": "6c7b27e583afbb5b02db05b8bc9ce9ba44be756e44a922b58678d447bfc8168c"
+    },
+    {
+      "file": "openhands_persistence.txt",
+      "bytes": 14703,
+      "sha256": "c508a38e494a5c7ac51e053d2c915478f35fcbd9bb62ad03eb4859510e8a0f0d"
+    },
+    {
+      "file": "openhands_security.txt",
+      "bytes": 37375,
+      "sha256": "44ec4d9a7d566d789f165d75a0302ebbdc856202015d1a18af50e05efb6cdfcc"
+    },
+    {
+      "file": "openhands_LICENSE.txt",
+      "bytes": 1079,
+      "sha256": "14a9b631c658eee682c6c2973525fbdf808c3457176bc47513052c559cc5ce86"
+    },
+    {
+      "file": "claude_sdk_README_md.txt",
+      "bytes": 2502,
+      "sha256": "d7f8965afea6198e0448bb8a3f3e0806d4dd6cfb3696cab21b1ee36faaef2065"
+    },
+    {
+      "file": "claude_npm.txt",
+      "bytes": 3847,
+      "sha256": "eb3bfa17e55515f0f0d592435f5dd41588ca39e7c387e2aee5e5fa1f11f9690d"
+    },
+    {
+      "file": "claude_docs.txt",
+      "bytes": 9408,
+      "sha256": "97ffb20562a473292629fbfb8b8e8611dc72f8afae55a3364baf95a30340d356"
+    },
+    {
+      "file": "claude_quickstart.txt",
+      "bytes": 15237,
+      "sha256": "3a97c3e7c68c3b97928642007842a2eaba424585d4a4f60c175dda54d8ee28cc"
+    },
+    {
+      "file": "claude_permissions.txt",
+      "bytes": 26475,
+      "sha256": "c3f64490441bbe831b5ea85d1bff786115ae23e799464cfa896116973900cc60"
+    },
+    {
+      "file": "claude_sessions.txt",
+      "bytes": 23890,
+      "sha256": "f0bc3b89f2dacc9c9d45bcd3d35333744eca350e0dd5e190b1eea4772cc3c088"
+    },
+    {
+      "file": "js_releases.txt",
+      "bytes": 62973,
+      "sha256": "e4f780b8458e28cdaa9ad03e7e0afd740c4a86c6866eab3e9e649e24c27528b5"
+    },
+    {
+      "file": "anthropics__claude-agent-sdk-typescript__release.json",
+      "bytes": 3419,
+      "sha256": "4790b9fffc473137547e20a002b36dfb455d8420919a50551b33386fde3a70d7"
+    },
+    {
+      "file": "earendil-works__pi-mono__release.json",
+      "bytes": 24450,
+      "sha256": "55410c69e668aa53e7a3ce103ea59489f98af68ecac28119818bd0c99974294c"
+    },
+    {
+      "file": "OpenHands__software-agent-sdk__release.json",
+      "bytes": 17911,
+      "sha256": "c8b2bc5937c40028a07ec4e3e8dd5a687534f88753b349b11511c2dd5ecac089"
+    },
+    {
+      "file": "langchain-ai__deepagents__release.json",
+      "bytes": 7296,
+      "sha256": "475ee26b54487132f50bffff868ede1201d6df05cc95b0c772707088779a5839"
+    },
+    {
+      "file": "langchain-ai__deepagentsjs__release.json",
+      "bytes": 2465,
+      "sha256": "703a23c67bf63c8aa63127c97d0d427b1e49c56fba41a2dcf76e9e410d4fa5e2"
+    }
+  ],
+  "fetches": [
+    {
+      "name": "deepagentsjs_README_md",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/README.md",
+      "status": 200,
+      "bytes": 27
+    },
+    {
+      "name": "deepagentsjs_LICENSE",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/LICENSE",
+      "status": 200,
+      "bytes": 1070
+    },
+    {
+      "name": "deepagentsjs_package_json",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/package.json",
+      "status": 200,
+      "bytes": 1933
+    },
+    {
+      "name": "deepagentsjs_pyproject_toml",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/pyproject.toml",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "deepagents_README_md",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagents/main/README.md",
+      "status": 200,
+      "bytes": 6924
+    },
+    {
+      "name": "deepagents_LICENSE",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagents/main/LICENSE",
+      "status": 200,
+      "bytes": 1067
+    },
+    {
+      "name": "deepagents_package_json",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagents/main/package.json",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "deepagents_pyproject_toml",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagents/main/pyproject.toml",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "pi_README_md",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/README.md",
+      "status": 200,
+      "bytes": 6787
+    },
+    {
+      "name": "pi_LICENSE",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/LICENSE",
+      "status": 200,
+      "bytes": 1069
+    },
+    {
+      "name": "pi_package_json",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/package.json",
+      "status": 200,
+      "bytes": 4937
+    },
+    {
+      "name": "pi_pyproject_toml",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/pyproject.toml",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "openhands_README_md",
+      "url": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/main/README.md",
+      "status": 200,
+      "bytes": 10801
+    },
+    {
+      "name": "openhands_LICENSE",
+      "url": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/main/LICENSE",
+      "status": 200,
+      "bytes": 1079
+    },
+    {
+      "name": "openhands_package_json",
+      "url": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/main/package.json",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "openhands_pyproject_toml",
+      "url": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/main/pyproject.toml",
+      "status": 200,
+      "bytes": 4138
+    },
+    {
+      "name": "claude_sdk_README_md",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-agent-sdk-typescript/main/README.md",
+      "status": 200,
+      "bytes": 2502
+    },
+    {
+      "name": "claude_sdk_LICENSE",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-agent-sdk-typescript/main/LICENSE",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "claude_sdk_package_json",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-agent-sdk-typescript/main/package.json",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "claude_sdk_pyproject_toml",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-agent-sdk-typescript/main/pyproject.toml",
+      "status": 404,
+      "bytes": 14
+    },
+    {
+      "name": "js_readme",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/libs/deepagents/README.md",
+      "final": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/libs/deepagents/README.md",
+      "status": 200,
+      "bytes": 5537
+    },
+    {
+      "name": "js_manifest",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/libs/deepagents/package.json",
+      "final": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/main/libs/deepagents/package.json",
+      "status": 200,
+      "bytes": 2924
+    },
+    {
+      "name": "python_manifest",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagents/main/libs/deepagents/pyproject.toml",
+      "final": "https://raw.githubusercontent.com/langchain-ai/deepagents/main/libs/deepagents/pyproject.toml",
+      "status": 200,
+      "bytes": 6409
+    },
+    {
+      "name": "js_npm",
+      "url": "https://registry.npmjs.org/deepagents/latest",
+      "final": "https://registry.npmjs.org/deepagents/latest",
+      "status": 200,
+      "bytes": 3942
+    },
+    {
+      "name": "pi_agent_readme",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/agent/README.md",
+      "final": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/agent/README.md",
+      "status": 200,
+      "bytes": 17486
+    },
+    {
+      "name": "pi_coding_readme",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/README.md",
+      "final": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/README.md",
+      "status": 200,
+      "bytes": 33083
+    },
+    {
+      "name": "pi_ai_readme",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/ai/README.md",
+      "final": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/ai/README.md",
+      "status": 200,
+      "bytes": 84866
+    },
+    {
+      "name": "pi_coding_sdk",
+      "url": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/docs/sdk.md",
+      "final": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/docs/sdk.md",
+      "status": 200,
+      "bytes": 38305
+    },
+    {
+      "name": "claude_docs",
+      "url": "https://code.claude.com/docs/en/agent-sdk.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk.md",
+      "status": 200,
+      "bytes": 9408
+    },
+    {
+      "name": "claude_llms",
+      "url": "https://platform.claude.com/llms.txt",
+      "final": "https://platform.claude.com/llms.txt",
+      "status": 200,
+      "bytes": 67821
+    },
+    {
+      "name": "claude_npm",
+      "url": "https://registry.npmjs.org/@anthropic-ai/claude-agent-sdk/latest",
+      "final": "https://registry.npmjs.org/@anthropic-ai/claude-agent-sdk/latest",
+      "status": 200,
+      "bytes": 3847
+    },
+    {
+      "name": "lc_index",
+      "url": "https://docs.langchain.com/llms.txt",
+      "final": "https://docs.langchain.com/llms.txt",
+      "status": 200,
+      "bytes": 22190,
+      "type": "text/plain; charset=utf-8",
+      "start": "# Docs by LangChain\n\n> Documentation for LangSmith, Fleet, and our open source packages.\n\n"
+    },
+    {
+      "name": "js_overview",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/overview.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/overview.md",
+      "status": 200,
+      "bytes": 73810,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "js_customization",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/customization.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/customization.md",
+      "status": 200,
+      "bytes": 129220,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "js_backends",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/backends.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/backends.md",
+      "status": 200,
+      "bytes": 59947,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "js_subagents",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/subagents.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/subagents.md",
+      "status": 200,
+      "bytes": 119369,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "js_hitl",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop.md",
+      "status": 200,
+      "bytes": 15975,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "js_skills",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/skills.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/skills.md",
+      "status": 200,
+      "bytes": 82660,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "langgraph_durable",
+      "url": "https://docs.langchain.com/oss/javascript/langgraph/durable-execution.md",
+      "final": "https://docs.langchain.com/oss/javascript/langgraph/persistence.md",
+      "status": 200,
+      "bytes": 5396,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "langgraph_persistence",
+      "url": "https://docs.langchain.com/oss/javascript/langgraph/persistence.md",
+      "final": "https://docs.langchain.com/oss/javascript/langgraph/persistence.md",
+      "status": 200,
+      "bytes": 5396,
+      "type": "text/markdown; charset=utf-8",
+      "start": "> ## Documentation Index\n> Fetch the complete documentation index at: https://docs.langcha"
+    },
+    {
+      "name": "anthropic_overview",
+      "url": "https://platform.claude.com/docs/en/agent-sdk/overview.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk",
+      "status": 200,
+      "bytes": 375609,
+      "type": "text/html; charset=utf-8",
+      "start": "<!DOCTYPE html><html lang=\"en\" class=\"inter_1d81deff-module__CYM0aG__variable papermono_89"
+    },
+    {
+      "name": "js_releases",
+      "url": "https://api.github.com/repos/langchain-ai/deepagentsjs/releases?per_page=25",
+      "final": "https://api.github.com/repos/langchain-ai/deepagentsjs/releases?per_page=25",
+      "status": 200,
+      "bytes": 62969
+    },
+    {
+      "name": "js_tree",
+      "url": "https://api.github.com/repos/langchain-ai/deepagentsjs/git/trees/main?recursive=1",
+      "final": "https://api.github.com/repos/langchain-ai/deepagentsjs/git/trees/main?recursive=1",
+      "status": 200,
+      "bytes": 136346
+    },
+    {
+      "name": "openhands_tree",
+      "url": "https://api.github.com/repos/OpenHands/software-agent-sdk/git/trees/main?recursive=1",
+      "final": "https://api.github.com/repos/OpenHands/software-agent-sdk/git/trees/main?recursive=1",
+      "status": 200,
+      "bytes": 524094
+    },
+    {
+      "name": "openhands_index",
+      "url": "https://docs.openhands.dev/llms.txt",
+      "final": "https://docs.openhands.dev/llms.txt",
+      "status": 200,
+      "bytes": 41520
+    },
+    {
+      "name": "js_mcp",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/mcp.md",
+      "final": "https://docs.langchain.com/oss/javascript/langchain/mcp.md",
+      "status": 200,
+      "bytes": 32905
+    },
+    {
+      "name": "js_sandboxes",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/sandboxes.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/sandboxes.md",
+      "status": 200,
+      "bytes": 37399
+    },
+    {
+      "name": "js_checkpointers",
+      "url": "https://docs.langchain.com/oss/javascript/langgraph/checkpointers.md",
+      "final": "https://docs.langchain.com/oss/javascript/langgraph/checkpointers.md",
+      "status": 200,
+      "bytes": 22792
+    },
+    {
+      "name": "claude_permissions",
+      "url": "https://code.claude.com/docs/en/agent-sdk/permissions.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk/permissions.md",
+      "status": 200,
+      "bytes": 26475
+    },
+    {
+      "name": "claude_sessions",
+      "url": "https://code.claude.com/docs/en/agent-sdk/sessions.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk/sessions.md",
+      "status": 200,
+      "bytes": 23890
+    },
+    {
+      "name": "claude_subagents",
+      "url": "https://code.claude.com/docs/en/agent-sdk/subagents.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk/subagents.md",
+      "status": 200,
+      "bytes": 45403
+    },
+    {
+      "name": "claude_hosting",
+      "url": "https://code.claude.com/docs/en/agent-sdk/hosting.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk/hosting.md",
+      "status": 200,
+      "bytes": 25318
+    },
+    {
+      "name": "claude_typescript",
+      "url": "https://code.claude.com/docs/en/agent-sdk/typescript.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk/typescript.md",
+      "status": 200,
+      "bytes": 358649
+    },
+    {
+      "name": "claude_quickstart",
+      "url": "https://code.claude.com/docs/en/agent-sdk/quickstart.md",
+      "final": "https://code.claude.com/docs/en/agent-sdk/quickstart.md",
+      "status": 200,
+      "bytes": 15237
+    },
+    {
+      "name": "skills_standard",
+      "url": "https://agentskills.io/what-are-skills.md",
+      "final": "https://agentskills.io/home.md",
+      "status": 200,
+      "bytes": 26481
+    },
+    {
+      "name": "mcp_concepts",
+      "url": "https://modelcontextprotocol.io/docs/learn/server-concepts.md",
+      "final": "https://modelcontextprotocol.io/docs/2026-07-28/learn/server-concepts.md",
+      "status": 200,
+      "bytes": 15014
+    },
+    {
+      "name": "js_agent_source",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/agent.ts",
+      "final": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/agent.ts",
+      "status": 200,
+      "bytes": 19055
+    },
+    {
+      "name": "js_async_source",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/middleware/async_subagents.ts",
+      "final": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/middleware/async_subagents.ts",
+      "status": 200,
+      "bytes": 27894
+    },
+    {
+      "name": "js_shell_source",
+      "url": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/backends/local-shell.ts",
+      "final": "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/backends/local-shell.ts",
+      "status": 200,
+      "bytes": 13879
+    },
+    {
+      "name": "openhands_ts",
+      "url": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/9df0ca59bb8110c5294a508fb6761d91d043e6a3/clients/typescript/README.md",
+      "final": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/9df0ca59bb8110c5294a508fb6761d91d043e6a3/clients/typescript/README.md",
+      "status": 200,
+      "bytes": 17128
+    },
+    {
+      "name": "openhands_pause",
+      "url": "https://docs.openhands.dev/sdk/guides/convo-pause-and-resume.md",
+      "final": "https://docs.openhands.dev/sdk/guides/convo-pause-and-resume.md",
+      "status": 200,
+      "bytes": 5128
+    },
+    {
+      "name": "openhands_persistence",
+      "url": "https://docs.openhands.dev/sdk/guides/convo-persistence.md",
+      "final": "https://docs.openhands.dev/sdk/guides/convo-persistence.md",
+      "status": 200,
+      "bytes": 14701
+    },
+    {
+      "name": "openhands_security",
+      "url": "https://docs.openhands.dev/sdk/guides/security.md",
+      "final": "https://docs.openhands.dev/sdk/guides/security.md",
+      "status": 200,
+      "bytes": 37273
+    },
+    {
+      "name": "openhands_tasks",
+      "url": "https://docs.openhands.dev/sdk/guides/task-tool-set.md",
+      "final": "https://docs.openhands.dev/sdk/guides/task-tool-set.md",
+      "status": 200,
+      "bytes": 12131
+    },
+    {
+      "name": "openhands_llm",
+      "url": "https://docs.openhands.dev/sdk/arch/llm.md",
+      "final": "https://docs.openhands.dev/sdk/arch/llm.md",
+      "status": 200,
+      "bytes": 15174
+    },
+    {
+      "name": "lc_openai",
+      "url": "https://docs.langchain.com/oss/javascript/integrations/chat/openai.md",
+      "final": "https://docs.langchain.com/oss/javascript/integrations/chat/openai.md",
+      "status": 200,
+      "bytes": 51392
+    },
+    {
+      "name": "lc_js_cancellation",
+      "url": "https://docs.langchain.com/oss/javascript/langchain/runtime.md",
+      "final": "https://docs.langchain.com/oss/javascript/langchain/runtime.md",
+      "status": 200,
+      "bytes": 8075
+    },
+    {
+      "name": "js_async_docs",
+      "url": "https://docs.langchain.com/oss/javascript/deepagents/async-subagents.md",
+      "final": "https://docs.langchain.com/oss/javascript/deepagents/async-subagents.md",
+      "status": 200,
+      "bytes": 20217
+    },
+    {
+      "name": "lc_runnable_types",
+      "url": "https://raw.githubusercontent.com/langchain-ai/langchainjs/main/libs/langchain-core/src/runnables/types.ts",
+      "final": "https://raw.githubusercontent.com/langchain-ai/langchainjs/main/libs/langchain-core/src/runnables/types.ts",
+      "status": 200,
+      "bytes": 3116
+    },
+    {
+      "name": "openhands_sdk_manifest",
+      "url": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/main/openhands-sdk/pyproject.toml",
+      "final": "https://raw.githubusercontent.com/OpenHands/software-agent-sdk/main/openhands-sdk/pyproject.toml",
+      "status": 200,
+      "bytes": 1530
+    },
+    {
+      "name": "python_overview",
+      "url": "https://docs.langchain.com/oss/python/deepagents/overview.md",
+      "final": "https://docs.langchain.com/oss/python/deepagents/overview.md",
+      "status": 200,
+      "bytes": 79371
+    },
+    {
+      "name": "python_custom",
+      "url": "https://docs.langchain.com/oss/python/deepagents/customization.md",
+      "final": "https://docs.langchain.com/oss/python/deepagents/customization.md",
+      "status": 200,
+      "bytes": 153327
+    },
+    {
+      "name": "python_pypi",
+      "url": "https://pypi.org/pypi/deepagents/json",
+      "final": "https://pypi.org/pypi/deepagents/json",
+      "status": 200,
+      "bytes": 206282
+    },
+    {
+      "name": "lc_core_npm",
+      "url": "https://registry.npmjs.org/@langchain/core/latest",
+      "final": "https://registry.npmjs.org/@langchain/core/latest",
+      "status": 200,
+      "bytes": 20574
+    },
+    {
+      "name": "js_npm_all",
+      "url": "https://registry.npmjs.org/deepagents",
+      "error": "<urlopen error _ssl.c:1112: The handshake operation timed out>"
+    }
+  ]
+}

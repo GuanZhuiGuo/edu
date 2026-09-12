@@ -324,34 +324,56 @@ export function createEducationDataStore({
           normalized.ontology_version, normalized.schema_version,
           stringifyJson(normalized.provenance), revision, now, now);
 
-      const insertQuestion = db.prepare(`INSERT INTO education_questions(
+      const upsertQuestion = db.prepare(`INSERT INTO education_questions(
         tenant_id, bank_id, bank_version, question_id, question_version, title,
         stem, question_type, difficulty, proposition_method, ability_level,
         public_payload_json, review_status, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(tenant_id, question_id) DO UPDATE SET
+        bank_id=excluded.bank_id,
+        bank_version=excluded.bank_version,
+        question_version=excluded.question_version,
+        title=excluded.title,
+        stem=excluded.stem,
+        question_type=excluded.question_type,
+        difficulty=excluded.difficulty,
+        proposition_method=excluded.proposition_method,
+        ability_level=excluded.ability_level,
+        public_payload_json=excluded.public_payload_json,
+        review_status=excluded.review_status,
+        updated_at=excluded.updated_at`);
+      const deleteMappings = db.prepare(`DELETE FROM education_question_knowledge_points
+        WHERE tenant_id=? AND question_id=?`);
       const insertMapping = db.prepare(`INSERT INTO education_question_knowledge_points(
         tenant_id, question_id, ontology_id, ontology_version, knowledge_point_id,
         mapping_role, weight
       ) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-      const insertSolution = db.prepare(`INSERT INTO education_question_solutions(
+      const upsertSolution = db.prepare(`INSERT INTO education_question_solutions(
         tenant_id, question_id, storage_classification, private_payload_json, updated_at
-      ) VALUES (?, ?, 'server_private', ?, ?)`);
+      ) VALUES (?, ?, 'server_private', ?, ?)
+      ON CONFLICT(tenant_id, question_id) DO UPDATE SET
+        storage_classification=excluded.storage_classification,
+        private_payload_json=excluded.private_payload_json,
+        updated_at=excluded.updated_at`);
+      const deleteSolution = db.prepare(`DELETE FROM education_question_solutions
+        WHERE tenant_id=? AND question_id=?`);
 
       for (const item of normalized.items) {
-        insertQuestion.run(
+        upsertQuestion.run(
           safeTenantId, normalized.bank_id, normalized.version, item.id,
           item.version, item.title, item.stem, item.question_type, item.difficulty,
           item.proposition_method, item.ability_level, stringifyJson(item.public_payload),
           item.review_status, now, now
         );
+        deleteMappings.run(safeTenantId, item.id);
         for (const mapping of item.mappings) {
           insertMapping.run(safeTenantId, item.id, normalized.ontology_id,
             normalized.ontology_version, mapping.knowledge_point_id,
             mapping.mapping_role, mapping.weight);
         }
         if (item.private_payload) {
-          insertSolution.run(safeTenantId, item.id, stringifyJson(item.private_payload), now);
-        }
+          upsertSolution.run(safeTenantId, item.id, stringifyJson(item.private_payload), now);
+        } else deleteSolution.run(safeTenantId, item.id);
       }
       return { idempotent: false, ...questionCounts(safeTenantId, normalized.bank_id, normalized.version) };
     });

@@ -1,0 +1,18 @@
+{
+  "full_name": "midrender/revideo",
+  "html_url": "https://github.com/midrender/revideo",
+  "description": "Create Videos with Code",
+  "homepage": "https://midrender.com/revideo",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/redotvideo/revideo",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

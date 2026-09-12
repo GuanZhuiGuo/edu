@@ -1,0 +1,18 @@
+{
+  "full_name": "stevenpetryk/mafs",
+  "html_url": "https://github.com/stevenpetryk/mafs",
+  "description": "React components for interactive math",
+  "homepage": "https://mafs.dev",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/stevenpetryk/mafs",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

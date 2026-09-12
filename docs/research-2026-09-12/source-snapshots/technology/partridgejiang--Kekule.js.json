@@ -1,0 +1,18 @@
+{
+  "full_name": "partridgejiang/Kekule.js",
+  "html_url": "https://github.com/partridgejiang/Kekule.js",
+  "description": "A Javascript cheminformatics toolkit.",
+  "homepage": "http://partridgejiang.github.io/Kekule.js",
+  "default_branch": "master",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/partridgejiang/Kekule.js",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

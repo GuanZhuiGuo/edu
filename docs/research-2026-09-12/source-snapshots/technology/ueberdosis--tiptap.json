@@ -1,0 +1,18 @@
+{
+  "full_name": "ueberdosis/tiptap",
+  "html_url": "https://github.com/ueberdosis/tiptap",
+  "description": "The headless rich text editor framework for web artisans.",
+  "homepage": "https://tiptap.dev",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/ueberdosis/tiptap",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

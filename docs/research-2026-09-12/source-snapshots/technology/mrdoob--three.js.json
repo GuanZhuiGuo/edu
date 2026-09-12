@@ -1,0 +1,18 @@
+{
+  "full_name": "mrdoob/three.js",
+  "html_url": "https://github.com/mrdoob/three.js",
+  "description": "JavaScript 3D Library.",
+  "homepage": "https://threejs.org/",
+  "default_branch": "dev",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/mrdoob/three.js",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

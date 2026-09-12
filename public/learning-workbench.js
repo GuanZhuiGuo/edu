@@ -477,6 +477,7 @@ const questionTreeState = {
 };
 const questionBankState = {
   activeView: "history",
+  selectedQuestionId: "",
   portraitQuestionId: "",
   generatorDraft: null,
   seedQuestions: [],
@@ -586,6 +587,7 @@ function bindUserScopedWorkbench() {
     }
 
     questionBankState.portraitQuestionId = "";
+    questionBankState.selectedQuestionId = "";
     questionBankState.generatorDraft = null;
     populateQuestionPortraitSelect();
     renderQuestionAttributeStrengths();
@@ -2976,6 +2978,8 @@ function setStudentQuestionBrowserOpen(open, { focus = false } = {}) {
   const tabs = document.querySelector("#questionBankViewTabs");
   const browser = document.querySelector("#questionBankBrowser");
   const toggle = document.querySelector("#studentQuestionBrowserToggle");
+  const workspace = document.querySelector("#questionBankWorkspace");
+  if (workspace) workspace.dataset.bankBrowserOpen = String(visible);
 
   if (start) start.style.display = teacher ? "none" : "";
   if (tabs) tabs.style.display = visible ? "" : "none";
@@ -2987,7 +2991,7 @@ function setStudentQuestionBrowserOpen(open, { focus = false } = {}) {
     if (title) title.textContent = questionBankState.studentBrowserOpen ? "收起全部题库" : "浏览全部题库";
     if (meta) meta.textContent = questionBankState.studentBrowserOpen ? "回到三个学习入口" : "查看全部题目与筛选器";
   }
-  if (visible && focus) window.requestAnimationFrame(() => document.querySelector("#questionBankSearch")?.focus());
+  if (visible && focus) window.requestAnimationFrame(() => (document.querySelector("#questionBankUnifiedSearch") || document.querySelector("#questionBankSearch"))?.focus());
 }
 
 function renderStudentPracticeStart() {
@@ -3121,6 +3125,14 @@ function bindQuestionBank() {
     renderQuestionKnowledgeTree();
     renderQuestionBank();
   });
+  document.querySelector("#questionBankList")?.addEventListener("click", (event) => {
+    if (event.target.closest("[data-question-bank-retry]")) void loadSeedQuestionCatalog();
+    if (event.target.closest("[data-clear-question-filters]")) {
+      resetQuestionBankFilters();
+      renderQuestionKnowledgeTree();
+      renderQuestionBank();
+    }
+  });
   document.addEventListener("click", (event) => {
     const entry = event.target.closest("[data-student-practice-entry]");
     if (entry && !entry.disabled) openStudentPracticeEntry(entry.dataset.studentPracticeEntry);
@@ -3236,6 +3248,11 @@ function renderQuestionKnowledgeTree() {
     if (input) input.value = "";
     renderQuestionKnowledgeTree();
   });
+  const workspace = document.querySelector("#questionBankWorkspace");
+  if (workspace) {
+    workspace.dataset.questionDirectoryCount = query ? String(root.querySelectorAll("[data-question-point-id]").length) : "";
+    workspace.dispatchEvent(new CustomEvent("question-bank:tree-render"));
+  }
   window.lucide?.createIcons?.({ attrs: { "stroke-width": 1.8 } });
 }
 
@@ -3243,7 +3260,7 @@ function selectQuestionTreePoint(id) {
   questionTreeState.selectedId = id || "all";
   const filter = document.querySelector("#questionKnowledgeFilter");
   if (filter && [...filter.options].some((option) => option.value === questionTreeState.selectedId)) filter.value = questionTreeState.selectedId;
-  if (window.matchMedia?.("(max-width: 820px)")?.matches) {
+  if ((document.querySelector("#questionBankWorkspace")?.getBoundingClientRect().width || window.innerWidth) < 1024) {
     questionTreeState.mobileOpen = false;
     syncQuestionTreeMobileState();
   }
@@ -3290,30 +3307,49 @@ function renderQuestionBank() {
     result: document.querySelector("#questionResultFilter")?.value || "all",
     source: document.querySelector("#questionSourceFilter")?.value || "all"
   };
-  const questions = filterQuestionHistory(getQuestionHistory(), filters);
+  const allQuestions = getQuestionHistory();
+  const questions = filterQuestionHistory(allQuestions, filters);
   const root = document.querySelector("#questionBankList");
-  setText("#questionBankCount", `共 ${questions.length} 道题`);
+  const workspace = document.querySelector("#questionBankWorkspace");
+  const status = questionBankState.catalogStatus;
+  setText("#questionBankCount", status === "loading" ? "正在读取题库…" : status === "error" ? "题库读取失败" : `共 ${questions.length} 道题`);
   if (!root) return;
+  root.setAttribute("aria-busy", String(status === "loading"));
+  if (workspace) {
+    workspace.dataset.questionBankStatus = status;
+    workspace.dataset.questionBankMatches = String(questions.length);
+    workspace.dataset.questionBankTotal = String(allQuestions.length);
+    workspace.dispatchEvent(new CustomEvent("question-bank:render"));
+  }
+  if (questionBankState.selectedQuestionId && (status !== "ready" || !questions.some((question) => question.id === questionBankState.selectedQuestionId))) {
+    questionBankState.selectedQuestionId = "";
+    const detail = document.querySelector("#questionDetailPanel");
+    if (detail) detail.innerHTML = '<div class="question-detail-empty"><b>选择一道题目</b><p>查看题干、作答和知识点映射。</p></div>';
+    workspace?.dispatchEvent(new CustomEvent("question-bank:detail", { detail: { id: "" } }));
+  }
   if (questionBankState.catalogStatus === "loading") {
     root.innerHTML = `<div class="question-list-empty"><i data-lucide="loader-circle"></i><b>正在读取题库</b><p>正在从教育数据服务加载题目。</p></div>`;
     window.lucide?.createIcons?.();
     return;
   }
   if (questionBankState.catalogStatus === "error") {
-    root.innerHTML = `<div class="question-list-empty"><i data-lucide="circle-alert"></i><b>题库读取失败</b><p>${escapeHTML(questionBankState.catalogError || "请稍后重试")}</p></div>`;
+    root.innerHTML = `<div class="question-list-empty"><i data-lucide="circle-alert" aria-hidden="true"></i><b>题库读取失败</b><p>${escapeHTML(questionBankState.catalogError || "请稍后重试")}</p><div class="question-bank-ux-state-actions"><button class="btn btn-primary" type="button" data-question-bank-retry>重新加载</button><button class="btn" type="button" data-clear-question-filters>清空筛选</button></div></div>`;
     window.lucide?.createIcons?.();
     return;
   }
   root.innerHTML = questions.length ? questions.map((question) => `
-    <button type="button" class="question-history-row result-${question.result}" data-question-id="${escapeHTML(question.id)}">
+    <button type="button" class="btn question-history-row result-${question.result}${questionBankState.selectedQuestionId === question.id ? " is-selected" : ""}" aria-pressed="${questionBankState.selectedQuestionId === question.id}" data-question-id="${escapeHTML(question.id)}">
       <span class="question-result-icon">${question.result === "correct" ? "✓" : question.result === "wrong" ? "×" : question.result === "partial" ? "◐" : "·"}</span>
       <span class="question-history-main"><b>${escapeHTML(question.stem)}</b><small>${question.knowledgePoints.map((point) => escapeHTML(point.name)).join(" · ")}</small></span>
       <span class="question-type-tag">${escapeHTML(question.type)}</span>
       <span class="question-source-tag">${escapeHTML(sourceLabel(question.source))}</span>
       <time>${escapeHTML(question.date)}</time>
-    </button>`).join("") : `<div class="question-list-empty"><i data-lucide="library"></i><b>题库暂无题目</b><p>当前数据库中没有符合条件的题目。</p></div>`;
+    </button>`).join("") : `<div class="question-list-empty"><i data-lucide="search-x" aria-hidden="true"></i><b>${allQuestions.length ? "没有符合条件的题目" : "题库暂无题目"}</b><p>${allQuestions.length ? "试试移除部分条件，或清空筛选查看全部题目。" : "当前可访问的题库还没有题目。"}</p><div class="question-bank-ux-state-actions"><button class="btn" type="button" data-clear-question-filters>清空筛选</button></div></div>`;
   root.querySelectorAll("[data-question-id]").forEach((button) => button.addEventListener("click", () => {
-    root.querySelectorAll("[data-question-id]").forEach((row) => row.classList.toggle("is-selected", row === button));
+    root.querySelectorAll("[data-question-id]").forEach((row) => {
+      row.classList.toggle("is-selected", row === button);
+      row.setAttribute("aria-pressed", String(row === button));
+    });
     renderQuestionDetail(button.dataset.questionId);
   }));
   window.lucide?.createIcons?.();
@@ -3323,6 +3359,7 @@ function renderQuestionDetail(id) {
   const question = getQuestionHistory().find((item) => item.id === id);
   const root = document.querySelector("#questionDetailPanel");
   if (!question || !root) return;
+  questionBankState.selectedQuestionId = id;
   const attributes = question.attributes || getQuestionAttributes(question);
   const attempted = question.result !== "unattempted";
   const options = Array.isArray(question.options) && question.options.length
@@ -3384,6 +3421,7 @@ function renderQuestionDetail(id) {
     populateQuestionPortraitSelect();
     setQuestionBankView("portrait");
   });
+  document.querySelector("#questionBankWorkspace")?.dispatchEvent(new CustomEvent("question-bank:detail", { detail: { id } }));
   window.lucide?.createIcons?.({ attrs: { "stroke-width": 1.8 } });
 }
 

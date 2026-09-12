@@ -1,0 +1,18 @@
+{
+  "full_name": "d3/d3",
+  "html_url": "https://github.com/d3/d3",
+  "description": "Bring data to life with SVG, Canvas and HTML. :bar_chart::chart_with_upwards_trend::tada:",
+  "homepage": "https://d3js.org",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "isc",
+    "name": "ISC License",
+    "spdx_id": "ISC",
+    "url": "https://api.github.com/licenses/isc",
+    "node_id": "MDc6TGljZW5zZTEw"
+  },
+  "source_url": "https://api.github.com/repos/d3/d3",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

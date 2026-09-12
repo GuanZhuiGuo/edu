@@ -1,0 +1,18 @@
+{
+  "full_name": "rdkit/rdkit-js",
+  "html_url": "https://github.com/rdkit/rdkit-js",
+  "description": "A powerful cheminformatics and molecule rendering toolbelt for JavaScript, powered by RDKit .",
+  "homepage": "https://rdkitjs.com",
+  "default_branch": "master",
+  "archived": false,
+  "license": {
+    "key": "bsd-3-clause",
+    "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+    "spdx_id": "BSD-3-Clause",
+    "url": "https://api.github.com/licenses/bsd-3-clause",
+    "node_id": "MDc6TGljZW5zZTU="
+  },
+  "source_url": "https://api.github.com/repos/rdkit/rdkit-js",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

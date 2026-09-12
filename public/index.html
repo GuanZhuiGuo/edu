@@ -5,38 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script>document.documentElement.dataset.appHost = String(!(window.parent !== window && new URLSearchParams(location.search).get("app-content") === "1"));</script>
     <meta name="theme-color" content="#f4f6fa" />
-    <title>AI教师</title>
+    <title>AI教培平台</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232f6feb'/%3E%3Cpath d='M15 19h34v7H15zm3 12h28v7H18zm5 12h18v7H23z' fill='white'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="./vendor/katex/katex.min.css" />
-    <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="./learning-map-polish.css" />
-    <link rel="stylesheet" href="./education-settings-workbench.css" />
-    <link rel="stylesheet" href="./education-skill-workbench.css" />
-    <link rel="stylesheet" href="./interactive-lesson-lab.css" />
-    <link rel="stylesheet" href="./ontology-workbench.css" />
-    <link rel="stylesheet" href="./system-release-center.css" />
-    <link rel="stylesheet" href="./product-ui-polish.css" />
-    <link rel="stylesheet" href="./agent-trace-view.css" />
-    <link rel="stylesheet" href="./video-explanation-workbench.css" />
-    <link rel="stylesheet" href="./app-shell.css" />
-    <link rel="stylesheet" href="./app-mobile.css" />
-    <link rel="stylesheet" href="./app-workbench-mobile.css" />
-    <link rel="stylesheet" href="./app-pad.css" />
-    <link rel="stylesheet" href="./knowledge-connection-status.css" />
-    <link rel="stylesheet" href="./app-home.css" />
-    <link rel="stylesheet" href="./app-course-context.css" />
+    <link rel="stylesheet" href="./design-system.css" />
   </head>
   <body>
     <a class="skip-link" href="#appMainContent">跳到主要内容</a>
     <div class="workspace">
-      <header class="global-header" aria-label="AI教师导航">
+      <header class="global-header" aria-label="AI教培平台导航">
         <div class="global-brand">
           <button class="global-icon-button launcher-button" type="button" aria-label="打开产品菜单" title="产品菜单">
             <i data-lucide="grip" aria-hidden="true"></i>
           </button>
-          <span class="product-wordmark" aria-label="AI教师">
+          <span class="product-wordmark" aria-label="AI教培平台">
             <span class="product-wordmark-mark" aria-hidden="true"><i data-lucide="book-open-check"></i></span>
-            <span class="platform-name">AI教师</span>
+            <span class="platform-name">AI教培平台</span>
           </span>
           <button id="systemVersionButton" class="system-version-button" type="button" aria-haspopup="dialog" aria-controls="systemReleaseDialog" aria-label="查看 2.0 版本发布与系统架构" title="版本与系统架构">2.0</button>
         </div>
@@ -112,6 +96,9 @@
             <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="questionBankWorkspace" aria-label="练习与错题" data-workspace-view="bank" data-portal-role="student">
               <i data-lucide="library" aria-hidden="true"></i><span>练习与错题</span>
             </button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="assessmentWorkspace" aria-label="智能评测" data-workspace-view="assessment" data-portal-role="student">
+              <i data-lucide="scan-line" aria-hidden="true"></i><span>智能评测</span>
+            </button>
             <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="learningRecordsWorkspace" aria-label="学习记录" data-workspace-view="records" data-portal-role="student">
               <i data-lucide="history" aria-hidden="true"></i><span>学习记录</span>
             </button>
@@ -124,60 +111,21 @@
             </button>
           </nav>
           <nav class="workspace-menu" aria-label="教师端功能" role="tablist" aria-orientation="vertical" data-portal-menu="teacher" hidden>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="agentWorkspace" aria-label="课堂预览" title="课堂预览" data-workspace-view="agent" data-portal-role="teacher"><i data-lucide="presentation" aria-hidden="true"></i><span>课堂预览</span></button>
             <span class="workspace-menu-group-label" role="presentation">教学管理</span>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="teacherDashboardWorkspace" aria-label="教学总览" title="教学总览" data-workspace-view="teacher-dashboard" data-portal-role="teacher">
-              <i data-lucide="layout-dashboard" aria-hidden="true"></i><span>教学总览</span>
-            </button>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="teacherStudentsWorkspace" aria-label="班级学情" title="班级学情" data-workspace-view="teacher-students" data-portal-role="teacher">
-              <i data-lucide="users-round" aria-hidden="true"></i><span>班级学情</span>
-            </button>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="teacherCoursesWorkspace" aria-label="课程管理" title="课程管理" data-workspace-view="teacher-courses" data-portal-role="teacher">
-              <i data-lucide="notebook-tabs" aria-hidden="true"></i><span>课程管理</span>
-            </button>
-            <span class="workspace-menu-group-label" role="presentation">备课与教学</span>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="knowledgeGraphWorkspace" aria-label="知识管理" title="知识管理" data-workspace-view="graph" data-portal-role="teacher">
-              <i data-lucide="network" aria-hidden="true"></i><span>知识管理</span>
-            </button>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="questionBankWorkspace" aria-label="出题与题库" title="出题与题库" data-workspace-view="bank" data-portal-role="teacher">
-              <i data-lucide="file-stack" aria-hidden="true"></i><span>出题与题库</span>
-            </button>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="teacherPlanWorkspace" aria-label="教学计划" title="教学计划" data-workspace-view="teacher-plan" data-portal-role="teacher">
-              <i data-lucide="calendar-range" aria-hidden="true"></i><span>教学计划</span>
-            </button>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="videoExplanationWorkspace" aria-label="视频讲解" title="视频讲解" data-workspace-view="video-explanation" data-portal-role="teacher">
-              <i data-lucide="clapperboard" aria-hidden="true"></i><span>视频讲解</span>
-            </button>
-            <details id="teacherToolsDisclosure" class="teacher-toolbox">
-              <summary aria-label="展开更多教学工具">
-                <i data-lucide="blocks" aria-hidden="true"></i>
-                <span>更多教学工具</span>
-                <i class="teacher-toolbox-chevron" data-lucide="chevron-down" aria-hidden="true"></i>
-              </summary>
-              <div class="teacher-toolbox-menu">
-                <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="ontologyWorkbenchWorkspace" aria-label="本体图" title="本体图" data-workspace-view="ontology" data-portal-role="teacher">
-                  <i data-lucide="git-fork" aria-hidden="true"></i><span>本体图</span>
-                </button>
-                <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="educationSkillsWorkspace" aria-label="Agent Skills" title="Agent Skills" data-workspace-view="agent-skills" data-portal-role="teacher">
-                  <i data-lucide="blocks" aria-hidden="true"></i><span>Agent Skills</span>
-                </button>
-                <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="agentWorkspace" aria-label="课堂预览" title="课堂预览" data-workspace-view="agent" data-portal-role="teacher">
-                  <i data-lucide="presentation" aria-hidden="true"></i><span>课堂预览</span>
-                </button>
-                <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="interactiveLessonWorkspace" aria-label="互动教材" title="互动教材" data-workspace-view="lesson-lab" data-portal-role="teacher">
-                  <i data-lucide="wand-sparkles" aria-hidden="true"></i><span>互动教材</span>
-                </button>
-                <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="knowledgeMaterialsWorkspace" aria-label="素材工坊" title="素材工坊" data-workspace-view="materials" data-portal-role="teacher">
-                  <i data-lucide="shapes" aria-hidden="true"></i><span>素材工坊</span>
-                </button>
-                <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="technologyLandscapeWorkspace" aria-label="技术地图" title="技术地图" data-workspace-view="tech-landscape" data-portal-role="teacher">
-                  <i data-lucide="map" aria-hidden="true"></i><span>技术地图</span>
-                </button>
-              </div>
-            </details>
-            <span class="workspace-menu-group-label" role="presentation">系统设置</span>
-            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="voiceConfigWorkspace" aria-label="AI教师设置" title="AI教师设置" data-workspace-view="voice-config" data-portal-role="teacher">
-              <i data-lucide="sliders-horizontal" aria-hidden="true"></i><span>AI教师设置</span>
-            </button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="teacherDashboardWorkspace" aria-label="教学总览" title="教学总览" data-workspace-view="teacher-dashboard" data-portal-role="teacher"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span>教学总览</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="teacherStudentsWorkspace" aria-label="班级学情" title="班级学情" data-workspace-view="teacher-students" data-portal-role="teacher"><i data-lucide="users-round" aria-hidden="true"></i><span>班级学情</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="teacherCoursesWorkspace" aria-label="课程管理" title="课程管理" data-workspace-view="teacher-courses" data-portal-role="teacher"><i data-lucide="notebook-tabs" aria-hidden="true"></i><span>课程管理</span></button>
+            <span class="workspace-menu-group-label" role="presentation">备课资源</span>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="coursewareAssistantWorkspace" aria-label="课件助手" title="课件助手" data-workspace-view="courseware-assistant" data-portal-role="teacher"><i data-lucide="wand-sparkles" aria-hidden="true"></i><span>课件助手</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="coursewareLibraryWorkspace" aria-label="课件库" title="课件库" data-workspace-view="courseware-library" data-portal-role="teacher"><i data-lucide="panels-top-left" aria-hidden="true"></i><span>课件库</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="knowledgeGraphWorkspace" aria-label="知识库" title="知识库" data-workspace-view="graph" data-portal-role="teacher"><i data-lucide="network" aria-hidden="true"></i><span>知识库</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="questionBankWorkspace" aria-label="题库" title="题库" data-workspace-view="bank" data-portal-role="teacher"><i data-lucide="file-stack" aria-hidden="true"></i><span>题库</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="assessmentWorkspace" aria-label="智能评测" title="智能评测" data-workspace-view="assessment" data-portal-role="teacher"><i data-lucide="scan-line" aria-hidden="true"></i><span>智能评测</span></button>
+            <span class="workspace-menu-group-label" role="presentation">能力与设置</span>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="ontologyWorkbenchWorkspace" aria-label="本体图" title="本体图" data-workspace-view="ontology" data-portal-role="teacher"><i data-lucide="git-fork" aria-hidden="true"></i><span>本体图</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="skillHubWorkspace" aria-label="Skill hub" title="Skill hub" data-workspace-view="skill-hub" data-portal-role="teacher"><i data-lucide="blocks" aria-hidden="true"></i><span>Skill hub</span></button>
+            <button class="workspace-menu-button" type="button" role="tab" aria-selected="false" aria-controls="voiceConfigWorkspace" aria-label="AI教师设置" title="AI教师设置" data-workspace-view="voice-config" data-portal-role="teacher"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span>AI教师设置</span></button>
           </nav>
           <div class="portal-role-switcher" role="tablist" aria-label="切换学生端和教师端">
             <button class="is-active" type="button" role="tab" aria-selected="true" aria-label="切换到学生端" title="学生端" data-portal-switch="student"><i data-lucide="graduation-cap" aria-hidden="true"></i><span>学生端</span></button>
@@ -217,6 +165,7 @@
             <nav class="mobile-nav-menu student-mobile-more-menu" aria-label="更多学习工具" role="tablist" aria-orientation="vertical">
               <button type="button" role="tab" aria-selected="false" aria-controls="knowledgeGraphWorkspace" data-mobile-workspace-view="graph" data-mobile-portal-role-scope="student"><i data-lucide="network" aria-hidden="true"></i><span><b>知识地图</b><small>查看知识关系和掌握情况</small></span></button>
               <button type="button" role="tab" aria-selected="false" aria-controls="learningRecordsWorkspace" data-mobile-workspace-view="records" data-mobile-portal-role-scope="student"><i data-lucide="history" aria-hidden="true"></i><span><b>学习记录</b><small>回顾学习画像与学习动态</small></span></button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="assessmentWorkspace" data-mobile-workspace-view="assessment" data-mobile-portal-role-scope="student"><i data-lucide="scan-line" aria-hidden="true"></i><span><b>智能评测</b><small>完成测评并查看证据复盘</small></span></button>
               <button type="button" role="tab" aria-selected="false" aria-controls="learningBuddyWorkspace" data-mobile-workspace-view="buddy" data-mobile-portal-role-scope="student"><i data-lucide="users" aria-hidden="true"></i><span><b>学习搭子</b><small>进入专注与共同学习空间</small></span></button>
               <button type="button" role="tab" aria-selected="false" aria-controls="voiceConfigWorkspace" data-mobile-workspace-view="voice-config" data-mobile-portal-role-scope="student"><i data-lucide="settings-2" aria-hidden="true"></i><span><b>学习偏好</b><small>调整教师形象、声音和习惯</small></span></button>
             </nav>
@@ -233,35 +182,20 @@
               <button class="mobile-nav-dialog-close" type="button" aria-label="关闭教师端菜单" data-mobile-nav-close><i data-lucide="x" aria-hidden="true"></i></button>
             </header>
             <div class="teacher-mobile-nav-scroll">
-              <section aria-labelledby="teacherMobileManagementLabel">
-                <h3 id="teacherMobileManagementLabel">教学管理</h3>
-                <nav class="mobile-nav-menu" aria-label="教学管理" role="tablist" aria-orientation="vertical">
-                  <button type="button" role="tab" aria-selected="false" aria-controls="teacherDashboardWorkspace" data-mobile-workspace-view="teacher-dashboard" data-mobile-portal-role-scope="teacher"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span><b>教学总览</b><small>查看教学指标与待办</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="teacherStudentsWorkspace" data-mobile-workspace-view="teacher-students" data-mobile-portal-role-scope="teacher"><i data-lucide="users-round" aria-hidden="true"></i><span><b>班级学情</b><small>查看学生状态与学习证据</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="teacherCoursesWorkspace" data-mobile-workspace-view="teacher-courses" data-mobile-portal-role-scope="teacher"><i data-lucide="notebook-tabs" aria-hidden="true"></i><span><b>课程管理</b><small>管理课程、章节与发布</small></span></button>
-                </nav>
-              </section>
-              <section aria-labelledby="teacherMobilePreparationLabel">
-                <h3 id="teacherMobilePreparationLabel">备课与教学</h3>
-                <nav class="mobile-nav-menu" aria-label="备课与教学" role="tablist" aria-orientation="vertical">
-                  <button type="button" role="tab" aria-selected="false" aria-controls="knowledgeGraphWorkspace" data-mobile-workspace-view="graph" data-mobile-portal-role-scope="teacher"><i data-lucide="network" aria-hidden="true"></i><span><b>知识管理</b><small>管理知识结构与班级分布</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="ontologyWorkbenchWorkspace" data-mobile-workspace-view="ontology" data-mobile-portal-role-scope="teacher"><i data-lucide="git-fork" aria-hidden="true"></i><span><b>本体图</b><small>查看实体、关系与题目映射</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="questionBankWorkspace" data-mobile-workspace-view="bank" data-mobile-portal-role-scope="teacher"><i data-lucide="file-stack" aria-hidden="true"></i><span><b>出题与题库</b><small>管理题目、审核与作业</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="teacherPlanWorkspace" data-mobile-workspace-view="teacher-plan" data-mobile-portal-role-scope="teacher"><i data-lucide="calendar-range" aria-hidden="true"></i><span><b>教学计划</b><small>安排课堂、作业与测验</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="videoExplanationWorkspace" data-mobile-workspace-view="video-explanation" data-mobile-portal-role-scope="teacher"><i data-lucide="clapperboard" aria-hidden="true"></i><span><b>视频讲解</b><small>把课件制作为可编辑的教学视频</small></span></button>
-                </nav>
-              </section>
-              <section aria-labelledby="teacherMobileToolsLabel">
-                <h3 id="teacherMobileToolsLabel">AI教学工具</h3>
-                <nav class="mobile-nav-menu" aria-label="AI教学工具" role="tablist" aria-orientation="vertical">
-                  <button type="button" role="tab" aria-selected="false" aria-controls="agentWorkspace" data-mobile-workspace-view="agent" data-mobile-portal-role-scope="teacher"><i data-lucide="presentation" aria-hidden="true"></i><span><b>课堂预览</b><small>以学生视角体验AI教师</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="interactiveLessonWorkspace" data-mobile-workspace-view="lesson-lab" data-mobile-portal-role-scope="teacher"><i data-lucide="wand-sparkles" aria-hidden="true"></i><span><b>互动教材</b><small>制作可交互的课堂材料</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="knowledgeMaterialsWorkspace" data-mobile-workspace-view="materials" data-mobile-portal-role-scope="teacher"><i data-lucide="shapes" aria-hidden="true"></i><span><b>素材工坊</b><small>制作图解、实验与思维导图</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="educationSkillsWorkspace" data-mobile-workspace-view="agent-skills" data-mobile-portal-role-scope="teacher"><i data-lucide="blocks" aria-hidden="true"></i><span><b>Agent Skills</b><small>查看模型可用能力与工具边界</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="technologyLandscapeWorkspace" data-mobile-workspace-view="tech-landscape" data-mobile-portal-role-scope="teacher"><i data-lucide="map" aria-hidden="true"></i><span><b>技术地图</b><small>查看学科场景与技术能力</small></span></button>
-                  <button type="button" role="tab" aria-selected="false" aria-controls="voiceConfigWorkspace" data-mobile-workspace-view="voice-config" data-mobile-portal-role-scope="teacher"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span><b>AI教师设置</b><small>设置讲解、知识、出题和声音</small></span></button>
-                </nav>
-              </section>
+              <nav class="mobile-nav-menu" aria-label="教师端功能" role="tablist" aria-orientation="vertical">
+                <button type="button" role="tab" aria-selected="false" aria-controls="agentWorkspace" data-mobile-workspace-view="agent" data-mobile-portal-role-scope="teacher"><i data-lucide="presentation" aria-hidden="true"></i><span><b>课堂预览</b><small>以学生视角体验 AI 教师</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="teacherDashboardWorkspace" data-mobile-workspace-view="teacher-dashboard" data-mobile-portal-role-scope="teacher"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span><b>教学总览</b><small>查看教学指标与待办</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="teacherStudentsWorkspace" data-mobile-workspace-view="teacher-students" data-mobile-portal-role-scope="teacher"><i data-lucide="users-round" aria-hidden="true"></i><span><b>班级学情</b><small>查看学生状态与学习证据</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="teacherCoursesWorkspace" data-mobile-workspace-view="teacher-courses" data-mobile-portal-role-scope="teacher"><i data-lucide="notebook-tabs" aria-hidden="true"></i><span><b>课程管理</b><small>管理课程与章节</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="coursewareAssistantWorkspace" data-mobile-workspace-view="courseware-assistant" data-mobile-portal-role-scope="teacher"><i data-lucide="wand-sparkles" aria-hidden="true"></i><span><b>课件助手</b><small>制作讲解视频、图解与互动实验</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="coursewareLibraryWorkspace" data-mobile-workspace-view="courseware-library" data-mobile-portal-role-scope="teacher"><i data-lucide="panels-top-left" aria-hidden="true"></i><span><b>课件库</b><small>收藏、筛选和复用课堂素材</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="knowledgeGraphWorkspace" data-mobile-workspace-view="graph" data-mobile-portal-role-scope="teacher"><i data-lucide="network" aria-hidden="true"></i><span><b>知识库</b><small>管理知识与课程资料</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="questionBankWorkspace" data-mobile-workspace-view="bank" data-mobile-portal-role-scope="teacher"><i data-lucide="file-stack" aria-hidden="true"></i><span><b>题库</b><small>管理题目、审核与作业</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="assessmentWorkspace" data-mobile-workspace-view="assessment" data-mobile-portal-role-scope="teacher"><i data-lucide="scan-line" aria-hidden="true"></i><span><b>智能评测</b><small>创建方法、任务与结果复盘</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="ontologyWorkbenchWorkspace" data-mobile-workspace-view="ontology" data-mobile-portal-role-scope="teacher"><i data-lucide="git-fork" aria-hidden="true"></i><span><b>本体图</b><small>查看实体、关系与题目映射</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="skillHubWorkspace" data-mobile-workspace-view="skill-hub" data-mobile-portal-role-scope="teacher"><i data-lucide="blocks" aria-hidden="true"></i><span><b>Skill hub</b><small>查看教学技能与技术能力</small></span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="voiceConfigWorkspace" data-mobile-workspace-view="voice-config" data-mobile-portal-role-scope="teacher"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span><b>AI教师设置</b><small>设置讲解、知识和声音</small></span></button>
+              </nav>
             </div>
             <footer class="mobile-nav-dialog-foot">
               <button type="button" data-mobile-switch-role="student"><i data-lucide="graduation-cap" aria-hidden="true"></i><span>返回学生端</span><i data-lucide="chevron-right" aria-hidden="true"></i></button>
@@ -270,9 +204,9 @@
         </dialog>
         <header class="page-toolbar">
           <div class="page-identity">
-            <div id="workspaceBreadcrumb" class="breadcrumb">AI教师</div>
+            <div id="workspaceBreadcrumb" class="breadcrumb">AI教培平台</div>
             <div class="title-row">
-              <h1 id="workspaceTitle">AI教师</h1>
+              <h1 id="workspaceTitle">AI教培平台</h1>
               <span id="workspaceTypeChip" class="type-chip" hidden></span>
             </div>
           </div>
@@ -880,7 +814,8 @@
                 </span>
               </div>
               <button id="classroomCompactMastery" class="classroom-compact-mastery" type="button" data-open-workspace="records" aria-label="查看学习概况">
-                <i data-lucide="chart-no-axes-combined" aria-hidden="true"></i>
+                <i data-lucide="book-open-check" aria-hidden="true"></i>
+                <small class="classroom-compact-course-name">初中数学</small>
                 <span id="classroomCompactMasteryLabel">学情读取中</span>
               </button>
               <div class="ai-dialogue-actions">
@@ -1551,6 +1486,41 @@
         </main>
 
         <main
+          id="assessmentWorkspace"
+          class="assessment-workspace learning-page workspace-panel"
+          data-workspace-panel="assessment"
+          hidden
+        >
+          <div class="learning-page-shell assessment-shell">
+            <header class="assessment-page-head">
+              <div>
+                <span class="page-eyebrow">EVIDENCE-BASED ASSESSMENT</span>
+                <h2>智能评测</h2>
+                <p>把口语、实操、作业和课堂表现统一成可复盘的评测任务。</p>
+              </div>
+              <div class="assessment-head-actions">
+                <span class="assessment-boundary"><i data-lucide="shield-check" aria-hidden="true"></i><span>本地演示 · 证据链待接入服务端</span></span>
+                <button type="button" class="primary-btn" data-assessment-action="new-task"><i data-lucide="plus" aria-hidden="true"></i>新建评测任务</button>
+              </div>
+            </header>
+            <div class="assessment-kpi-grid" aria-label="评测概览">
+              <article><span class="assessment-kpi-icon blue"><i data-lucide="clipboard-check" aria-hidden="true"></i></span><div><small>进行中任务</small><b data-assessment-stat="active">2</b><em>待提交 1 个</em></div></article>
+              <article><span class="assessment-kpi-icon violet"><i data-lucide="gauge" aria-hidden="true"></i></span><div><small>平均得分</small><b data-assessment-stat="score">86</b><em>最近 30 天</em></div></article>
+              <article><span class="assessment-kpi-icon green"><i data-lucide="radar" aria-hidden="true"></i></span><div><small>已配置方法</small><b data-assessment-stat="methods">4</b><em>覆盖 4 类证据</em></div></article>
+              <article><span class="assessment-kpi-icon amber"><i data-lucide="database" aria-hidden="true"></i></span><div><small>数据集</small><b data-assessment-stat="datasets">3</b><em>可继续导入</em></div></article>
+            </div>
+            <nav class="assessment-tabs" role="tablist" aria-label="智能评测功能">
+              <button type="button" role="tab" aria-selected="true" data-assessment-tab="overview"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span>评测总览</span></button>
+              <button type="button" role="tab" aria-selected="false" data-assessment-tab="methods"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span>评测方法</span></button>
+              <button type="button" role="tab" aria-selected="false" data-assessment-tab="tasks"><i data-lucide="clipboard-list" aria-hidden="true"></i><span>评测任务</span></button>
+              <button type="button" role="tab" aria-selected="false" data-assessment-tab="datasets"><i data-lucide="database" aria-hidden="true"></i><span>数据集</span></button>
+              <button type="button" role="tab" aria-selected="false" data-assessment-tab="results"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i><span>结果复盘</span></button>
+            </nav>
+            <div id="assessmentRoot" class="assessment-root" aria-live="polite"></div>
+          </div>
+        </main>
+
+        <main
           id="learningPlanWorkspace"
           class="learning-plan-workspace learning-page workspace-panel"
           data-workspace-panel="plan"
@@ -1621,6 +1591,31 @@
               <div class="buddy-character" aria-hidden="true"><span class="buddy-face">小澜</span><span class="buddy-breath"></span></div>
               <div class="buddy-hero-copy"><span class="page-eyebrow">学习搭子</span><h2>小澜在等你一起自习</h2><p>可以先开始一次 25 分钟的专注学习。</p><div class="buddy-status-row"><span>本次尚未开始</span><span>暂无已关联计划</span></div></div>
               <button type="button" data-open-workspace="agent">需要讲解？问AI教师</button>
+            </section>
+            <section class="buddy-community-card" aria-labelledby="buddyCommunityTitle">
+              <header class="buddy-community-head">
+                <div><span class="page-eyebrow">共同学习 · 闭环社区</span><h2 id="buddyCommunityTitle">大家正在分享</h2><p>从题目、知识点到解题思路，边看边练，把有用的内容带回自己的学习。</p></div>
+                <button type="button" class="primary-btn" data-buddy-action="compose"><i data-lucide="square-pen" aria-hidden="true"></i>发布分享</button>
+              </header>
+              <div class="buddy-community-toolbar">
+                <div class="buddy-community-filters" role="tablist" aria-label="分享类型">
+                  <button type="button" class="is-active" role="tab" aria-selected="true" data-buddy-filter="all">全部</button>
+                  <button type="button" role="tab" aria-selected="false" data-buddy-filter="question">题目分享</button>
+                  <button type="button" role="tab" aria-selected="false" data-buddy-filter="knowledge">知识点卡片</button>
+                </div>
+                <span id="buddyCommunityCount" class="buddy-community-count">4 条分享</span>
+              </div>
+              <div class="buddy-community-layout">
+                <div id="buddyCommunityFeed" class="buddy-community-feed" aria-label="学习分享流"></div>
+                <aside id="buddyCommunityDetail" class="buddy-community-detail" aria-live="polite">
+                  <div class="buddy-community-detail-empty"><i data-lucide="mouse-pointer-click" aria-hidden="true"></i><b>选择一条分享</b><p>查看完整思路，收藏后可在题库或知识地图继续学习。</p></div>
+                </aside>
+              </div>
+              <form id="buddyCommunityComposer" class="buddy-community-composer" hidden>
+                <label><span>分享标题</span><input name="title" maxlength="50" placeholder="例如：我终于理解了相似三角形" required /></label>
+                <label><span>内容</span><textarea name="body" rows="3" maxlength="240" placeholder="写下你的解题思路、易错点或记忆方法" required></textarea></label>
+                <div class="buddy-community-composer-actions"><button type="button" data-buddy-action="cancel-compose">取消</button><button type="submit" class="primary-btn">发布到学习搭子</button></div>
+              </form>
             </section>
             <div class="buddy-main-grid">
               <section class="focus-room-card">
@@ -1752,6 +1747,10 @@
           </div>
         </main>
 
+        <main id="coursewareAssistantWorkspace" class="workspace-panel courseware-assistant-workspace" data-workspace-panel="courseware-assistant" hidden></main>
+        <main id="coursewareLibraryWorkspace" class="workspace-panel learning-page courseware-library-workspace" data-workspace-panel="courseware-library" hidden></main>
+        <main id="skillHubWorkspace" class="workspace-panel learning-page skill-hub-workspace" data-workspace-panel="skill-hub" hidden></main>
+
         <main
           id="educationSkillsWorkspace"
           class="education-skills-workspace workspace-panel"
@@ -1780,7 +1779,7 @@
                 <p>把知识点变成可以动手探索的教材。先试一个实验，再调整参数观察变化。</p>
               </div>
               <div class="lesson-lab-head-actions">
-                <button id="generationGuidanceOpen" class="generation-guidance-trigger" type="button" aria-haspopup="dialog" aria-controls="generationGuidanceDialog">
+                <button id="generationGuidanceOpen" class="generation-guidance-trigger btn" type="button" aria-haspopup="dialog" aria-controls="generationGuidanceDialog">
                   <i data-lucide="compass" aria-hidden="true"></i>
                   <span><b>生成指导</b><small>按知识点选载体</small></span>
                   <i data-lucide="chevron-right" aria-hidden="true"></i>
@@ -1790,32 +1789,42 @@
             </header>
 
             <div class="lesson-lab-grid">
+              <details id="lessonComposerDetails" class="lesson-composer-disclosure" open>
+                <summary><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span><b>生成参数</b><small id="lessonComposerSummary">物理 · 斜面与摩擦</small></span><i data-lucide="chevron-down" aria-hidden="true"></i></summary>
               <form id="interactiveLessonForm" class="lesson-composer" novalidate>
                 <header><h3>制作互动教材</h3></header>
-                <label class="lesson-form-field lesson-example-field"><span>从示例开始</span><select id="lessonQuickExample"><option value="inclined_plane">斜面与摩擦</option><option value="pendulum">单摆的周期</option><option value="collision">小车碰撞</option><option value="quadratic">二次函数参数</option><option value="">自定义知识点</option></select></label>
-                <label class="lesson-form-field lesson-topic-field"><span>想让学生探索什么？</span><input id="lessonKnowledgePoint" maxlength="160" value="斜面与摩擦" placeholder="输入知识点，例如：单摆的周期" required /></label>
+                <label class="lesson-form-field lesson-example-field"><span>从示例开始</span><select id="lessonQuickExample" class="form-select"><option value="inclined_plane">斜面与摩擦</option><option value="pendulum">单摆的周期</option><option value="collision">小车碰撞</option><option value="quadratic">二次函数参数</option><option value="">自定义知识点</option></select></label>
+                <label class="lesson-form-field lesson-topic-field"><span>想让学生探索什么？</span><input id="lessonKnowledgePoint" class="form-control" maxlength="160" value="斜面与摩擦" placeholder="输入知识点，例如：单摆的周期" required /></label>
                 <details class="lesson-more-settings" id="lessonMoreSettings"><summary>更多设置 <span>学科、目标与参考材料</span></summary>
+                <fieldset class="lesson-form-group"><legend>教学目标</legend>
                 <div class="lesson-form-grid">
-                  <label class="lesson-form-field"><span>学科</span><select id="lessonSubject"><option>数学</option><option selected>物理</option><option>化学</option><option>生物</option><option>语文</option><option>英语</option><option>地理</option><option>历史</option><option>道德与法治 / 思想政治</option><option>信息科技</option><option>通用技术</option><option>科学（小学综合）</option><option>音乐</option><option>美术</option><option>体育与健康</option><option>劳动与综合实践</option></select></label>
-                  <label class="lesson-form-field"><span>年级</span><select id="lessonGradeBand"><option>小学</option><option>七年级</option><option selected>八年级</option><option>九年级</option><option>高一</option><option>高二</option><option>高三</option><option>大学</option></select></label>
-
-                  <label class="lesson-form-field is-wide"><span>学习目标</span><textarea id="lessonLearningGoal" maxlength="600" placeholder="留空时，根据知识点自动生成目标">比较斜面倾角和摩擦对滑块运动的影响</textarea></label>
-                  <label class="lesson-form-field is-wide"><span>教材形式</span><select id="lessonPreferredArtifact"><option value="">自动选择</option><option value="function_graph">互动函数图</option><option value="physics_lab" selected>物理参数实验</option><option value="projectile_lab">抛体运动实验</option><option value="acid_base_lab">酸碱滴定实验</option><option value="mindmap">互动思维导图</option><option value="concept_cards">概念翻转卡</option></select></label>
-                  <label id="lessonPhysicsEngineField" class="lesson-form-field is-wide"><span>物理引擎</span><select id="lessonPhysicsEngine"><option value="auto">自动推荐</option><option value="matter">Matter.js · 轻量 2D 力学</option><option value="planck">Planck.js · Box2D 风格刚体</option></select><small>常规实验推荐 Matter.js，碰撞推荐 Planck.js。</small></label>
-                  <label class="lesson-form-field is-wide"><span>补充材料（可选）</span><textarea id="lessonSourceText" maxlength="4000" placeholder="粘贴教材段落、概念定义或教学要求…"></textarea></label>
-                  <div class="lesson-form-field is-wide"><span>参考图片（可选）</span><input id="lessonImageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden /><div id="lessonImageDrop" class="lesson-image-drop" role="button" tabindex="0"><i data-lucide="image-plus" aria-hidden="true"></i><img id="lessonImagePreview" src="./assets/knowledge/right-triangle-pythagoras.svg" alt="参考图片预览" hidden /><span><b>添加参考图片</b><small id="lessonImageName">上传图片、习题截图或教材页</small></span><button id="lessonImageRemove" type="button" aria-label="移除图片" hidden><i data-lucide="x"></i></button></div></div>
+                  <label class="lesson-form-field"><span>学科</span><select id="lessonSubject" class="form-select"><option>数学</option><option selected>物理</option><option>化学</option><option>生物</option><option>语文</option><option>英语</option><option>地理</option><option>历史</option><option>道德与法治 / 思想政治</option><option>信息科技</option><option>通用技术</option><option>科学（小学综合）</option><option>音乐</option><option>美术</option><option>体育与健康</option><option>劳动与综合实践</option></select></label>
+                  <label class="lesson-form-field"><span>年级</span><select id="lessonGradeBand" class="form-select"><option>小学</option><option>七年级</option><option selected>八年级</option><option>九年级</option><option>高一</option><option>高二</option><option>高三</option><option>大学</option></select></label>
+                  <label class="lesson-form-field is-wide"><span>学习目标</span><textarea id="lessonLearningGoal" class="form-control" maxlength="600" placeholder="留空时，根据知识点自动生成目标">比较斜面倾角和摩擦对滑块运动的影响</textarea></label>
+                  <label class="lesson-form-field is-wide"><span>教材形式</span><select id="lessonPreferredArtifact" class="form-select"><option value="">自动选择</option><option value="function_graph">互动函数图</option><option value="physics_lab" selected>物理参数实验</option><option value="projectile_lab">抛体运动实验</option><option value="acid_base_lab">酸碱滴定实验</option><option value="mindmap">互动思维导图</option><option value="concept_cards">概念翻转卡</option></select></label>
+                  <label id="lessonPhysicsEngineField" class="lesson-form-field is-wide"><span>物理引擎</span><select id="lessonPhysicsEngine" class="form-select"><option value="auto">自动推荐</option><option value="matter">Matter.js · 轻量 2D 力学</option><option value="planck">Planck.js · Box2D 风格刚体</option></select><small>常规实验推荐 Matter.js，碰撞推荐 Planck.js。</small></label>
                 </div>
+                </fieldset>
+                <fieldset class="lesson-form-group"><legend>参考材料</legend>
+                <div class="lesson-form-grid">
+                  <label class="lesson-form-field is-wide"><span>补充材料（可选）</span><textarea id="lessonSourceText" class="form-control" maxlength="4000" placeholder="粘贴教材段落、概念定义或教学要求…"></textarea></label>
+                  <div class="lesson-form-field is-wide"><span>参考图片（可选）</span><input id="lessonImageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden /><div id="lessonImageDrop" class="lesson-image-drop" role="button" tabindex="0" aria-label="添加参考图片"><i data-lucide="image-plus" aria-hidden="true"></i><!-- impeccable-disable-next-line broken-image: the selected local image is assigned before this hidden preview is shown --><img id="lessonImagePreview" alt="参考图片预览" hidden /><span><b>添加参考图片</b><small id="lessonImageName">上传图片、习题截图或教材页</small></span><button id="lessonImageRemove" class="btn" type="button" aria-label="移除图片" hidden><i data-lucide="x" aria-hidden="true"></i></button></div></div>
+                </div>
+                </fieldset>
                 </details>
-                <button id="lessonGenerateButton" class="lesson-generate-button" type="submit"><i data-lucide="sparkles"></i><span>生成互动教材</span></button>
-                <p id="lessonGenerateStatus" class="lesson-generate-status" data-state="idle">已加载内置斜面实验。点击“开始实验”观察运动。</p>
+                <div class="lesson-composer-submit">
+                  <button id="lessonGenerateButton" class="lesson-generate-button btn btn-primary" type="submit"><i data-lucide="sparkles" aria-hidden="true"></i><span>生成互动教材</span></button>
+                  <p id="lessonGenerateStatus" class="lesson-generate-status" role="status" aria-live="polite" data-state="idle">已加载内置斜面实验。点击“开始实验”观察运动。</p>
+                </div>
               </form>
+              </details>
 
               <div class="lesson-preview-column">
                 <section class="lesson-preview-panel" aria-labelledby="lessonPreviewTitle">
                   <header class="lesson-preview-toolbar">
-                    <div><b id="lessonPreviewTitle">互动预览</b><small id="lessonResultMeta">内置示例</small></div>
+                    <div><b id="lessonPreviewTitle" tabindex="-1">互动预览</b><small id="lessonResultMeta">内置示例</small></div>
                     <div class="lesson-preview-actions">
-                      <button id="lessonDownloadHtml" type="button" disabled><i data-lucide="download"></i><span>下载 HTML</span></button>
+                      <button id="lessonDownloadHtml" class="btn" type="button" disabled><i data-lucide="download" aria-hidden="true"></i><span>下载 HTML</span></button>
                       <details class="lesson-export-menu"><summary>录制与回放</summary><div class="lesson-export-options">
                         <button id="lessonRecordButton" type="button"><i data-lucide="circle-dot"></i><span>记录操作</span></button>
                         <button id="lessonReplayButton" type="button" disabled><i data-lucide="history"></i><span>回放</span></button>
@@ -1825,8 +1834,8 @@
                       </div></details>
                     </div>
                   </header>
-                  <div id="lessonPlayerEmpty" class="lesson-player-empty" hidden>等待生成教材</div>
-                  <div id="lessonPlayerStage" class="lesson-player-stage"></div>
+                  <div id="lessonPlayerEmpty" class="lesson-player-empty"><i data-lucide="presentation" aria-hidden="true"></i><b>在这里预览互动教材</b><p>先加载内置实验，或填写知识点生成教材。</p><button id="lessonLoadSample" class="btn" type="button">加载内置实验</button></div>
+                  <div id="lessonPlayerStage" class="lesson-player-stage" hidden></div>
                 </section>
                 <details class="lesson-generation-details"><summary>生成信息</summary>                <div id="lessonProviderStatus" class="lesson-provider-status" data-state="loading">
                   <i data-lucide="cpu" aria-hidden="true"></i>
@@ -1898,7 +1907,7 @@
             <section class="technology-controls" aria-label="筛选技术">
               <label class="technology-search"><i data-lucide="search"></i><input id="technologySearch" placeholder="搜索技术、学科或场景…" /></label>
               <select id="technologyCategoryFilter" aria-label="筛选分类"><option value="">全部分类</option></select>
-              <select id="technologyStatusFilter" aria-label="筛选状态"><option value="">全部状态</option><option value="implemented">本次已开发</option><option value="existing">项目已有</option><option value="candidate">候选技术</option></select>
+              <select id="technologyStatusFilter" aria-label="筛选状态"><option value="">全部状态</option><option value="implemented">已接入</option><option value="existing">项目已有</option><option value="candidate">候选技术</option></select>
               <span id="technologyResultCount">正在读取</span>
             </section>
             <section id="technologyLandscapeGrid" class="technology-grid" aria-live="polite"></section>

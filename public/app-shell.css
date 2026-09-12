@@ -19,8 +19,10 @@ html[data-app-host="true"] body > .skip-link { display: none; }
 .app-device-menu button[aria-checked="true"] .app-mode-check { visibility: visible; }
 .app-device-menu small { display: block; padding: 10px; font-size: 12px; line-height: 1.5; color: #637087; }
 .app-preview-controls, .app-preview-modes { display: flex; align-items: center; gap: 6px; }
+.app-preview-controls { flex-shrink: 0; }
 .app-preview-modes { padding: 4px; border: 1px solid #dce3ec; border-radius: 12px; background: #fff; }
-.app-preview-modes button, .app-pad-rotate { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 8px 12px; border: 0; border-radius: 8px; background: transparent; color: #536176; font: inherit; font-size: 13px; cursor: pointer; }
+.app-preview-modes button, .app-pad-rotate { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 8px; background: transparent; color: #536176; font: inherit; font-size: 13px; cursor: pointer; }
+.app-preview-controls svg { width: 20px; height: 20px; flex-shrink: 0; }
 .app-preview-modes button[aria-pressed="true"] { color: #245dca; background: #eaf1ff; font-weight: 600; }
 .app-preview-modes button:hover, .app-pad-rotate:hover { background: #eaf1ff; }
 .app-pad-rotate { border: 1px solid #d5dce6; background: #fff; }
@@ -62,21 +64,23 @@ html[data-app-host="true"], html[data-app-host="true"] body { width: 100%; heigh
 .app-preview-host[data-display-mode="pad"] .app-device { position: absolute; left: 50%; top: 50%; box-sizing: border-box; width: var(--pad-width, 1064px); height: var(--pad-height, 798px); max-width: none; max-height: none; border: 10px solid #252930; border-radius: 36px; grid-template-rows: 30px minmax(0, 1fr) 20px; transform: translate(-50%, -50%) scale(var(--device-scale, 1)); transform-origin: center; }
 .app-preview-host[data-display-mode="pad"] .app-device-status { padding: 3px 24px 0; font-size: 13px; }
 .app-preview-host[data-display-mode="pad"] .app-device-home span { height: 4px; width: 150px; }
-@media (max-width: 520px) {
-  .app-preview-toolbar { padding-inline: 15px; }
-  .app-preview-stage { grid-template-rows: 52px minmax(0, 1fr) 14px; }
+@media (max-width: 900px) { .app-preview-brand span { display: none; } }
+@media (max-width: 640px) {
+  .app-preview-toolbar { padding-inline: 12px; gap: 8px; }
+  .app-preview-stage { grid-template-rows: 60px minmax(0, 1fr) 14px; }
   .app-preview-brand span, .app-preview-caption { display: none; }
   .app-preview-brand strong { font-size: 14px; }
   .app-preview-brand > svg { display: none; }
-  .app-preview-modes button { min-width: 40px; padding: 7px; }
-  .app-preview-modes button span { display: none; }
-  .app-pad-rotate { padding-inline: 8px; font-size: 12px; }
+  .app-preview-modes button { width: 44px; min-width: 44px; padding: 0; }
+  .app-preview-modes button span, .app-pad-rotate span { display: none; }
+  .app-pad-rotate { width: 44px; padding: 0; }
   .app-device-wrap { padding-inline: 6px; }
   .app-device { border-width: 4px; border-radius: 36px; }
   .app-preview-exit { min-height: 40px; padding: 6px 10px; }
 }
+@media (max-width: 360px) { .app-preview-toolbar .app-preview-brand { display: none; } .app-preview-toolbar { justify-content: flex-end; } }
 @media (max-height: 600px) {
-  .app-preview-stage { grid-template-rows: 44px minmax(0, 1fr) 8px; }
+  .app-preview-stage { grid-template-rows: 60px minmax(0, 1fr) 8px; }
   .app-preview-caption { display: none; }
   .app-device { border-radius: 30px; grid-template-rows: 26px minmax(0, 1fr) 14px; }
   .app-device-status { padding-top: 3px; font-size: 12px; }

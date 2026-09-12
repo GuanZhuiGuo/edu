@@ -1,0 +1,18 @@
+{
+  "full_name": "remotion-dev/remotion",
+  "html_url": "https://github.com/remotion-dev/remotion",
+  "description": "🎥      Make videos programmatically with React",
+  "homepage": "https://remotion.dev",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "other",
+    "name": "Other",
+    "spdx_id": "NOASSERTION",
+    "url": null,
+    "node_id": "MDc6TGljZW5zZTA="
+  },
+  "source_url": "https://api.github.com/repos/remotion-dev/remotion",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

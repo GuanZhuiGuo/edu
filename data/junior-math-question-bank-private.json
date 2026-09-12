@@ -3,9 +3,9 @@
   "schema_ref": "./junior-math-question-bank-private.schema.json",
   "storage_classification": "server_private",
   "bank_id": "junior-math-moe-2022-seed-bank-private",
-  "version": "2026.08-seed.1",
-  "compiled_at": "2026-08-14T00:00:00+08:00",
-  "build_fingerprint": "47bbfeb92cee3d540153539755a6891126d43d7d5cae4bea69ef69441aaa6f5d",
+  "version": "2026.09-seed.1",
+  "compiled_at": "2026-09-12T00:00:00+08:00",
+  "build_fingerprint": "d4504263d62962684a0903ea8830cce4f62006468a2648055f8cf019b817fa9d",
   "public_bank_ref": "public/data/junior-math-question-bank.json",
   "access_contract": {
     "static_serving_allowed": false,

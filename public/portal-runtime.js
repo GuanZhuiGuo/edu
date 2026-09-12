@@ -3,10 +3,16 @@ const PORTAL_VIEWS_KEY = "ai-teacher:portal-views:v1";
 const TEACHER_CONTEXT_KEY = "ai-teacher:teacher-context:v1";
 const MOBILE_SHELL_QUERY = "(max-width: 820px)";
 
+const TEACHER_VIEW_ALIASES = Object.freeze({
+  "video-explanation": "courseware-assistant", "lesson-lab": "courseware-assistant",
+  materials: "courseware-assistant", "agent-skills": "skill-hub",
+  "tech-landscape": "skill-hub", "teacher-plan": "teacher-dashboard",
+});
+
 const PORTAL_ROLES = Object.freeze({
   student: Object.freeze({
     defaultView: "agent",
-    allowedViews: new Set(["agent", "course", "plan", "graph", "bank", "records", "buddy", "voice-config"])
+    allowedViews: new Set(["agent", "course", "plan", "graph", "bank", "assessment", "records", "buddy", "voice-config"])
   }),
   teacher: Object.freeze({
     defaultView: "teacher-dashboard",
@@ -14,16 +20,14 @@ const PORTAL_ROLES = Object.freeze({
       "teacher-dashboard",
       "teacher-students",
       "teacher-courses",
-      "teacher-plan",
-      "video-explanation",
+      "courseware-assistant",
+      "courseware-library",
+      "skill-hub",
       "graph",
       "ontology",
       "bank",
+      "assessment",
       "agent",
-      "lesson-lab",
-      "materials",
-      "agent-skills",
-      "tech-landscape",
       "voice-config"
     ])
   })
@@ -36,6 +40,7 @@ const WORKSPACE_PRESENTATION = Object.freeze({
     plan: { breadcrumb: "今日计划", title: "今日计划", chip: "本周目标 · 每日任务" },
     graph: { breadcrumb: "知识地图", title: "知识地图", chip: "知识关系 · 我的掌握情况" },
     bank: { breadcrumb: "练习与错题", title: "练习与错题", chip: "练习记录 · 错题复习" },
+    assessment: { breadcrumb: "智能评测", title: "智能评测", chip: "评测方法 · 任务 · 证据复盘" },
     records: { breadcrumb: "学习记录", title: "学习记录", chip: "学习画像 · 学习动态" },
     buddy: { breadcrumb: "学习搭子", title: "学习搭子", chip: "专注学习 · 共同进步" },
     "voice-config": { breadcrumb: "学习偏好", title: "学习偏好", chip: "教师形象 · 声音 · 对话习惯" }
@@ -44,9 +49,13 @@ const WORKSPACE_PRESENTATION = Object.freeze({
     "teacher-dashboard": { breadcrumb: "教学总览", title: "教学总览", chip: "班级概览 · 教学提醒" },
     "teacher-students": { breadcrumb: "班级学情", title: "班级学情", chip: "学生状态 · 学习证据" },
     "teacher-courses": { breadcrumb: "课程管理", title: "课程管理", chip: "课程 · 章节 · 发布" },
-    graph: { breadcrumb: "知识管理", title: "知识管理", chip: "知识结构 · 班级分布" },
+    graph: { breadcrumb: "知识库", title: "知识库", chip: "知识结构 · 班级分布" },
     ontology: { breadcrumb: "本体图", title: "本体图", chip: "实体 · 关系 · 题目映射 · 发布版本" },
-    bank: { breadcrumb: "出题与题库", title: "出题与题库", chip: "题目画像 · 审核 · 作业" },
+    bank: { breadcrumb: "题库", title: "题库", chip: "题目画像 · 审核 · 作业" },
+    assessment: { breadcrumb: "智能评测", title: "智能评测", chip: "方法 · 任务 · 数据集 · 结果" },
+    "courseware-assistant": { breadcrumb: "课件助手", title: "课件助手", chip: "" },
+    "courseware-library": { breadcrumb: "课件库", title: "课件库", chip: "" },
+    "skill-hub": { breadcrumb: "Skill hub", title: "Skill hub", chip: "" },
     "teacher-plan": { breadcrumb: "教学计划", title: "教学计划", chip: "课堂 · 作业 · 测验" },
     "video-explanation": { breadcrumb: "视频讲解", title: "视频讲解", chip: "教材 · 讲稿 · 分镜 · 成片" },
     agent: { breadcrumb: "课堂预览", title: "课堂预览", chip: "以学生视角体验AI教师" },
@@ -88,7 +97,8 @@ function readPortalViews() {
     const parsed = JSON.parse(localStorage.getItem(PORTAL_VIEWS_KEY) || "null");
     if (!parsed || typeof parsed !== "object") return defaults;
     for (const role of Object.keys(defaults)) {
-      if (PORTAL_ROLES[role].allowedViews.has(parsed[role])) defaults[role] = parsed[role];
+      const restored = role === "teacher" ? TEACHER_VIEW_ALIASES[parsed[role]] || parsed[role] : parsed[role];
+      if (PORTAL_ROLES[role].allowedViews.has(restored)) defaults[role] = restored;
     }
   } catch {
     // Use the role defaults.
@@ -242,7 +252,8 @@ export function getPortalRole() {
 
 export function resolvePortalWorkspace(view, role = activeRole) {
   const portal = PORTAL_ROLES[role] || PORTAL_ROLES.student;
-  return portal.allowedViews.has(view) ? view : portal.defaultView;
+  const target = role === "teacher" ? TEACHER_VIEW_ALIASES[view] || view : view;
+  return portal.allowedViews.has(target) ? target : portal.defaultView;
 }
 
 export function getPortalWorkspacePresentation(view, role = activeRole) {
@@ -634,7 +645,7 @@ export function initPortalRuntime({ activateWorkspace } = {}) {
     getRole: getPortalRole,
     switchRole: (role) => switchPortalRole(role),
     resolveWorkspace: resolvePortalWorkspace,
-    openWorkspace: (view) => activateWorkspaceHandler?.(resolvePortalWorkspace(view, activeRole)),
+    openWorkspace: (view) => activateWorkspaceHandler?.(view),
     getSubjectStudentId: () => subjectStudentId
   });
   globalThis.AITeacherPortalRuntime = api;

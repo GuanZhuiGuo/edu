@@ -29,7 +29,10 @@ function response() {
 function fixture(identity = {}) {
   const runtime = createEducationDataRuntime({
     env: { EDUCATION_DATA_SEED_DEMO: "true" },
-    storeOptions: { filename: ":memory:" }
+    storeOptions: {
+      filename: ":memory:",
+      clock: () => "2026-08-24T00:00:00.000Z",
+    }
   });
   const service = createEducationDataService({
     store: runtime.store,

@@ -1,9 +1,9 @@
 .education-settings-workbench {
   min-height: 0;
   display: grid;
-  grid-template-columns: 204px minmax(0, 1fr);
-  gap: 18px;
-  padding: 0 24px 28px;
+  grid-template-columns: 216px minmax(0, 1fr);
+  gap: 20px;
+  padding: 0 0 28px;
 }
 
 .education-settings-workbench[data-role="student"] {
@@ -16,10 +16,10 @@
   align-self: start;
   display: grid;
   gap: 6px;
-  padding: 8px;
-  border: 1px solid #e7eaf0;
-  border-radius: 14px;
-  background: #f7f8fa;
+  padding: 6px;
+  border: 0;
+  border-radius: 10px;
+  background: #eef1f5;
 }
 
 .education-settings-group-label {
@@ -209,7 +209,9 @@
 
 .education-settings-panels,
 .education-settings-panel {
+  width: 100%;
   min-width: 0;
+  max-width: none;
 }
 
 .education-settings-panel {
@@ -226,33 +228,29 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  padding: 22px 24px;
-  border: 1px solid #e4e8ef;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #ffffff 0%, #f6f9ff 100%);
+  padding: 2px 0 12px;
+  border: 0;
+  border-bottom: 1px solid #e4e8ef;
+  border-radius: 0;
+  background: transparent;
 }
 
 .settings-section-head span {
-  display: block;
-  margin-bottom: 7px;
-  color: #5278b8;
-  font-size: 11px;
-  font-weight: 750;
-  letter-spacing: .12em;
+  display: none;
 }
 
 .settings-section-head h3 {
   margin: 0;
   color: #1f2530;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .settings-section-head p {
   max-width: 660px;
-  margin: 7px 0 0;
+  margin: 4px 0 0;
   color: #687181;
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.55;
 }
 
 .settings-section-head > em {

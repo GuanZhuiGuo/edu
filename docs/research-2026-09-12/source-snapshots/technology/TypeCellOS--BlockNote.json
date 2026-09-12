@@ -1,0 +1,18 @@
+{
+  "full_name": "TypeCellOS/BlockNote",
+  "html_url": "https://github.com/TypeCellOS/BlockNote",
+  "description": "A React Rich Text Editor that's block-based (Notion style) and extensible. Built on top of Prosemirror and Tiptap.",
+  "homepage": "https://www.blocknotejs.org/",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "other",
+    "name": "Other",
+    "spdx_id": "NOASSERTION",
+    "url": null,
+    "node_id": "MDc6TGljZW5zZTA="
+  },
+  "source_url": "https://api.github.com/repos/TypeCellOS/BlockNote",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

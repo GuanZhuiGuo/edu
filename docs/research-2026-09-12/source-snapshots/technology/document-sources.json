@@ -1,0 +1,230 @@
+[
+  {
+    "file": "mrdoob--three.js--README.md",
+    "source_url": "https://raw.githubusercontent.com/mrdoob/three.js/dev/README.md",
+    "final_url": "https://raw.githubusercontent.com/mrdoob/three.js/dev/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 2969
+  },
+  {
+    "file": "BabylonJS--Babylon.js--README.md",
+    "source_url": "https://raw.githubusercontent.com/BabylonJS/Babylon.js/master/README.md",
+    "retrieved": "2026-09-12",
+    "ok": false,
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "file": "liabru--matter-js--README.md",
+    "source_url": "https://raw.githubusercontent.com/liabru/matter-js/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/liabru/matter-js/master/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 9001
+  },
+  {
+    "file": "d3--d3--README.md",
+    "source_url": "https://raw.githubusercontent.com/d3/d3/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/d3/d3/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 1215
+  },
+  {
+    "file": "apache--echarts--README.md",
+    "source_url": "https://raw.githubusercontent.com/apache/echarts/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/apache/echarts/master/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 4162
+  },
+  {
+    "file": "plotly--plotly.js--README.md",
+    "source_url": "https://raw.githubusercontent.com/plotly/plotly.js/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/plotly/plotly.js/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 11154
+  },
+  {
+    "file": "jsxgraph--jsxgraph--README.md",
+    "source_url": "https://raw.githubusercontent.com/jsxgraph/jsxgraph/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/jsxgraph/jsxgraph/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 6102
+  },
+  {
+    "file": "geogebra--integration--README.md",
+    "source_url": "https://raw.githubusercontent.com/geogebra/integration/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/geogebra/integration/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 1024
+  },
+  {
+    "file": "ManimCommunity--manim--README.md",
+    "source_url": "https://raw.githubusercontent.com/ManimCommunity/manim/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/ManimCommunity/manim/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 8378
+  },
+  {
+    "file": "remotion-dev--remotion--README.md",
+    "source_url": "https://raw.githubusercontent.com/remotion-dev/remotion/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/remotion-dev/remotion/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 4158
+  },
+  {
+    "file": "motion-canvas--motion-canvas--README.md",
+    "source_url": "https://raw.githubusercontent.com/motion-canvas/motion-canvas/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/motion-canvas/motion-canvas/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 5248
+  },
+  {
+    "file": "redotvideo--revideo--README.md",
+    "source_url": "https://raw.githubusercontent.com/redotvideo/revideo/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/redotvideo/revideo/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 3669
+  },
+  {
+    "file": "THU-MAIC--OpenMAIC--README.md",
+    "source_url": "https://raw.githubusercontent.com/THU-MAIC/OpenMAIC/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/THU-MAIC/OpenMAIC/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 51192
+  },
+  {
+    "file": "HKUDS--DeepTutor--README.md",
+    "source_url": "https://raw.githubusercontent.com/HKUDS/DeepTutor/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/HKUDS/DeepTutor/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 83635
+  },
+  {
+    "file": "cclank--cell-architecture-studio--README.md",
+    "source_url": "https://raw.githubusercontent.com/cclank/cell-architecture-studio/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/cclank/cell-architecture-studio/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 5729
+  },
+  {
+    "file": "stevenpetryk--mafs--README.md",
+    "source_url": "https://raw.githubusercontent.com/stevenpetryk/mafs/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/stevenpetryk/mafs/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 1271
+  },
+  {
+    "file": "TypeCellOS--BlockNote--README.md",
+    "source_url": "https://raw.githubusercontent.com/TypeCellOS/BlockNote/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/TypeCellOS/BlockNote/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 4711
+  },
+  {
+    "file": "ueberdosis--tiptap--README.md",
+    "source_url": "https://raw.githubusercontent.com/ueberdosis/tiptap/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/ueberdosis/tiptap/main/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 7818
+  },
+  {
+    "file": "rdkit--rdkit-js--README.md",
+    "source_url": "https://raw.githubusercontent.com/rdkit/rdkit-js/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/rdkit/rdkit-js/master/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 12514
+  },
+  {
+    "file": "3dmol--3Dmol.js--README.md",
+    "source_url": "https://raw.githubusercontent.com/3dmol/3Dmol.js/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/3dmol/3Dmol.js/master/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 3904
+  },
+  {
+    "file": "molstar--molstar--README.md",
+    "source_url": "https://raw.githubusercontent.com/molstar/molstar/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/molstar/molstar/master/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 9614
+  },
+  {
+    "file": "planck--README.md",
+    "source_url": "https://raw.githubusercontent.com/piqnt/planck.js/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/piqnt/planck.js/master/README.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 781
+  },
+  {
+    "file": "jsxgraph--COPYING",
+    "source_url": "https://raw.githubusercontent.com/jsxgraph/jsxgraph/master/COPYING",
+    "retrieved": "2026-09-12",
+    "ok": false,
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "file": "remotion--LICENSE.md",
+    "source_url": "https://raw.githubusercontent.com/remotion-dev/remotion/main/LICENSE.md",
+    "final_url": "https://raw.githubusercontent.com/remotion-dev/remotion/main/LICENSE.md",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 2822
+  },
+  {
+    "file": "blocknote--LICENSE",
+    "source_url": "https://raw.githubusercontent.com/TypeCellOS/BlockNote/main/LICENSE",
+    "retrieved": "2026-09-12",
+    "ok": false,
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "file": "3dmol--LICENSE",
+    "source_url": "https://raw.githubusercontent.com/3dmol/3Dmol.js/master/LICENSE",
+    "final_url": "https://raw.githubusercontent.com/3dmol/3Dmol.js/master/LICENSE",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 4283
+  },
+  {
+    "file": "ffmpeg--legal.html",
+    "source_url": "https://ffmpeg.org/legal.html",
+    "final_url": "https://ffmpeg.org/legal.html",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 10686
+  },
+  {
+    "file": "geogebra--license.html",
+    "source_url": "https://www.geogebra.org/license",
+    "final_url": "https://www.geogebra.org/license",
+    "retrieved": "2026-09-12",
+    "ok": true,
+    "chars": 169982
+  },
+  {
+    "file": "phet--licensing.html",
+    "source_url": "https://phet.colorado.edu/en/licensing",
+    "retrieved": "2026-09-12",
+    "ok": false,
+    "error": "<urlopen error _ssl.c:1112: The handshake operation timed out>"
+  }
+]

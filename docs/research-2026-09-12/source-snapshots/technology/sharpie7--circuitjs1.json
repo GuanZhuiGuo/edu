@@ -1,0 +1,18 @@
+{
+  "full_name": "sharpie7/circuitjs1",
+  "html_url": "https://github.com/sharpie7/circuitjs1",
+  "description": "Electronic Circuit Simulator in the Browser",
+  "homepage": null,
+  "default_branch": "master",
+  "archived": false,
+  "license": {
+    "key": "gpl-2.0",
+    "name": "GNU General Public License v2.0",
+    "spdx_id": "GPL-2.0",
+    "url": "https://api.github.com/licenses/gpl-2.0",
+    "node_id": "MDc6TGljZW5zZTg="
+  },
+  "source_url": "https://api.github.com/repos/sharpie7/circuitjs1",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

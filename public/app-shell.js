@@ -1,8 +1,9 @@
 // One live application in a persistent, same-origin viewport. Switching only
 // resizes that viewport; it never reboots conversations, forms, uploads or audio.
-import { mountKnowledgeConnectionStatus } from "./knowledge-connection-status.js";
+import { getKnowledgeConnectionStore, mountKnowledgeConnectionStatus } from "./knowledge-connection-status.js";
 import { mountAppHome } from "./app-home.js";
 import { mountAppCourseContext } from "./app-course-context.js";
+import { mountDesignSystem } from "./design-system.js";
 
 const MODE_KEY = "ai-teacher:display-mode:v1";
 const modes = { desktop: ["desktop", "桌面版"], app: ["phone", "手机版"], pad: ["pad", "Pad 版"] };
@@ -10,6 +11,7 @@ const icons = {
   phone: '<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/>',
   desktop: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>',
   pad: '<rect x="2" y="4" width="20" height="16" rx="3"/><path d="M18 11v2"/>',
+  rotate: '<path d="M3 10a9 9 0 1 1 2.6 8.4M3 4v6h6"/>',
   back: '<path d="m14 6-6 6 6 6"/>',
   more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
 };
@@ -34,19 +36,26 @@ export function mountAppShell() {
   host.className = "app-preview-stage";
   host.innerHTML = `
     <header class="app-preview-toolbar" aria-label="显示模式">
-      <a class="app-preview-brand" href="?display=desktop" aria-label="AI教师桌面版">${icon("phone")}<strong>AI教师</strong><span>App 版</span></a>
-      <div class="app-preview-controls"><button class="app-pad-rotate" type="button" aria-label="切换 Pad 横竖屏">切换竖屏</button><div class="app-preview-modes" role="group" aria-label="设备模式">${Object.entries(modes).map(([mode,[symbol,label]]) => `<button type="button" data-preview-mode="${mode}" aria-label="${label}" aria-pressed="false">${icon(symbol)}<span>${label}</span></button>`).join("")}</div></div>
+      <a class="app-preview-brand" href="?display=desktop" aria-label="AI教培平台桌面版">${icon("phone")}<strong>AI教培平台</strong><span>App 版</span></a>
+      <div class="app-preview-controls"><button class="app-pad-rotate" type="button" aria-label="切换 Pad 横竖屏">${icon("rotate")}<span>切换竖屏</span></button><div class="app-preview-modes" role="group" aria-label="设备模式">${Object.entries(modes).map(([mode,[symbol,label]]) => `<button type="button" data-preview-mode="${mode}" aria-label="${label}" aria-pressed="false">${icon(symbol)}<span>${label}</span></button>`).join("")}</div></div>
     </header>
     <div class="app-device-wrap">
-      <section class="app-device" aria-label="AI教师 App 手机预览">
+      <section class="app-device" aria-label="AI教培平台 App 手机预览">
         <div class="app-device-status" aria-hidden="true"><time>9:41</time><span class="app-device-indicators"><svg viewBox="0 0 18 14" width="18" height="14"><path d="M1 13V10h3v3zm5 0V7h3v6zm5 0V4h3v9zm5 0V1h2v12z" fill="currentColor"/></svg><svg width="18" height="14" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 5a12 12 0 0 1 16 0M5 8a8 8 0 0 1 10 0m-7 3a3 3 0 0 1 4 0"/><circle cx="10" cy="14" r=".7" fill="currentColor"/></svg><svg width="25" height="14" viewBox="0 0 27 14"><rect x="1" y="1" width="22" height="12" rx="3" fill="none" stroke="currentColor" opacity=".6"/><rect x="3" y="3" width="18" height="8" rx="1" fill="currentColor"/><path d="M25 5v4" stroke="currentColor" stroke-width="2"/></svg></span></div>
-        <iframe id="teacherAppFrame" title="AI教师应用" allow="microphone; camera; autoplay; fullscreen; display-capture"></iframe>
+        <iframe id="teacherAppFrame" title="AI教培平台应用" allow="microphone; camera; autoplay; fullscreen; display-capture"></iframe>
         <div class="app-device-home" aria-hidden="true"><span></span></div>
       </section>
     </div>
     <p class="app-preview-caption">学生端与教师端 · 全功能 App 体验</p>`;
   document.body.append(host);
   const frame = host.querySelector("iframe");
+  const connectionStore = getKnowledgeConnectionStore(document);
+  const connectionStatus = mountKnowledgeConnectionStatus({
+    container: host.querySelector(".app-preview-controls"),
+    store: connectionStore,
+    placement: "host",
+    restoreFocus: () => frame.contentWindow?.AITeacherAppContent?.focusConnectionStatus()
+  });
   let activeMode = mode;
   let orientation = "landscape";
   const wrap = host.querySelector(".app-device-wrap");
@@ -65,9 +74,12 @@ export function mountAppShell() {
   };
   new ResizeObserver(fitDevice).observe(wrap);
   const applyMode = (requested) => {
+    const previousMode = activeMode;
+    const focusedControl = document.activeElement?.closest?.(".app-preview-modes");
     activeMode = Object.hasOwn(modes, requested) ? requested : "desktop";
     document.body.dataset.displayMode = activeMode;
-    host.querySelector(".app-device").setAttribute("aria-label", `AI教师${modes[activeMode][1]}预览`);
+    connectionStatus.setVisible(activeMode !== "desktop");
+    host.querySelector(".app-device").setAttribute("aria-label", `AI教培平台${modes[activeMode][1]}预览`);
     host.querySelector(".app-preview-brand span").textContent = modes[activeMode][1];
     host.querySelector(".app-preview-caption").textContent = `学生端与教师端 · ${modes[activeMode][1]}全功能体验`;
     host.querySelectorAll("[data-preview-mode]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.previewMode === activeMode)));
@@ -78,18 +90,23 @@ export function mountAppShell() {
     history.replaceState(null, "", url);
     try { localStorage.setItem(MODE_KEY, activeMode); } catch { /* Optional preference. */ }
     frame.contentWindow?.AITeacherAppContent?.setMode(activeMode);
+    if (previousMode !== activeMode && activeMode === "desktop" && focusedControl) frame.contentDocument?.querySelector("#appViewToggle")?.focus();
   };
   window.AITeacherAppShell = Object.freeze({
     setMode: applyMode,
     getMode: () => activeMode,
     setHomeVisible: visible => { document.body.dataset.appHomeVisible = String(visible); },
-    getOrientation: () => orientation
+    getOrientation: () => orientation,
+    getConnectionStatusStore: () => connectionStore,
+    hasExternalControls: () => activeMode !== "desktop",
+    focusConnectionStatus: () => connectionStatus.focus(),
+    focusModeControl: () => host.querySelector(`[data-preview-mode="${activeMode}"]`)?.focus()
   });
   host.querySelectorAll("[data-preview-mode]").forEach(button => button.addEventListener("click", () => applyMode(button.dataset.previewMode)));
   host.querySelector(".app-pad-rotate").addEventListener("click", (event) => {
     orientation = orientation === "landscape" ? "portrait" : "landscape";
     document.body.dataset.padOrientation = orientation;
-    event.currentTarget.textContent = orientation === "landscape" ? "切换竖屏" : "切换横屏";
+    event.currentTarget.querySelector("span").textContent = orientation === "landscape" ? "切换竖屏" : "切换横屏";
     event.currentTarget.setAttribute("aria-label", `当前 Pad ${orientation === "landscape" ? "横屏，切换竖屏" : "竖屏，切换横屏"}`);
     fitDevice();
   });
@@ -114,9 +131,13 @@ export function mountAppShell() {
 }
 
 function mountContentControls() {
+  mountDesignSystem();
   const toggle = document.querySelector("#appViewToggle");
-  mountKnowledgeConnectionStatus();
   const parentShell = window.parent.AITeacherAppShell;
+  const connectionStatus = mountKnowledgeConnectionStatus({
+    store: parentShell?.getConnectionStatusStore?.(),
+    restoreFocus: () => parentShell?.focusConnectionStatus?.()
+  });
   let activeMode = parentShell?.getMode() || initialMode();
   const question = document.querySelector("#textQuestion");
   const fitQuestion = () => {
@@ -165,7 +186,8 @@ function mountContentControls() {
     const button = event.target.closest("[data-device-mode]");
     if (!button) return;
     closeModeMenu(true);
-    parentShell?.setMode(button.dataset.deviceMode);
+    if (parentShell?.setMode) parentShell.setMode(button.dataset.deviceMode);
+    else setMode(button.dataset.deviceMode);
   });
   document.addEventListener("pointerdown", event => { if (!modeMenu.contains(event.target) && !toggle.contains(event.target)) closeModeMenu(); });
   document.addEventListener("keydown", event => {
@@ -187,13 +209,13 @@ function mountContentControls() {
   teacherNav.dataset.mobilePortalRole = "teacher";
   teacherNav.hidden = true;
   const teacherEntries = [
-    ["teacher-dashboard", "总览"], ["teacher-students", "学情"],
-    ["teacher-courses", "课程"], ["bank", "题库"]
+    ["agent", "课堂"], ["courseware-assistant", "助手"],
+    ["courseware-library", "课件"], ["bank", "题库"], ["assessment", "评测"]
   ];
   teacherNav.innerHTML = teacherEntries.map(([view, label]) => {
     const source = document.querySelector(`[data-portal-role="teacher"][data-workspace-view="${view}"]`);
     return `<button type="button" role="tab" aria-selected="false" aria-controls="${source.getAttribute("aria-controls")}" aria-label="${source.getAttribute("aria-label")}" data-mobile-workspace-view="${view}" data-mobile-portal-role-scope="teacher">${source.querySelector("i,svg").outerHTML}<span>${label}</span></button>`;
-  }).join("") + `<button type="button" class="app-teacher-more" aria-label="更多教学工具" aria-haspopup="dialog" aria-controls="teacherMobileNavDialog" aria-expanded="false">${icon("more")}<span>更多</span></button>`;
+  }).join("") + `<button type="button" class="app-teacher-more" aria-label="全部教师功能" aria-haspopup="dialog" aria-controls="teacherMobileNavDialog" aria-expanded="false">${icon("more")}<span>全部</span></button>`;
   teacherNav.setAttribute("role", "tablist");
   app.append(teacherNav);
   const more = teacherNav.querySelector(".app-teacher-more");
@@ -277,6 +299,10 @@ function mountContentControls() {
     if (activeMode === "app" && mode !== "app") homeWasVisible = home.isVisible();
     activeMode = Object.hasOwn(modes, mode) ? mode : "desktop";
     document.body.dataset.displayMode = activeMode;
+    const externalControls = Boolean(parentShell?.hasExternalControls?.());
+    const restoreModeFocus = externalControls && document.activeElement === toggle;
+    toggle.hidden = externalControls;
+    connectionStatus?.setVisible(!externalControls);
     if (activeMode !== "app") home.hide();
     else if (enteringApp && homeWasVisible) home.show({ focus: false });
     syncNavigation();
@@ -287,13 +313,14 @@ function mountContentControls() {
     toggle.title = "切换桌面、手机或 Pad，保留当前页面";
     modeMenu.querySelectorAll("[data-device-mode]").forEach(button => button.setAttribute("aria-checked", String(button.dataset.deviceMode === activeMode)));
     closeModeMenu();
+    if (restoreModeFocus) parentShell.focusModeControl?.();
     // Resize observers and legacy graph renderers both receive the new viewport.
     requestAnimationFrame(() => requestAnimationFrame(() => {
       fitQuestion();
       window.dispatchEvent(new Event("resize"));
     }));
   };
-  window.AITeacherAppContent = Object.freeze({ setMode, showHome: () => home.show() });
+  window.AITeacherAppContent = Object.freeze({ setMode, showHome: () => home.show(), focusConnectionStatus: () => connectionStatus?.focus() });
   toggle.addEventListener("click", () => modeMenu.hidden ? openModeMenu() : closeModeMenu(true));
   setMode(activeMode);
 }

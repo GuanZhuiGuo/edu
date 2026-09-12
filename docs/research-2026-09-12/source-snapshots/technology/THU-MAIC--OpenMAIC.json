@@ -1,0 +1,18 @@
+{
+  "full_name": "THU-MAIC/OpenMAIC",
+  "html_url": "https://github.com/THU-MAIC/OpenMAIC",
+  "description": "Open Multi-Agent Interactive Classroom — Get an immersive, multi-agent learning experience in just one click",
+  "homepage": null,
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/THU-MAIC/OpenMAIC",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

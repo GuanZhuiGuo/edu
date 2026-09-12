@@ -246,7 +246,7 @@ test("learning workbench exposes one unique panel and one role-scoped menu entry
 
   const roleViews = {
     student: ["agent", "course", "plan", "graph", "bank", "records", "buddy", "voice-config"],
-    teacher: ["teacher-dashboard", "teacher-students", "teacher-courses", "graph", "bank", "teacher-plan", "agent", "materials", "agent-skills", "voice-config"]
+    teacher: ["agent", "teacher-dashboard", "teacher-students", "teacher-courses", "courseware-assistant", "courseware-library", "graph", "bank", "ontology", "skill-hub", "voice-config"]
   };
   for (const [role, views] of Object.entries(roleViews)) {
     for (const view of views) {
@@ -254,25 +254,31 @@ test("learning workbench exposes one unique panel and one role-scoped menu entry
       assert.equal((html.match(roleScopedEntry) || []).length, 1, `${role}/${view} needs one role-scoped menu entry`);
     }
   }
-  const allPanels = [...new Set(Object.values(roleViews).flat()), "materials", "library"];
+  const allPanels = [...new Set(Object.values(roleViews).flat()), "library"];
   for (const view of allPanels) {
     assert.equal((html.match(new RegExp(`data-workspace-panel="${view}"`, "g")) || []).length, 1, `${view} needs one panel`);
   }
 });
 
-test("Agent Skills is a teacher-only workspace initialized from the public server manifest", async () => {
-  const [html, clientSource, portalSource] = await Promise.all([
+test("Skill hub preserves the native skill workspace and its public server manifest", async () => {
+  const [html, clientSource, portalSource, designSource, skillSource] = await Promise.all([
     readFile(indexPath, "utf8"),
     readFile(clientPath, "utf8"),
     readFile(portalRuntimePath, "utf8"),
+    readFile(new URL("../public/design-system.css", import.meta.url), "utf8"),
+    readFile(new URL("../public/education-skill-workbench.js", import.meta.url), "utf8"),
   ]);
-  assert.match(html, /href="\.\/education-skill-workbench\.css"/u);
+  assert.match(html, /href="\.\/design-system\.css"/u);
+  assert.match(designSource, /@import url\('\.\/education-skill-workbench\.css'\) layer\(legacy\)/u);
   assert.match(html, /id="educationSkillsWorkspace"[\s\S]*?data-workspace-panel="agent-skills"/u);
   assert.match(html, /id="educationSkillWorkbench"/u);
-  assert.match(html, /data-workspace-view="agent-skills"[^>]*data-portal-role="teacher"/u);
-  assert.doesNotMatch(html, /data-workspace-view="agent-skills"[^>]*data-portal-role="student"/u);
+  assert.match(html, /data-workspace-view="skill-hub"[^>]*data-portal-role="teacher"/u);
+  assert.doesNotMatch(html, /data-workspace-view="(?:skill-hub|agent-skills)"[^>]*data-portal-role="student"/u);
   assert.match(clientSource, /initEducationSkillWorkbench\(document\.querySelector\("#educationSkillWorkbench"\)\)/u);
-  assert.match(portalSource, /"agent-skills"/u);
+  assert.match(clientSource, /mountSkillHub\(\)/u);
+  assert.match(portalSource, /"agent-skills": "skill-hub"/u);
+  assert.match(skillSource, /fetchImpl\("\/api\/education\/agent\/skills"/u);
+  assert.match(skillSource, /payload\.skills\.filter\(\(skill\) => skill\?\.id && skill\?\.status === "active"\)/u);
 });
 
 test("teacher curriculum import stays in the knowledge workspace and exposes the ontology review chain", async () => {

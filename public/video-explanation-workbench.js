@@ -1,5 +1,10 @@
 const API_ROOT = "/api/education/videos";
 const LEGACY_API_ROOT = "/api/education/video-explanations";
+const videoWorkbenchInstances = new WeakMap();
+
+export function getVideoExplanationWorkbench(root = document.querySelector("#videoExplanationWorkbench")) {
+  return root ? videoWorkbenchInstances.get(root) || null : null;
+}
 
 const TERMINAL_TASK_STATES = new Set(["completed", "succeeded", "success", "failed", "error", "cancelled", "canceled"]);
 const ACTIVE_TASK_STATES = new Set(["queued", "pending", "submitting", "running", "processing", "generating", "composing", "cancel_requested"]);
@@ -467,6 +472,7 @@ function collectSettings(form) {
 }
 
 export function initVideoExplanationWorkbench(root = document.querySelector("#videoExplanationWorkbench")) {
+  if (root && videoWorkbenchInstances.has(root)) return videoWorkbenchInstances.get(root);
   if (!root || root.dataset.initialized === "true") return null;
   root.dataset.initialized = "true";
 
@@ -547,6 +553,22 @@ export function initVideoExplanationWorkbench(root = document.querySelector("#vi
       ? `${icon(type === "error" ? "circle-alert" : type === "success" ? "circle-check" : "info")}<span>${escapeHTML(message)}</span><button type="button" aria-label="关闭提示" data-video-action="dismiss-notice">${icon("x")}</button>`
       : "";
     refreshIcons(nodes.notice);
+    notifyCourseware();
+  }
+
+  function currentCourseware() {
+    const project = state.activeProject;
+    if (!project?.outputUrl) return null;
+    return { title: project.title, description: project.summary || `基于${project.sourceName || "教材"}制作的讲解视频`, subject: String(project.settings?.subject || "通用"), type: "video", technology: "视频讲解", tags: [project.sourceName].filter(Boolean), interactive: false, videoUrl: project.outputUrl, source: "saved" };
+  }
+
+  function notifyCourseware() {
+    root.dispatchEvent(new CustomEvent("video-workbench:changed", { bubbles: true, detail: {
+      project: state.activeProject ? structuredClone(state.activeProject) : null,
+      courseware: currentCourseware(),
+      creating: state.creating,
+      notice: state.notice ? { ...state.notice } : null
+    } }));
   }
 
   function renderServiceStatus() {
@@ -765,6 +787,7 @@ export function initVideoExplanationWorkbench(root = document.querySelector("#vi
   }
 
   function renderStudio() {
+    notifyCourseware();
     const project = state.activeProject;
     if (!project) {
       renderCreateStage();
@@ -838,6 +861,7 @@ export function initVideoExplanationWorkbench(root = document.querySelector("#vi
     const projectIndex = state.projects.findIndex((item) => item.id === state.activeProject.id);
     if (projectIndex >= 0) state.projects[projectIndex] = { ...state.projects[projectIndex], tasks };
     renderTaskDock(state.activeProject);
+    notifyCourseware();
   }
 
   function taskFromActionPayload(payload, defaults = {}) {
@@ -1522,20 +1546,34 @@ export function initVideoExplanationWorkbench(root = document.querySelector("#vi
   });
 
   document.addEventListener("learning-workspace:change", (event) => {
-    if (event.detail?.view !== "video-explanation") return;
+    if (!["video-explanation", "courseware-assistant"].includes(event.detail?.view)) return;
     if (!state.config && !state.loadingProjects && state.configError) loadInitial();
   });
 
   refreshIcons();
   loadInitial();
 
-  return Object.freeze({
+  const api = Object.freeze({
     refresh: loadInitial,
     openProject: loadProject,
+    getCourseware: currentCourseware,
+    getProject: () => state.activeProject ? structuredClone(state.activeProject) : null,
+    prepareDraft(prompt = "") {
+      if (state.creating) throw new Error("视频项目正在创建，请等待当前操作完成。");
+      state.activeProject = null;
+      state.selectedSceneId = "";
+      renderProjectList();
+      renderCreateStage();
+      const titleInput = root.querySelector('[data-video-create-form] input[name="title"]');
+      if (titleInput) titleInput.value = String(prompt).trim().slice(0, 80);
+      setNotice("请上传课件或选择已解析资料，再创建项目。分镜与成片任务会显示真实进度。", "info");
+    },
     getState: () => ({
       projects: state.projects.length,
       activeProjectId: state.activeProject?.id || null,
       serviceReady: !(state.configError && state.projectsError)
     })
   });
+  videoWorkbenchInstances.set(root, api);
+  return api;
 }

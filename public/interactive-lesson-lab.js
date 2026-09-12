@@ -5,6 +5,23 @@ import { buildPhysicsLessonHtml } from "./physics-lesson-export.js";
 
 const CONFIG_URL = "/api/interactive-lessons/config";
 const GENERATE_URL = "/api/interactive-lessons/generate";
+const lessonLabInstances = new WeakMap();
+
+export function getInteractiveLessonLab(root = document.querySelector("#interactiveLessonWorkspace")) {
+  return root ? lessonLabInstances.get(root) || null : null;
+}
+
+export function mountInteractiveLessonPlayer(container, lesson, options = {}) {
+  const player = new LessonPlayer(container, lesson, options);
+  player.mount();
+  return player;
+}
+
+export async function buildCoursewareLessonHtml(lesson, events = []) {
+  return lesson.artifact_type === "physics_lab"
+    ? buildPhysicsLessonHtml(lesson, events)
+    : buildStandaloneLessonHtml(lesson, events);
+}
 
 const ARTIFACT_LABELS = Object.freeze({
   function_graph: "互动函数图",
@@ -44,11 +61,16 @@ const SAMPLE_LESSON = Object.freeze({
 
 export function initInteractiveLessonLab(options = {}) {
   const root = options.root || document.querySelector("#interactiveLessonWorkspace");
+  if (root && lessonLabInstances.has(root)) return lessonLabInstances.get(root);
   if (!root || root.dataset.lessonLabReady === "true") return null;
   root.dataset.lessonLabReady = "true";
 
   const elements = {
     form: root.querySelector("#interactiveLessonForm"),
+    composerDetails: root.querySelector("#lessonComposerDetails"),
+    composerSummary: root.querySelector("#lessonComposerSummary"),
+    previewTitle: root.querySelector("#lessonPreviewTitle"),
+    loadSample: root.querySelector("#lessonLoadSample"),
     quickExample: root.querySelector("#lessonQuickExample"),
     physicsEngine: root.querySelector("#lessonPhysicsEngine"),
     physicsEngineField: root.querySelector("#lessonPhysicsEngineField"),
@@ -78,6 +100,26 @@ export function initInteractiveLessonLab(options = {}) {
     eventCount: root.querySelector("#lessonEventCount"),
   };
   if (!elements.form || !elements.stage || !elements.generate) return null;
+
+  const wideLayout = window.matchMedia?.("(min-width: 1024px)");
+  const syncComposerLayout = () => {
+    if (root.dataset.coursewareEmbedded === "true") return;
+    // Collapse only on a breakpoint transition, never during edits or generation.
+    if (elements.composerDetails) elements.composerDetails.open = wideLayout?.matches !== false;
+  };
+  syncComposerLayout();
+  wideLayout?.addEventListener?.("change", syncComposerLayout);
+  const syncComposerSummary = () => {
+    if (elements.composerSummary) elements.composerSummary.textContent = `${elements.subject.value} · ${elements.knowledgePoint.value.trim() || "自定义知识点"}`;
+  };
+  elements.form.addEventListener("input", syncComposerSummary);
+  elements.form.addEventListener("change", syncComposerSummary);
+  const revealPreview = () => {
+    if (wideLayout?.matches !== false) return;
+    if (elements.composerDetails) elements.composerDetails.open = false;
+    elements.previewTitle?.focus({ preventScroll: true });
+    elements.previewTitle?.scrollIntoView({ behavior: "auto", block: "start" });
+  };
 
   const state = {
     busy: false,
@@ -119,19 +161,44 @@ export function initInteractiveLessonLab(options = {}) {
     updateEventCount();
   };
 
-  const mountLesson = (lesson, { trace = [], agent = null, sample = false } = {}) => {
+  const mountLesson = (lesson, { trace = [], agent = null, sample = false, preserveSource = false } = {}) => {
     state.recordRevision += 1;
     elements.record.disabled = false;
     if (state.mediaRecorder?.state === "recording") state.mediaRecorder.stop();
     state.player?.destroy();
     stopReplay(state);
     state.lesson = lesson;
+    const selectLessonValue = (select, value) => {
+      const text = String(value || "");
+      if (text && ![...select.options].some((option) => option.value === text)) {
+        const option = root.ownerDocument.createElement("option");
+        option.value = text;
+        option.textContent = text;
+        select.append(option);
+      }
+      select.value = text;
+    };
+    selectLessonValue(elements.subject, lesson.subject);
+    selectLessonValue(elements.gradeBand, lesson.grade_band);
+    elements.knowledgePoint.value = String(lesson.knowledge_point || lesson.title || "").slice(0, 160);
+    elements.learningGoal.value = (lesson.learning_objectives || []).join("；").slice(0, 600);
+    elements.preferredArtifact.value = Object.hasOwn(ARTIFACT_LABELS, lesson.artifact_type) ? lesson.artifact_type : "";
+    const sampleKey = Object.entries(PHYSICS_LESSON_SAMPLES).find(([, item]) => item.lesson_id === lesson.lesson_id)?.[0];
+    elements.quickExample.value = sampleKey || (lesson.lesson_id === SAMPLE_LESSON.lesson_id ? "quadratic" : "");
+    state.physicsPreset = lesson.artifact_type === "physics_lab" ? lesson.visualization?.preset : undefined;
+    if (elements.physicsEngine) elements.physicsEngine.value = lesson.artifact_type === "physics_lab" ? lesson.visualization?.engine || "auto" : "auto";
+    if (!preserveSource) {
+      elements.sourceText.value = String(lesson.explanation || "").slice(0, 4000);
+      clearSelectedImage(state, elements);
+    }
+    syncPhysicsField();
     state.events = [];
     state.recording = false;
     renderRecordButton(elements.record, false);
     elements.empty.hidden = true;
     elements.stage.hidden = false;
     elements.lessonMeta.textContent = `${ARTIFACT_LABELS[lesson.artifact_type] || "互动教材"} · ${lesson.subject} · ${lesson.grade_band}`;
+    syncComposerSummary();
     state.player = new LessonPlayer(elements.stage, lesson, {
       onEvent: onPlayerEvent,
       onReady: () => {
@@ -147,6 +214,7 @@ export function initInteractiveLessonLab(options = {}) {
     elements.downloadHtml.disabled = false;
     renderAgentTrace(elements.trace, trace, agent, sample);
     updateEventCount();
+    if (!preserveSource) setStatus(`已加载${sample ? "内置示例" : "课件"}：${lesson.title}，可直接交互或继续生成。`, "success");
     window.lucide?.createIcons?.({ attrs: { "stroke-width": 1.8 } });
   };
 
@@ -184,6 +252,8 @@ export function initInteractiveLessonLab(options = {}) {
       return;
     }
     state.busy = true;
+    const requestId = globalThis.crypto?.randomUUID?.() || `lesson-${Date.now()}`;
+    root.dispatchEvent(new CustomEvent("interactive-lesson:generation", { bubbles: true, detail: { requestId, status: "running", title: knowledgePoint } }));
     elements.generate.disabled = true;
     elements.generate.classList.add("is-busy");
     setStatus("正在根据知识点设计互动教材…", "busy");
@@ -207,11 +277,16 @@ export function initInteractiveLessonLab(options = {}) {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.message || "互动教材生成失败");
-      mountLesson(payload.lesson, { trace: payload.trace, agent: payload.agent });
+      mountLesson(payload.lesson, { trace: payload.trace, agent: payload.agent, preserveSource: true });
       setStatus("生成完成：教材可交互、可记录、可下载", "success");
+      revealPreview();
+      root.dispatchEvent(new CustomEvent("interactive-lesson:generation", { bubbles: true, detail: { requestId, status: "completed", lesson: payload.lesson } }));
+      return payload.lesson;
     } catch (error) {
       setStatus(error?.message || "互动教材生成失败，请重试", "error");
       renderTraceError(elements.trace, error?.message || "生成失败");
+      root.dispatchEvent(new CustomEvent("interactive-lesson:generation", { bubbles: true, detail: { requestId, status: "failed", error: error?.message || "生成失败" } }));
+      return null;
     } finally {
       state.busy = false;
       elements.generate.disabled = !state.configured;
@@ -263,13 +338,19 @@ export function initInteractiveLessonLab(options = {}) {
   });
   syncPhysicsField();
 
+  elements.loadSample?.addEventListener("click", () => {
+    elements.quickExample.value = "inclined_plane";
+    elements.quickExample.dispatchEvent(new Event("change", { bubbles: true }));
+    elements.previewTitle?.focus({ preventScroll: true });
+  });
+
   elements.form.addEventListener("submit", (event) => {
     event.preventDefault();
     void generate();
   });
   elements.imageDrop.addEventListener("click", () => elements.imageInput.click());
   elements.imageDrop.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (event.target === elements.imageDrop && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
       elements.imageInput.click();
     }
@@ -384,14 +465,16 @@ export function initInteractiveLessonLab(options = {}) {
           : `已套用生成指导示例：${item.knowledgePoint}`,
         "success",
       );
+      syncComposerSummary();
+      if (elements.composerDetails) elements.composerDetails.open = true;
       window.setTimeout(() => {
         elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
         elements.generate.focus();
       }, 0);
     },
     onExploreTechnology: (item) => {
-      const navigation = document.querySelector('[data-workspace-view="tech-landscape"][data-portal-role="teacher"]');
-      navigation?.click();
+      if (globalThis.AITeacherPortalRuntime?.openWorkspace) globalThis.AITeacherPortalRuntime.openWorkspace("tech-landscape");
+      else document.dispatchEvent(new CustomEvent("workspace:navigate", { detail: { view: "tech-landscape" } }));
       window.setTimeout(() => {
         const technologySearch = document.querySelector("#technologySearch");
         if (!technologySearch) return;
@@ -404,7 +487,39 @@ export function initInteractiveLessonLab(options = {}) {
 
   mountLesson(PHYSICS_LESSON_SAMPLES.inclined_plane, { sample: true });
   void refreshConfig();
-  return Object.freeze({ generate, mountLesson, getLesson: () => state.lesson });
+  const api = Object.freeze({
+    generate,
+    mountLesson,
+    getLesson: () => state.lesson,
+    isBusy: () => state.busy,
+    async generateCourseware({ prompt, type = "", subject = "" } = {}) {
+      if (state.busy) throw new Error("互动教材正在生成，请等待当前任务完成。");
+      const description = String(prompt || "").trim();
+      if (!description) throw new Error("请先描述想制作的课件。");
+      elements.quickExample.value = "";
+      elements.knowledgePoint.value = description.split(/\n/)[0].slice(0, 160);
+      elements.learningGoal.value = description.slice(0, 600);
+      elements.sourceText.value = description.slice(0, 4000);
+      if (subject && [...elements.subject.options].some((option) => option.value === subject)) elements.subject.value = subject;
+      elements.preferredArtifact.value = Object.hasOwn(ARTIFACT_LABELS, type) ? type : "";
+      state.physicsPreset = undefined;
+      syncPhysicsField();
+      syncComposerSummary();
+      const result = await generate();
+      if (!result) throw new Error(elements.status.textContent || "互动教材生成失败。");
+      return result;
+    },
+    async getCourseware() {
+      if (!state.lesson || !state.player) return null;
+      const lesson = state.events.length ? state.lesson : state.player.getExportLesson();
+      const technology = lesson.artifact_type === "physics_lab"
+        ? lesson.visualization?.engine === "planck" ? "Planck.js" : "Matter.js"
+        : ["function_graph", "projectile_lab", "acid_base_lab"].includes(lesson.artifact_type) ? "Canvas 2D" : "原生 DOM";
+      return { title: lesson.title, description: lesson.subtitle || lesson.explanation, subject: lesson.subject, type: lesson.artifact_type, technology, tags: [lesson.grade_band, lesson.knowledge_point].filter(Boolean), interactive: true, lesson: structuredClone(lesson), html: await buildCoursewareLessonHtml(lesson, state.events), source: "saved" };
+    }
+  });
+  lessonLabInstances.set(root, api);
+  return api;
 }
 
 class LessonPlayer {
@@ -437,12 +552,15 @@ class LessonPlayer {
       </header>
       <div class="lesson-player-grid">
         <section class="lesson-player-canvas" data-lesson-visual></section>
-        <aside class="lesson-player-guide">
+        <details class="lesson-player-guidance">
+          <summary>教学引导<span>预测、观察与迁移练习</span></summary>
+          <div class="lesson-player-guide">
           <section class="lesson-guide-step is-prediction"><span>1</span><div><b>先预测</b><p>${escapeHtml(this.lesson.guidance.prediction_prompt)}</p></div></section>
           <section class="lesson-guide-step is-observation"><span>2</span><div><b>再观察</b><p>${escapeHtml(this.lesson.guidance.observation_prompt)}</p></div></section>
           <section class="lesson-guide-step is-transfer"><span>3</span><div><b>做迁移</b><p>${escapeHtml(this.lesson.guidance.transfer_question)}</p></div></section>
           <details class="lesson-key-points"><summary>关键结论</summary><ul>${this.lesson.key_points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul></details>
-        </aside>
+          </div>
+        </details>
       </div>`;
     this.root.append(shell);
     this.visual = shell.querySelector("[data-lesson-visual]");
@@ -779,6 +897,7 @@ class LessonPlayer {
   setControlsDisabled(value) { this.physics?.setControlsDisabled(value); }
 
   getExportLesson() {
+    if (!this.physics) return { ...this.lesson, visualization: { ...this.lesson.visualization, parameters: { ...this.parameters } } };
     const snapshot = this.physics?.getSnapshot();
     if (!snapshot?.ready) return this.lesson;
     return { ...this.lesson, visualization: { ...this.lesson.visualization, engine: snapshot.engine, parameters: { ...snapshot.parameters } } };

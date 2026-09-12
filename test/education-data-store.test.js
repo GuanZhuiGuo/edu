@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { createEducationDataRuntime } from "../education-data-runtime.js";
@@ -7,7 +8,10 @@ import { seedEducationDemoData } from "../education-data-seed.js";
 function fixture() {
   return createEducationDataRuntime({
     env: { EDUCATION_DATA_SEED_DEMO: "true" },
-    storeOptions: { filename: ":memory:" }
+    storeOptions: {
+      filename: ":memory:",
+      clock: () => "2026-08-24T00:00:00.000Z",
+    }
   });
 }
 
@@ -31,6 +35,34 @@ test("SQLite migration and demo seed create real relational data idempotently", 
     assert.equal(repeated.question_bank.idempotent, true);
     assert.equal(repeated.mastery_evidence.inserted, 0);
     assert.equal(runtime.store.summary({ tenantId: runtime.tenantId }).counts.questions, 420);
+  } finally {
+    runtime.store.close();
+  }
+});
+
+test("a new seed bank version replaces logical questions without duplicating IDs", () => {
+  const runtime = fixture();
+  try {
+    const publicCatalog = JSON.parse(readFileSync(new URL("../public/data/junior-math-question-bank.json", import.meta.url), "utf8"));
+    const privateCatalog = JSON.parse(readFileSync(new URL("../data/junior-math-question-bank-private.json", import.meta.url), "utf8"));
+    publicCatalog.version = `${publicCatalog.version}.replacement`;
+    privateCatalog.version = publicCatalog.version;
+    publicCatalog.items[0].stem = "版本升级后的题干";
+
+    const result = runtime.store.importQuestionBank({
+      tenantId: runtime.tenantId,
+      publicCatalog,
+      privateCatalog,
+      seedRevision: "replacement-version-fixture",
+    });
+
+    assert.equal(result.idempotent, false);
+    assert.equal(result.question_count, 420);
+    assert.equal(runtime.store.summary({ tenantId: runtime.tenantId }).counts.questions, 420);
+    assert.equal(runtime.store.getQuestion({
+      tenantId: runtime.tenantId,
+      questionId: publicCatalog.items[0].id,
+    }).stem, "版本升级后的题干");
   } finally {
     runtime.store.close();
   }

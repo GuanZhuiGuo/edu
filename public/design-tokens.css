@@ -1,0 +1,95 @@
+:root {
+  color-scheme: light;
+  --ds-font: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  --ds-font-xs: 12px;
+  --ds-font-sm: 13px;
+  --ds-font-body: 14px;
+  --ds-font-md: 16px;
+  --ds-font-title: 20px;
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  --ds-color-primary: #263f6b;
+  --ds-color-primary-hover: #1b3055;
+  --ds-color-primary-subtle: #edf1f8;
+  --ds-text: #253249;
+  --ds-muted: #5d6b7e;
+  --ds-border: #d8dfe8;
+  --ds-surface: #fff;
+  --ds-surface-subtle: #f5f7fa;
+  --ds-success: #237454;
+  --ds-warning: #916017;
+  --ds-danger: #b33440;
+  --ds-radius: 8px;
+  --ds-radius-panel: 12px;
+  --ds-control-height: 36px;
+  --ds-control-font: 14px;
+  --ds-header-height: 56px;
+  --ds-toolbar-height: 48px;
+  --ds-frame-height: calc(var(--ds-header-height) + var(--ds-toolbar-height));
+  --ds-page-x: 24px;
+  --ds-page-y: 24px;
+  --ds-sidebar-width: 224px;
+  --ds-sidebar-rail: 56px;
+  --ds-list-width: 280px;
+  --ds-tree-width: 260px;
+  --ds-aside-width: 320px;
+  --ds-page-max: 1440px;
+  --ds-read-width: 680px;
+  --ds-form-width: 640px;
+  --ds-modal-inset: 24px;
+  --ds-icon-sm: 16px;
+  --ds-icon-md: 20px;
+  --ds-icon-lg: 24px;
+  --ds-grid-list-detail: var(--ds-list-width) minmax(0, 1fr);
+  --ds-grid-three: var(--ds-tree-width) minmax(0, 1fr) var(--ds-aside-width);
+  --ds-grid-row-action: minmax(0, 1fr) auto;
+  --ds-grid-row-icon: 32px minmax(0, 1fr);
+  --ds-grid-cards-2: repeat(2, minmax(0, 1fr));
+  --ds-grid-cards-3: repeat(3, minmax(0, 1fr));
+  --ds-grid-cards-4: repeat(4, minmax(0, 1fr));
+  /* Compatibility aliases for unmigrated business components. */
+  --ui-bg: var(--ds-surface-subtle);
+  --ui-surface: var(--ds-surface);
+  --ui-surface-subtle: var(--ds-surface-subtle);
+  --ui-surface-accent: var(--ds-color-primary-subtle);
+  --ui-border: var(--ds-border);
+  --ui-text: var(--ds-text);
+  --ui-text-secondary: var(--ds-muted);
+  --ui-text-muted: var(--ds-muted);
+  --ui-accent: var(--ds-color-primary);
+  --ui-accent-hover: var(--ds-color-primary-hover);
+  --ui-radius-sm: var(--ds-radius);
+  --ui-radius-md: var(--ds-radius-panel);
+  --tblr-primary: var(--ds-color-primary);
+  --tblr-primary-rgb: 38, 63, 107;
+  --tblr-body-color: var(--ds-text);
+  --tblr-body-bg: var(--ds-surface);
+  --tblr-body-font-family: var(--ds-font);
+  --tblr-body-font-size: var(--ds-font-body);
+  --tblr-border-color: var(--ds-border);
+  --tblr-border-radius: var(--ds-radius);
+  --tblr-secondary-color: var(--ds-muted);
+  --tblr-muted: var(--ds-muted);
+}
+body[data-display-mode='app'], body[data-display-mode='pad'] {
+  --ds-control-height: 44px;
+  --ds-control-font: 14px;
+  --ds-page-x: 20px;
+  --ds-page-y: 20px;
+}
+body[data-display-mode='app'] {
+  --ds-header-height: 52px;
+  --ds-toolbar-height: 48px;
+  --ds-page-x: 16px;
+  --ds-page-y: 16px;
+  --ds-modal-inset: 16px;
+}
+@media (max-width: 639px), (pointer: coarse) {
+  :root { --ds-control-height: 44px; }
+}
+@media (min-width: 1920px) { :root { --ds-page-x: 32px; } }

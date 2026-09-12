@@ -1,0 +1,31 @@
+/* One cascade entry. Legacy rules are contained instead of competing with
+   the component library by specificity. Workspace rules own structure only. */
+@layer tabler, legacy, design, workspace;
+@import url('./styles.css') layer(legacy);
+@import url('./learning-map-polish.css') layer(legacy);
+@import url('./education-settings-workbench.css') layer(legacy);
+@import url('./education-skill-workbench.css') layer(legacy);
+@import url('./ontology-workbench.css') layer(legacy);
+@import url('./system-release-center.css') layer(legacy);
+@import url('./product-ui-polish.css') layer(legacy);
+@import url('./agent-trace-view.css') layer(legacy);
+@import url('./video-explanation-workbench.css') layer(legacy);
+@import url('./app-shell.css') layer(legacy);
+@import url('./app-mobile.css') layer(legacy);
+@import url('./app-workbench-mobile.css') layer(legacy);
+@import url('./app-pad.css') layer(legacy);
+@import url('./knowledge-connection-status.css') layer(legacy);
+@import url('./app-home.css') layer(legacy);
+@import url('./app-course-context.css') layer(legacy);
+@import url('./vendor/tabler/controls.css') layer(tabler);
+@import url('./design-tokens.css') layer(design);
+@import url('./design-controls.css') layer(design);
+@import url('./design-layout.css') layer(design);
+@import url('./interactive-lesson-lab.css') layer(workspace);
+@import url('./question-bank-ux.css') layer(workspace);
+@import url('./knowledge-graph-ux.css') layer(workspace);
+@import url('./courseware-assistant.css') layer(workspace);
+@import url('./courseware-library.css') layer(workspace);
+@import url('./skill-hub.css') layer(workspace);
+@import url('./assessment-workbench.css') layer(workspace);
+@import url('./learning-buddy-community.css') layer(workspace);

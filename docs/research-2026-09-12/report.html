@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>课件分类与创作架构研究</title>
+<style>
+:root { color-scheme: light; --ink:#171717; --muted:#575757; --line:#d5d5d5; --soft:#f5f5f5; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:24px; }
+body { margin:0; background:#fff; color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Arial,sans-serif; font-size:16px; line-height:1.85; }
+::selection { background:#d9d9d9; color:#000; }
+a { color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; overflow-wrap:anywhere; }
+a:hover { text-decoration-thickness:2px; }
+:focus-visible { outline:2px solid #222; outline-offset:4px; }
+.report-layout { display:grid; grid-template-columns:244px minmax(0,1fr); gap:64px; max-width:1440px; margin:0 auto; padding:48px 48px 80px; }
+.report-sidebar { position:sticky; top:32px; align-self:start; max-height:calc(100vh - 64px); overflow:auto; scrollbar-color:#aaa transparent; }
+.report-toc { border-bottom:1px solid var(--line); padding-bottom:20px; }
+.report-toc > summary { cursor:pointer; padding:0 0 12px; font-size:16px; font-weight:650; }
+.report-toc nav > ol { margin:0; padding:0; list-style:none; }
+.report-toc li { margin:0; padding:0; line-height:1.5; }
+.report-toc a { display:block; padding:7px 0; color:var(--muted); font-size:13px; text-decoration:none; }
+.report-toc a:hover, .report-toc a[aria-current="location"] { color:#000; text-decoration:underline; }
+.report-toc .toc-level-3 { padding-left:14px; }
+.report-toc .toc-level-4 { padding-left:28px; }
+.report-tools { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:20px; }
+.report-tools button { min-height:40px; padding:6px 12px; border:1px solid #aaa; border-radius:3px; background:#fff; color:var(--ink); font:inherit; font-size:13px; cursor:pointer; }
+.report-tools button:hover { background:var(--soft); }
+.report-tools a { font-size:13px; color:var(--muted); }
+main { min-width:0; max-width:1024px; }
+.report-document + .report-document { margin-top:64px; padding-top:40px; border-top:1px solid var(--line); }
+h1,h2,h3,h4,h5,h6 { color:#111; line-height:1.45; font-weight:650; overflow-wrap:anywhere; scroll-margin-top:24px; }
+h1 { max-width:26em; margin:0 0 36px; font-size:32px; letter-spacing:-.02em; }
+h2 { margin:48px 0 20px; padding-top:8px; font-size:24px; }
+h3 { margin:32px 0 14px; font-size:19px; }
+h4,h5,h6 { margin:24px 0 12px; font-size:16px; }
+.report-document > :first-child { margin-top:0; }
+p { max-width:78ch; margin:0 0 18px; }
+ul,ol { margin:0 0 22px; padding-left:1.5em; }
+li { margin:7px 0; }
+li > p { margin-bottom:10px; }
+strong { font-weight:650; }
+blockquote { margin:24px 0; padding:0 0 0 20px; border-left:1px solid #777; color:#444; }
+blockquote > :last-child { margin-bottom:0; }
+hr { height:1px; margin:36px 0; border:0; background:var(--line); }
+.table-scroll { max-width:100%; overflow-x:auto; margin:24px 0; scrollbar-color:#aaa var(--soft); }
+table { border-collapse:collapse; width:100%; min-width:640px; font-size:14px; line-height:1.65; text-align:left; }
+caption { padding:0 0 12px; text-align:left; font-weight:600; }
+th,td { padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top; overflow-wrap:anywhere; }
+th { border-top:1px solid #777; border-bottom-color:#777; background:var(--soft); font-weight:650; }
+td > :last-child { margin-bottom:0; }
+pre { overflow:auto; margin:24px 0; padding:18px 20px; border:1px solid var(--line); background:var(--soft); font-size:13px; line-height:1.7; tab-size:2; scrollbar-color:#aaa var(--soft); }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.88em; overflow-wrap:anywhere; }
+:not(pre) > code { padding:1px 4px; background:var(--soft); }
+pre code { padding:0; background:none; font-size:inherit; overflow-wrap:normal; }
+img,svg { max-width:100%; height:auto; }
+.footnote { margin-top:36px; color:#444; font-size:13px; line-height:1.75; }
+.footnote hr { margin:0 0 20px; }
+.footnote li { margin:10px 0; }
+.footnote p { max-width:none; }
+.footnote-ref { font-size:12px; font-weight:650; text-decoration:none; }
+.footnote-backref { white-space:nowrap; margin-left:6px; }
+.report-diagram { margin:28px 0; }
+.report-diagram-scroll { max-width:100%; overflow-x:auto; scrollbar-color:#aaa var(--soft); }
+.report-diagram svg { display:block; width:100%; min-width:0; height:auto; }
+.report-diagram figcaption { margin-top:12px; color:var(--muted); font-size:13px; line-height:1.7; }
+@media (min-width:1600px) { .report-layout { padding-top:64px; } }
+@media (max-width:1100px) { .report-layout { grid-template-columns:210px minmax(0,1fr); gap:36px; padding:36px 28px 64px; } }
+@media (max-width:900px) {
+  .report-diagram svg { min-width:860px; }
+  .report-layout { display:block; padding:24px 24px 56px; }
+  .report-sidebar { position:static; max-height:none; margin-bottom:32px; }
+  .report-toc { padding-bottom:8px; }
+  .report-toc > summary { min-height:44px; padding:8px 0; }
+  .report-toc nav { max-height:50vh; overflow:auto; padding-bottom:12px; }
+  .report-toc a { min-height:40px; padding:9px 0; font-size:14px; }
+  .report-tools { margin-top:12px; }
+  .report-tools button { min-height:44px; }
+  h1 { font-size:28px; margin-bottom:28px; }
+  h2 { margin-top:36px; font-size:22px; }
+}
+@media (max-width:480px) { .report-layout { padding:20px 18px 48px; } h1 { font-size:25px; } h2 { font-size:21px; } h3 { font-size:18px; } th,td { padding:10px 12px; } }
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+@page { size:A4; margin:18mm 16mm; }
+@media print {
+  html { scroll-behavior:auto; }
+  body { color:#000; font-size:10.5pt; line-height:1.65; }
+  .report-layout { display:block; max-width:none; padding:0; }
+  .report-sidebar { display:none; }
+  main { max-width:none; }
+  h1 { margin-bottom:20pt; font-size:22pt; }
+  h2 { margin-top:24pt; font-size:16pt; }
+  h3 { margin-top:18pt; font-size:12pt; }
+  h4,h5,h6 { font-size:10.5pt; }
+  h1,h2,h3,h4,h5,h6 { break-after:avoid; }
+  p,li { orphans:3; widows:3; }
+  .report-document + .report-document { margin-top:28pt; padding-top:20pt; }
+  .table-scroll { overflow:visible; margin:16pt 0; }
+  table { min-width:0; width:100%; font-size:8pt; line-height:1.5; }
+  thead { display:table-header-group; }
+  tr { break-inside:avoid; }
+  th,td { padding:5pt 6pt; }
+  pre { overflow:visible; white-space:pre-wrap; overflow-wrap:anywhere; font-size:8.5pt; padding:10pt; }
+  pre code { white-space:pre-wrap; overflow-wrap:anywhere; }
+  .footnote { font-size:8.5pt; }
+  .report-diagram { break-inside:avoid; }
+  .report-diagram-scroll { overflow:visible; }
+  .report-diagram svg { min-width:0; width:100%; height:auto; }
+  .report-diagram figcaption { font-size:8.5pt; }
+  a { color:#000; }
+}
+</style>
+</head>
+<body id="report-top">
+<div class="report-layout">
+<aside class="report-sidebar"><details class="report-toc" open><summary>目录</summary><nav aria-label="文档目录"><ol><li class="toc-level-2"><a href="#main-决策结论">决策结论</a></li><li class="toc-level-2"><a href="#main-教育需求与技术供给">教育需求与技术供给</a></li><li class="toc-level-3"><a href="#main-教师需要找什么">教师需要找什么</a></li><li class="toc-level-3"><a href="#main-可以借鉴的标准与产品">可以借鉴的标准与产品</a></li><li class="toc-level-2"><a href="#main-课件库分类模型">课件库分类模型</a></li><li class="toc-level-3"><a href="#main-资源形态只回答交付物是什么">资源形态只回答交付物是什么</a></li><li class="toc-level-3"><a href="#main-学科学段与知识主题">学科、学段与知识主题</a></li><li class="toc-level-3"><a href="#main-呈现交互与关键词">呈现、交互与关键词</a></li><li class="toc-level-2"><a href="#main-查询与制作的两条路径">查询与制作的两条路径</a></li><li class="toc-level-3"><a href="#main-查找时逐步缩小范围">查找时逐步缩小范围</a></li><li class="toc-level-3"><a href="#main-制作时描述目标">制作时描述目标</a></li><li class="toc-level-2"><a href="#main-技术目录的专业组织">技术目录的专业组织</a></li><li class="toc-level-3"><a href="#main-技术具有多种职责">技术具有多种职责</a></li><li class="toc-level-3"><a href="#main-本项目的供给收敛">本项目的供给收敛</a></li><li class="toc-level-2"><a href="#main-本次落地与保留边界">本次落地与保留边界</a></li><li class="toc-level-2"><a href="#main-原因反思与持续治理">原因反思与持续治理</a></li><li class="toc-level-2"><a href="#main-来源与证据范围">来源与证据范围</a></li><li class="toc-level-2"><a href="#proposal-对话式课件助手与-deep-agent-方案">对话式课件助手与 Deep Agent 方案</a></li><li class="toc-level-3"><a href="#proposal-1-推荐决策">1. 推荐决策</a></li><li class="toc-level-3"><a href="#proposal-2-必须限定或修正的关键主张">2. 必须限定或修正的关键主张</a></li><li class="toc-level-3"><a href="#proposal-3-github-项目比较与取舍">3. GitHub 项目比较与取舍</a></li><li class="toc-level-3"><a href="#proposal-4-自然语音与最少必要-gui">4. 自然语音与最少必要 GUI</a></li><li class="toc-level-3"><a href="#proposal-5-推荐架构与责任分工">5. 推荐架构与责任分工</a></li><li class="toc-level-3"><a href="#proposal-6-持久化修改取消与降级">6. 持久化、修改、取消与降级</a></li><li class="toc-level-3"><a href="#proposal-7-分阶段验收">7. 分阶段验收</a></li><li class="toc-level-3"><a href="#proposal-8-方案边界与来源">8. 方案边界与来源</a></li></ol></nav></details>
+<div class="report-tools"><button type="button" data-print-report>打印 / 保存 PDF</button><a href="#report-top">返回开头</a></div></aside>
+<main><article class="report-document" id="main-document"><h1 id="main-课件分类与创作架构研究">课件分类与创作架构研究</h1>
+<h2 id="main-决策结论">决策结论</h2>
+<p>课件库采用多维筛选：<strong>资源形态、学科、学段、知识主题、呈现方式、交互方式、制作技术与关键词</strong>分别表达不同属性。默认界面只突出资源形态、学科主题树、关键词和学段；其他条件渐进展开。教师查找资源时从教学内容出发，技术目录从可实现的呈现效果与能力职责出发；两者通过知识主题和能力标识关联，不共用一棵包罗所有属性的大树。</p>
+<p>资源形态确定为三个主类：<strong>知识点资源、整套课件、视频讲解</strong>。“知识点资源”比“知识点卡片”更准确，能涵盖卡片、函数图、几何图解、参数实验与知识导图。二次函数、酸碱滴定等具体名称作为知识点词和标签，不再与整套课件、视频并列。高中与大学是适用学段；二维与三维是呈现方式，都不进入知识主题树。</p>
+<p>制作入口以自然语言描述目标为主，少量选择用于补齐影响结果的条件。当前界面已把工具选择折叠为可选项，仍使用已有的关键词建议与生成链路。自然语音、多轮自主创作与 Deep Agent 后台属于下一阶段方案，本次没有实施。</p>
+<p>后台编排的优先研究候选是 <strong>LangChain Deep Agents JS</strong>。原因是与当前 Node/ESM 后端匹配，并提供规划、工作文件、上下文与子任务接口；这一判断不等于它的中文教学质量或成本已经优于当前 Pi。应先统一任务、产物和版本契约，再以同一组领域工具比较两种编排路线，保留 Pi 处理短任务及回退。<sup id="main-fnref:r10"><a class="footnote-ref" href="#main-fn:r10">1</a></sup></p>
+<h2 id="main-教育需求与技术供给">教育需求与技术供给</h2>
+<h3 id="main-教师需要找什么">教师需要找什么</h3>
+<p>课件分类的首要目标是降低备课成本。教师通常已经知道面向什么学生、要解释什么、课堂上要怎样使用；他们不一定知道哪个 JavaScript 引擎适合这个目标。把“函数”“视频”“三维”“高中数学”“OpenMAIC”放在同一个下拉菜单里，会让教师同时判断内容、受众、载体和技术实现，选中一项还会错误排斥其他本来可以共存的属性。</p>
+<p>以下是基于教学任务的产品分析，尚未通过本项目教师访谈或使用数据验证。它用于确定信息架构的初始假设，后续应通过查找成功率、预览后使用率与修改成本评估，而非仅看生成次数。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>备课任务</th>
+<th>最先需要的信息</th>
+<th>合适的入口</th>
+<th>选型重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>明天解释一个难点</td>
+<td>学科、主题、学生学段、目标概念</td>
+<td>主题树与关键词</td>
+<td>正确性、理解门槛、准备时间</td>
+</tr>
+<tr>
+<td>让学生发现变量关系</td>
+<td>可调参数、可观察量、活动任务</td>
+<td>知识点资源＋交互条件</td>
+<td>受控模型、即时反馈、参数边界</td>
+</tr>
+<tr>
+<td>准备一节完整课堂</td>
+<td>学习目标、环节、顺序、练习与总结</td>
+<td>整套课件</td>
+<td>内容完整性、节奏、可编辑结构</td>
+</tr>
+<tr>
+<td>布置课前或课后观看</td>
+<td>主题、时长、字幕、终端兼容性</td>
+<td>视频讲解</td>
+<td>连续播放、讲解准确、可访问性</td>
+</tr>
+<tr>
+<td>修改已有资源</td>
+<td>目标版本、可修改部分、来源</td>
+<td>预览后“复用”</td>
+<td>保留原件、修改范围、再次保存</td>
+</tr>
+</tbody>
+</table></div>
+<p>从供给角度看，同一教学目标有多种实现路径，成本与可控程度差别很大。函数关系可以用精确曲线与参数滑杆表达，也可以拍成线性视频；后者更适合讲故事，前者更适合控制变量。三维对于空间结构可能有帮助，但不会自动使代数概念更清楚。选择应依据教学目标与可用表达能力，而非使用最新、最复杂的引擎。</p>
+<h3 id="main-可以借鉴的标准与产品">可以借鉴的标准与产品</h3>
+<p>LRMI 将 <code>learningResourceType</code>、<code>educationalLevel</code>、<code>interactivityType</code>、<code>educationalAlignment</code> 分为不同属性。它支持“资源是什么”“适合谁”“怎样学习”“对齐什么框架”分别建模，但没有规定本项目必须使用哪三个资源形态。<sup id="main-fnref:r1"><a class="footnote-ref" href="#main-fn:r1">2</a></sup> CASE 的知识/能力节点具有稳定标识和父子关系；其信息模型把学段作为独立且可多值的属性，为主题树和学段分离提供了直接依据。<sup id="main-fnref:r2"><a class="footnote-ref" href="#main-fn:r2">3</a></sup></p>
+<p>产品证据也支持这种分工。H5P 同时存在 Interactive Book、Course Presentation、Interactive Video 和 Flashcards，说明组合资源、视频与细粒度活动可以并存；视频也可能带交互。<sup id="main-fnref:r3"><a class="footnote-ref" href="#main-fn:r3">4</a></sup> GeoGebra 的资料卡区分 Activity 与 Book，同时提供函数、几何等主题入口；PhET 分别设置 Subject、Grade Level 和 Compatibility。<sup id="main-fnref:r4"><a class="footnote-ref" href="#main-fn:r4">5</a></sup><sup id="main-fnref:r5"><a class="footnote-ref" href="#main-fn:r5">6</a></sup> 这些是可借鉴的组织方式，不是对本地枚举或教学效果的认证。</p>
+<p>本研究以中小学备课为主要使用场景，保留大学与职业教育的扩展。技术和框架事实核对到 2026-09-12；推荐学段属于编辑判断，不等于教材版本或课程标准已完成对齐。</p>
+<h2 id="main-课件库分类模型">课件库分类模型</h2>
+<h3 id="main-资源形态只回答交付物是什么">资源形态只回答交付物是什么</h3>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>枚举</th>
+<th>显示名称</th>
+<th>判断标准</th>
+<th>不应混入的内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>knowledge_resource</code></td>
+<td>知识点资源</td>
+<td>围绕一个或少量关联目标的可复用单元，如概念卡、动态图解、实验、导图</td>
+<td>不能因内部使用某个框架就升级为整套课件</td>
+</tr>
+<tr>
+<td><code>lesson_package</code></td>
+<td>整套课件</td>
+<td>作者确认的成套教学结构，具有可保存的环节顺序、资源关系和必要内容</td>
+<td>单张截图、一个 HTML 页面或当前场景快照不能自动认定为完整套件</td>
+</tr>
+<tr>
+<td><code>explainer_video</code></td>
+<td>视频讲解</td>
+<td>以可播放视频为主要交付物，具有可用视频资产</td>
+<td>不等同于某个视频模型，也不保证具有可编辑工程</td>
+</tr>
+</tbody>
+</table></div>
+<p>一套完整课件可以包含知识卡、互动实验和视频。顶层条目仍按主要交付形态归为整套课件，内部资源未来可以通过父子关系单独复用。不能因为包含视频就同时复制成多个相互独立、内容不一致的条目；视频若单独入库，应成为有明确来源关联的独立资产。</p>
+<p>视频的生成机制是制作信息。视频模型生成、PPT 配音合成、程序化数学动画、交互画布录屏，最终都可能交付 MP4/WebM，但它们的可控性、编辑能力和费用完全不同。当前不应把“视频讲解”专门等同于某个模型：视频模型是执行能力，成片是资源形态。PPT 内容解析、镜头生成、字幕配音和合成也需要分别完成，不能用“PPT 转视频”一个标签掩盖缺失步骤。</p>
+<h3 id="main-学科学段与知识主题">学科、学段与知识主题</h3>
+<p>学科是稳定入口，当前词表包括语文、数学、英语、物理、化学、生物、历史、地理、道德与法治、科学、信息科技、艺术、体育、综合。资源允许多学科；旧数据中确实存在的其他学科不会被静默删掉。这里列出的是目录可表达的范围，不代表每个学科已有可用内容。</p>
+<p>学段独立为小学、初中、高中、大学、职业教育。一个函数资源可以跨初高中适用，大学资源也可能包含高中先修内容，因此数据应允许多值。没有可靠信息时显示“未标注”，不能让模型或标题关键词自动制造学段事实。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>学科示例</th>
+<th>一级知识主题</th>
+<th>更细内容的放置方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>语文</td>
+<td>阅读理解、写作表达、语言积累</td>
+<td>修辞、议论文、古诗鉴赏等使用知识点词或后续子节点</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>数与运算、代数与方程、函数、几何、统计与概率</td>
+<td>二次函数、圆锥曲线、勾股定理等使用知识点词</td>
+</tr>
+<tr>
+<td>物理</td>
+<td>力与运动、电与磁、光与波、热与能量</td>
+<td>斜面、碰撞、电路、透镜等使用知识点词</td>
+</tr>
+<tr>
+<td>化学</td>
+<td>物质与结构、化学反应、实验方法</td>
+<td>酸碱滴定、分离提纯等可以跨主题标注</td>
+</tr>
+<tr>
+<td>生物</td>
+<td>生命与结构、生态与环境</td>
+<td>细胞器、遗传、食物链等使用知识点词</td>
+</tr>
+<tr>
+<td>地理</td>
+<td>自然地理、人文地理</td>
+<td>地形、气候、人口与产业等使用知识点词</td>
+</tr>
+</tbody>
+</table></div>
+<p>这是一套适合当前规模的发现词表，不是严密完备的学科本体。大学内容规模增长后，可增设微积分、线性代数、离散数学、近代物理等稳定主题节点；不要把它们全部勉强塞进现有五个数学主题，也不要现在为没有资源的每门大学课程创建深层目录。课程、教材版本、年级、章节属于另一条教学使用路径，未来可以映射到同一个知识主题，不能混成同义层级。</p>
+<p>当前实现为“学科→主题”两层导航，以 <code>math/functions</code>、<code>physics/mechanics</code> 等稳定 ID 表达主题。过滤逻辑已支持按路径段匹配后代，例如函数主题可以匹配未来的二次函数子节点；它不是 CASE 完整关系服务，也没有把本地 ID 冒充外部课程标准 GUID。<sup id="main-fnref2:r2"><a class="footnote-ref" href="#main-fn:r2">3</a></sup></p>
+<h3 id="main-呈现交互与关键词">呈现、交互与关键词</h3>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>当前词表</th>
+<th>使用原则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>呈现方式</td>
+<td>图文、二维、三维、音频、视频</td>
+<td>可多值；描述实际产物，不从引擎理论能力推断</td>
+</tr>
+<tr>
+<td>交互方式</td>
+<td>阅读观看、调节参数、交互探索、练习作答</td>
+<td>可多值；翻卡不等于作答，滑杆不等于有学习记录</td>
+</tr>
+<tr>
+<td>制作技术</td>
+<td>SVG、Canvas 2D、Matter.js、Planck.js 等已有标识</td>
+<td>进入更多筛选和详情；保留实际运行依据</td>
+</tr>
+<tr>
+<td>知识点词与标签</td>
+<td>二次函数、摩擦、酸碱、复习等</td>
+<td>补足精细检索，不无限增加顶层枚举</td>
+</tr>
+</tbody>
+</table></div>
+<p>“二维”通常只说明画面所表达的空间维度，“交互探索”才说明教师或学生能做什么。视频也可能叠加作答，但只有实现了相关控件与状态才应标注。类似地，一个 Three.js 查看器支持三维浏览，不代表它会解物理方程或能从任意文字生成三维模型。<sup id="main-fnref:r6"><a class="footnote-ref" href="#main-fn:r6">7</a></sup></p>
+<p>关键词索引覆盖标题、描述、学科、主题名称、学段、呈现与交互名称、技术和标签；当前按空白分词，词与词之间为 AND。不同筛选维度为 AND，同维多值为 OR。例如“物理＋初中＋二维”是交集；选择“摩擦或周期”两个知识标签是并集，再与前面的条件相交。这是确定性文本筛选，不需要为每次查询调用模型、Neo4j 或 Qdrant。</p>
+<p>标签应区分受控标签和自由词：主题 ID、学科、学段由目录管理；资源作者可补具体知识点和使用场景。规模扩大时再引入同义词表，如“力学↔力与运动”“2D↔二维”，并保留作者原词。自动标签应可校正并标明来源，不能成为未经核对的课程标准对齐事实。本次没有实现自由标签编辑器或自动语义标注服务。</p>
+<h2 id="main-查询与制作的两条路径">查询与制作的两条路径</h2>
+<h3 id="main-查找时逐步缩小范围">查找时逐步缩小范围</h3>
+<p>桌面端使用左侧学科主题树，顶部资源形态切换，右侧关键词、学段与结果。手机端折叠主题树和高级条件，优先显示搜索及可预览资源。Pad 按内容区域宽度决定卡片列数，避免设备宽度足够、但扣除两层导航后仍强行塞入三列窄卡片。</p>
+<p>已选条件显示为可移除项，清除全部后焦点回到关键词输入框。主题数量由真实当前数据计算；无结果时可以减少条件或前往制作。整套课件的空态明确说明完整结构保存尚未接入，避免让空分类误导教师反复生成，却仍无法保存到对应类别。</p>
+<h3 id="main-制作时描述目标">制作时描述目标</h3>
+<p>制作不需要复制课件库的全部筛选器。一个可执行需求通常需要学生对象、知识目标、期望课堂活动及交付约束，例如：“给八年级学生做一个斜面摩擦实验，让他们调倾角比较运动，再回答一道迁移题。”技术选择可以在后台完成；若要求离线播放或必须交付视频，这种约束才值得优先澄清。</p>
+<p>本次已把“指定制作工具”折叠在“制作选项（可选）”中，保持所有既有入口可达。提示写明“关键词建议”，与实际实现一致。目前没有自然语言语义规划、自主组合多种技术或教师语音创作能力；例如选择 OpenMAIC 仍需要使用现有工具入口，不能把关键词匹配包装成 Deep Agent。</p>
+<p>下一阶段才引入“描述目标→回显理解→自主制作→对话内预览→继续修改→保存版本”。当两种载体确有取舍，可以给出两份有实质区别的候选；常规需求不必总生成三个版本。教师可以说“保留第一版，文字更短”，但系统必须绑定明确产物 ID 与版本，不能只靠对话文本猜“第一版”指什么。</p>
+<h2 id="main-技术目录的专业组织">技术目录的专业组织</h2>
+<h3 id="main-技术具有多种职责">技术具有多种职责</h3>
+<p>技术页采用四组独立筛选：教学效果、能力职责、适用学科、知识主题，另设接入状态。“教学效果”在这里指画面和操作形式，不指经过实验验证的学习增益。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>分组</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>教学效果</td>
+<td>二维图解、三维空间、图表与数据、结构化文档、音视频、基础能力</td>
+<td>Three.js→三维空间；ECharts→图表；OpenMAIC→结构化课堂内容</td>
+</tr>
+<tr>
+<td>能力职责</td>
+<td>生成、编排、渲染、仿真、编辑、校验、导出</td>
+<td>Matter.js→仿真；KaTeX→公式渲染；FFmpeg→编辑与导出</td>
+</tr>
+<tr>
+<td>学科与主题</td>
+<td>多值标签，通用能力可跨学科</td>
+<td>KaTeX 服务数学/物理/化学；细胞适配主要服务生物</td>
+</tr>
+<tr>
+<td>接入状态</td>
+<td>已接入、源码已纳入、待接入</td>
+<td>拥有依赖源码不等于教师界面已可调用</td>
+</tr>
+</tbody>
+</table></div>
+<p>课件库里的某份资源只标自身实际能力；技术目录可以描述一个工具经过核对的供给能力。它们共享词表的语义，但不会相互推导“已有引擎，所以所有课件都可交互”。对教师显示课堂效果与适用边界，技术名称、许可和调用依据放入可展开详情。</p>
+<h3 id="main-本项目的供给收敛">本项目的供给收敛</h3>
+<p>当前技术目录共 46 项，默认展开 16 项已接入教学能力，26 项备选方案与 4 项已接入基础能力折叠。这里“已接入”意味着有当前主应用调用链与实现依据，不代表模型、浏览器或服务此刻必然可用。搜索或选择候选状态时，备选仍可被找到；正常浏览不会把未接入工具和当前能力混成同一张平铺清单。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>当前优先供给</th>
+<th>备选或能力边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>受控函数与平面几何</td>
+<td>Canvas 2D、SVG 预设</td>
+<td>JSXGraph/GeoGebra 的几何约束与编辑能力不能被少量预设完整替代</td>
+</tr>
+<tr>
+<td>二维力学实验</td>
+<td>Matter.js、Planck.js</td>
+<td>两者均有真实调用与切换，保留；未覆盖任意物理实验</td>
+</tr>
+<tr>
+<td>空间与细胞观察</td>
+<td>Three.js、Cell Studio 适配</td>
+<td>当前是查看器与受限细胞数据，不是通用文字转三维</td>
+</tr>
+<tr>
+<td>数据、知识关系、公式</td>
+<td>ECharts、G6、KaTeX</td>
+<td>图表、关系布局和排版均不负责证明教学结论正确</td>
+</tr>
+<tr>
+<td>成套内容组织</td>
+<td>OpenMAIC、DeepTutor 官方生成桥</td>
+<td>主应用只接入特定管线；完整成套保存仍是后续工作</td>
+</tr>
+<tr>
+<td>镜头图像与视频生成</td>
+<td>Seedream、Seedance 的方舟客户端</td>
+<td>需要凭证、模型配置与上游可用；本次仅验证本地调用链</td>
+</tr>
+<tr>
+<td>视频合成与录屏</td>
+<td>FFmpeg、MediaRecorder</td>
+<td>媒体处理不替代视频模型、分镜设计或数学动画引擎</td>
+</tr>
+<tr>
+<td>新数学动画、复杂编辑</td>
+<td>Manim、Remotion、其他备选</td>
+<td>接入、输出契约、运行环境与许可条件须单独验证</td>
+</tr>
+</tbody>
+</table></div>
+<p>没有足够证据支持“完全可替代且不优秀”的一刀切删除。当前的有效收敛是去除默认目录中的候选噪声、确立主路径，并不增加重复引擎。例如已有 Three.js 就暂不再增加 Babylon.js，已有 ECharts/G6 就不为普通图表额外增加 D3/Plotly；这属于本项目成本判断，不是公开项目的全面优劣排名。<sup id="main-fnref2:r6"><a class="footnote-ref" href="#main-fn:r6">7</a></sup><sup id="main-fnref:r7"><a class="footnote-ref" href="#main-fn:r7">8</a></sup></p>
+<p>需要保留职责差异。FFmpeg 负责合成转码，Manim 负责数学对象动画，二者不等价；KaTeX 排公式，MathLive 编辑公式，也不等价。BlockNote 建立在 Tiptap/ProseMirror 之上，却提供不同层次的编辑体验，不能仅凭共同依赖就判定任意一个可以无成本替代另一个。<sup id="main-fnref:r8"><a class="footnote-ref" href="#main-fn:r8">9</a></sup></p>
+<p>真正淘汰一项技术，应同时满足：主应用没有运行依赖；已选技术完整覆盖被推荐的需求；交互、正确性、导出、维护成本和许可不存在必须保留的差别。如果满足这些条件，再删除其默认推荐与适配代码，并用真实课件回归验证。仅比较 star 数、截图漂亮程度或“都能做 2D”不足以支持删除。</p>
+<p>许可也会改变供给选择。GeoGebra 的应用与素材有商业使用边界；Remotion 并非通用 MIT 许可；FFmpeg 的具体义务受构建和所带组件影响。目录记录实际来源和范围，正式集成再针对最终分发对象核查，不能用一个 GitHub 仓库的许可证代替其全部素材与服务条款。<sup id="main-fnref:r9"><a class="footnote-ref" href="#main-fn:r9">10</a></sup></p>
+<h2 id="main-本次落地与保留边界">本次落地与保留边界</h2>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>本次结果</th>
+<th>保留边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分类数据</td>
+<td>新增 catalog v2，资源形态/学科/学段/主题/呈现/交互分离</td>
+<td>旧 type 仍负责渲染器分派</td>
+</tr>
+<tr>
+<td>内置资源</td>
+<td>12 个真实样例逐项标注，编辑推荐初中 5 个、高中 7 个</td>
+<td>全部仍为知识点资源；不伪造视频或成套样例</td>
+</tr>
+<tr>
+<td>旧收藏</td>
+<td>只读投影，不写库、不改 ID、时间戳或完整 payload</td>
+<td>正常保存才写入新版元数据；仍仅存当前浏览器</td>
+</tr>
+<tr>
+<td>课件库 UI</td>
+<td>主题树、三形态入口、关键词、学段、更多筛选与标签</td>
+<td>未增加云同步、资产版本库或完整课件保存</td>
+</tr>
+<tr>
+<td>制作 UI</td>
+<td>自然语言目标优先，工具选择折叠，保留现有编辑和生成能力</td>
+<td>自动建议仍为关键词规则</td>
+</tr>
+<tr>
+<td>技术页</td>
+<td>46 项多维目录、默认能力与备选分组、接入状态纠偏</td>
+<td>无依赖卸载、无新执行器接入</td>
+</tr>
+<tr>
+<td>Deep Agent</td>
+<td>独立比较与架构方案</td>
+<td>未安装候选框架、未修改执行架构</td>
+</tr>
+</tbody>
+</table></div>
+<p>数据升级采用兼容视图：读取 IndexedDB 后生成新的 catalog 对象，不触发写事务；正常保存时才记录新版字段。原 <code>lesson</code>、几何模型、HTML、视频地址、未知扩展字段都保留。作者已有明确元数据优先，显式空数组保持为空。新内置样例的推荐学段不会覆盖以前保存的用户内容。</p>
+<p>定向回归共 <strong>51 项通过</strong>，覆盖分类/组合筛选、旧存储零写入、完整 payload 保留、保存与事务失败、几何与 Lesson DSL、助手导航与技术分组。浏览器检查覆盖手机、Pad 和桌面上的相关入口、主题筛选、三维筛选、空态与焦点回归；它是本地界面验收，不是新增模型能力或上游生成效果验证。</p>
+<p>后续最应补齐的是成套资产契约与版本保存，其次是长任务的持久状态，再开展 Deep Agents JS 对照试点。不能先把“整套课件”打上标签，再假定保存后的静态画面具有原来的互动、场景顺序和课堂逻辑。</p>
+<h2 id="main-原因反思与持续治理">原因反思与持续治理</h2>
+<p>当前问题的根因是“按开发接入顺序增加产品入口”：新做一个实验就增加一种 type，新接一个引擎就增加一个筛选值，新增加一种展示又进入同一个菜单。内部渲染契约逐渐变成教师的分类语言，产品分类因技术实现变化而变化。</p>
+<p>统一 UI 库可以修复按钮、字体、间距、选择器和焦点规则，但无法决定“视频”和“力学”是否同级。当前已经采用 Tabler 与共享设计 tokens，本轮没有为分类问题再换整套 UI 库；需要建立的是独立于组件库的领域词表、资源契约和能力目录。</p>
+<p>治理上应分别维护三件事：资源目录说明资产是什么，知识目录说明内容教什么，能力注册表说明系统能怎样制作与运行。新增技术先补能力及验证依据，新增课程内容先补知识主题与关键词，只有交付形态发生稳定变化才调整主枚举。这样更换渲染器或 Agent 框架时，教师的课件分类仍能保持稳定。</p>
+<p>未来评估分类是否成功，应观察“找到可用资源”而非“点了多少筛选”：给教师一组真实备课任务，记录查找时间、找不到的词、预览后使用率、错误分类率与修改后保存成功率。大学主题扩展、教材章节导航或更多枚举都应由这些证据驱动。现有报告没有教师访谈、生产使用数据或学习效果实验，因此不对教学增益与节省时间做数值承诺。</p>
+<h2 id="main-来源与证据范围">来源与证据范围</h2>
+<p>以下为原始发布方资料。外部资料支持术语、产品组织方式和框架能力；本项目的具体词表、优先级与迁移决策是分析建议。动态文档均以本次访问到的版本为准，实施框架迁移时需要固定包版本重新验证。</p>
+<p>详细附件：<a href="taxonomy-evidence.md">分类标准与存储迁移证据</a>、<a href="technology-evidence.md">46 项技术矩阵与调用依据</a>、<a href="deep-agent-evidence.md">Deep Agent 框架完整证据</a>。本地实现依据为 <code>public/courseware-taxonomy.js</code>、<code>courseware-store.js</code>、<code>courseware-library.js</code>、<code>courseware-assistant.js</code>、<code>technology-catalog-data.js</code>、<code>technology-landscape.js</code>、<code>education-video-service.js</code>、<code>ark-media-client.js</code> 及对应测试。</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="main-fn:r10">
+<p>LangChain. <a href="https://github.com/langchain-ai/deepagentsjs/blob/main/libs/deepagents/README.md">Deep Agents JS README</a>；<a href="https://docs.langchain.com/oss/javascript/deepagents/customization">Customization</a>。完整候选比较、版本与条件见本报告的后续 Deep Agent 方案及独立框架证据文件。&#160;<a class="footnote-backref" href="#main-fnref:r10" title="Jump back to footnote 1 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r1">
+<p>Dublin Core Metadata Initiative. <a href="https://www.dublincore.org/specifications/lrmi/lrmi_terms/2022-06-14/">LRMI Terms，2022-06-14</a>。资源类型、学段、交互与框架对齐的独立属性；另参见 <a href="https://raw.githubusercontent.com/schemaorg/schemaorg/main/data/schema.ttl">Schema.org 官方词汇源码</a>。&#160;<a class="footnote-backref" href="#main-fnref:r1" title="Jump back to footnote 2 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r2">
+<p>1EdTech. <a href="https://www.1edtech.org/standards/case">CASE 概览</a>；<a href="https://www.imsglobal.org/sites/default/files/spec/case/v1p1/information_model/caseservicev1p1_infomodelv1p0.html">CASE v1.1 信息模型</a>，Final Release 2025-01-24。稳定标识、父子关系及独立的多值 educationLevel。&#160;<a class="footnote-backref" href="#main-fnref:r2" title="Jump back to footnote 3 in the text">返回正文</a><a class="footnote-backref" href="#main-fnref2:r2" title="Jump back to footnote 3 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r3">
+<p>H5P. <a href="https://h5p.org/content-types-and-applications">Examples and Downloads</a>。Interactive Book、Course Presentation、Interactive Video、Flashcards 等不同规模与交互的内容类型。&#160;<a class="footnote-backref" href="#main-fnref:r3" title="Jump back to footnote 4 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r4">
+<p>GeoGebra. <a href="https://www.geogebra.org/materials">Community Resources</a>；<a href="https://www.geogebra.org/search">Search</a>。Activity/Book、函数与几何等主题及三维工具的分离。根据本次取得的服务端 HTML，不主张完整交互验收。&#160;<a class="footnote-backref" href="#main-fnref:r4" title="Jump back to footnote 5 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r5">
+<p>University of Colorado Boulder. <a href="https://phet.colorado.edu/en/simulations/filter?sort=alpha&amp;view=grid">PhET Simulation Directory</a> 及页面实际引用的<a href="https://phet.colorado.edu/_m/9535bee729b4951c690ea09db3f936ea6093eb5a.js?meteor_js_resource=true">官方脚本</a>。Subject、Grade Level、Compatibility 配置；未验证实时页面全部交互。&#160;<a class="footnote-backref" href="#main-fnref:r5" title="Jump back to footnote 6 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r6">
+<p>Three.js. <a href="https://github.com/mrdoob/three.js/blob/dev/README.md">官方 README</a>；Matter.js. <a href="https://github.com/liabru/matter-js/blob/master/README.md">官方 README</a>；Planck.js. <a href="https://github.com/piqnt/planck.js">官方仓库</a>；Cell Architecture Studio. <a href="https://github.com/cclank/cell-architecture-studio">官方仓库</a>。渲染、物理求解与具体内容适配的不同职责。&#160;<a class="footnote-backref" href="#main-fnref:r6" title="Jump back to footnote 7 in the text">返回正文</a><a class="footnote-backref" href="#main-fnref2:r6" title="Jump back to footnote 7 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r7">
+<p>Apache ECharts. <a href="https://github.com/apache/echarts">官方仓库</a>；D3. <a href="https://github.com/d3/d3/blob/main/README.md">官方 README</a>；Plotly.js. <a href="https://github.com/plotly/plotly.js">官方仓库</a>；JSXGraph. <a href="https://github.com/jsxgraph/jsxgraph">官方仓库</a>。不同图形与数据任务的供给范围。&#160;<a class="footnote-backref" href="#main-fnref:r7" title="Jump back to footnote 8 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r8">
+<p>Manim Community. <a href="https://github.com/ManimCommunity/manim">官方仓库</a>；FFmpeg. <a href="https://ffmpeg.org/">官方项目</a>；BlockNote. <a href="https://github.com/TypeCellOS/BlockNote/blob/main/README.md">官方 README</a>；Tiptap. <a href="https://github.com/ueberdosis/tiptap">官方仓库</a>。动画、媒体处理与编辑器层次差别。&#160;<a class="footnote-backref" href="#main-fnref:r8" title="Jump back to footnote 9 in the text">返回正文</a></p>
+</li>
+<li id="main-fn:r9">
+<p>GeoGebra. <a href="https://www.geogebra.org/license">License</a>；Remotion. <a href="https://github.com/remotion-dev/remotion/blob/main/LICENSE.md">LICENSE.md</a>；FFmpeg. <a href="https://ffmpeg.org/legal.html">Legal</a>。仅说明选型应核对最终使用对象，不替代完整许可审查。&#160;<a class="footnote-backref" href="#main-fnref:r9" title="Jump back to footnote 10 in the text">返回正文</a></p>
+</li>
+</ol>
+</div></article>
+<article class="report-document" id="proposal-document"><h2 id="proposal-对话式课件助手与-deep-agent-方案">对话式课件助手与 Deep Agent 方案</h2>
+<h3 id="proposal-1-推荐决策">1. 推荐决策</h3>
+<p>建议把课件助手演进为“教师表达目标，系统选择已有能力并完成制作，教师在对话中预览、修改和保存”的创作产品。<strong>多步骤编排框架首选 LangChain Deep Agents JS，采用旁路试点，暂不替换全部 Pi Agent 或学生实时教学服务。</strong> 选择理由是现有系统使用 Node/ESM，Deep Agents JS 提供可替换模型、领域工具、规划、子任务、工作文件及执行状态扩展点，较容易复用现有服务。<sup id="proposal-fnref:1"><a class="footnote-ref" href="#proposal-fn:1">1</a></sup><sup id="proposal-fnref:2"><a class="footnote-ref" href="#proposal-fn:2">2</a></sup></p>
+<p>这是目标方案，不是当前功能上线声明。现有课件助手主要是文字输入和关键词建议；教师自然语音创作、多轮语义修改、服务器课件版本库、完整多场景课件保存和统一持久任务尚需建设。框架接口存在，也不表示这些产品能力已经形成。</p>
+<p>建议的实施次序是：<strong>先统一任务与产物契约，改善对话式创作闭环；再在相同工具上比较 Pi 和 Deep Agents JS；确认收益后增加子 Agent；最后按实际需求考虑隔离代码生成。</strong> 已有函数图、几何和力学预设直接调用受控执行器，多次研究、素材组合和跨载体创作才进入较长的规划流程。</p>
+<p>“首选”表示架构适配上的推荐。尚无相同模型、相同任务的对照证据，不能宣称 Deep Agents JS 在中文教学质量、数学正确性、响应时长或总体费用上优于其他框架。现有 Pi 路径改动较少，也不能据此直接认定其运行总成本最低。</p>
+<h3 id="proposal-2-必须限定或修正的关键主张">2. 必须限定或修正的关键主张</h3>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>容易产生的理解</th>
+<th>经复核后的准确边界</th>
+<th>方案中的处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接入 Deep Agent 就获得语音课件助手</td>
+<td>候选框架承担 Agent 执行，不自动提供本产品的收音、转写、打断、播报、屏幕指代与选中对象同步。现有 <code>courseware-assistant.js</code> 没有教师语音输入实现</td>
+<td>新增教师创作语音接入层，先验证转写与指代，再连接同一创作命令入口</td>
+</tr>
+<tr>
+<td>当前已经能够智能选择所有技术</td>
+<td><code>suggestCoursewareType()</code> 是关键词规则，<code>TYPES</code> 是有限工具列表；技术研究目录中还有候选能力</td>
+<td>当前称“根据关键词建议已有工具”；目标中的语义选型仅从经过健康检查和能力验证的注册表选择</td>
+</tr>
+<tr>
+<td>“整套课件”分类意味着能保存完整课件</td>
+<td><code>materialCourseware()</code> 抓取当前可见 DOM，去除动态控件，保存 <code>type: visual</code> 和静态 HTML；没有保留完整原始 bundle 或全部场景</td>
+<td>内容快照仍归知识点资源；只有完整场景、资产引用与所需状态可重载时才允许标记整套课件</td>
+</tr>
+<tr>
+<td>分类字段升级就是内容迁移</td>
+<td>当前 <code>catalog</code> 读时投影只增加发现元数据，不改变 renderer payload，也不补出缺失内容</td>
+<td>保持旧 ID、时间戳和 payload；完整课件格式另建版本化契约，不能用分类字段假装完成迁移</td>
+</tr>
+<tr>
+<td>保存当前版本意味着已有版本历史</td>
+<td>当前 IndexedDB 保存按相同 ID 更新记录，保留 <code>createdAt</code> 并更新 <code>updatedAt</code>；这不保存每次历史版本，也不支持跨设备同步</td>
+<td>目标资产仓库区分 artifact ID、revision ID 和草稿指针；现有本地保存明确标示为当前浏览器保存</td>
+</tr>
+<tr>
+<td>关闭页面以后 Deep Agent 自然继续</td>
+<td>当前互动课件 HTTP handler 监听 <code>res.close</code> 并中断生成；这是请求绑定执行，不是独立后台 job</td>
+<td>新长任务入口将“断开事件订阅”与“取消任务”分开；旧同步接口保留原语义，避免隐式改变行为</td>
+</tr>
+<tr>
+<td><code>subagents</code> 配置就有后台并行和自然追问</td>
+<td>Deep Agents JS 同步委派会阻塞 supervisor；异步子 Agent 要有 Agent Protocol 服务。<sup id="proposal-fnref4:3"><a class="footnote-ref" href="#proposal-fn:3">8</a></sup></td>
+<td>第一阶段可以仅把整个创作 run 放进后台 worker；确认需要独立子 Agent 后再建对应服务</td>
+</tr>
+<tr>
+<td>异步任务 update 是无损热修改</td>
+<td>官方文档说明 update 以 interrupt multitask 策略中断原 run，再在同线程加入新指令启动新 run。<sup id="proposal-fnref5:3"><a class="footnote-ref" href="#proposal-fn:3">8</a></sup></td>
+<td>把修改保存为新修订请求，标明影响范围；避免让旧结果覆盖新版本，付费步骤先核对状态</td>
+</tr>
+<tr>
+<td>有 checkpoint 就不会重复调用</td>
+<td>LangGraph 回放会重执行 checkpoint 之后的节点，包括 API 调用；持久存储也要正确配置。<sup id="proposal-fnref2:4"><a class="footnote-ref" href="#proposal-fn:4">12</a></sup></td>
+<td>副作用由业务幂等键与 provider task ID 管理，不能依赖聊天历史或 checkpoint 实现“只调用一次”</td>
+</tr>
+<tr>
+<td>有文件 backend 就有安全沙箱</td>
+<td>State/Store/Filesystem/Shell 的职责不同；LocalShellBackend 没有隔离，路径模式也不能约束 shell。<sup id="proposal-fnref3:5"><a class="footnote-ref" href="#proposal-fn:5">11</a></sup></td>
+<td>标准课件路径不暴露 shell；代码路线使用独立隔离执行器</td>
+</tr>
+<tr>
+<td><code>abort()</code> 返回就证明上游取消完毕</td>
+<td>AbortSignal、Pi abort、SDK interrupt 表示对应执行层的中断机制，不能证明外部视频任务已终止。<sup id="proposal-fnref6:3"><a class="footnote-ref" href="#proposal-fn:3">8</a></sup><sup id="proposal-fnref2:6"><a class="footnote-ref" href="#proposal-fn:6">13</a></sup><sup id="proposal-fnref3:10"><a class="footnote-ref" href="#proposal-fn:10">6</a></sup></td>
+<td>使用 <code>cancel_requested</code>，核对各执行层后才宣布取消完成</td>
+</tr>
+<tr>
+<td>更换框架自动解决长等待</td>
+<td>规划、上下文整理和子 Agent 也增加模型轮次；旧接口还可能等待完整生成才返回</td>
+<td>首先拆分受理时间、首次真实进度、可操作预览、最终完成时间，测量关键等待阶段再优化</td>
+</tr>
+</tbody>
+</table></div>
+<p>以上限制不是要求扩大本轮改动。当前分类、目录和界面整理可以独立完成；Deep Agent、新语音入口、新持久服务和完整课件格式均属于后续方案范围。</p>
+<h3 id="proposal-3-github-项目比较与取舍">3. GitHub 项目比较与取舍</h3>
+<h4 id="proposal-31-可核验项目事实">3.1 可核验项目事实</h4>
+<p>资料访问日期为 <strong>2026-09-12</strong>；发布日期为官方 Release 的 UTC 日期。这里列出的版本是访问时已核验版本，实施时仍需锁定版本和对应接口。<sup id="proposal-fnref2:1"><a class="footnote-ref" href="#proposal-fn:1">1</a></sup><sup id="proposal-fnref:7"><a class="footnote-ref" href="#proposal-fn:7">3</a></sup><sup id="proposal-fnref:8"><a class="footnote-ref" href="#proposal-fn:8">4</a></sup><sup id="proposal-fnref:9"><a class="footnote-ref" href="#proposal-fn:9">5</a></sup><sup id="proposal-fnref:10"><a class="footnote-ref" href="#proposal-fn:10">6</a></sup></p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>已核验版本与许可</th>
+<th>适合承担什么</th>
+<th>当前项目的额外成本</th>
+<th>选型结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/langchain-ai/deepagentsjs">LangChain Deep Agents JS</a></td>
+<td><code>deepagents@1.13.4</code>，2026-09-09，MIT；TypeScript/ESM</td>
+<td>多步骤内容创作的主编排，使用受控工具交付产物</td>
+<td>LangChain/LangGraph 依赖、工具 schema 适配、任务事件、真实 checkpoint 存储、模型兼容验证</td>
+<td><strong>主编排首选，旁路试点</strong></td>
+</tr>
+<tr>
+<td><a href="https://github.com/earendil-works/pi">Pi</a></td>
+<td>仓库 <code>v0.85.1</code>，2026-09-05，MIT；本系统锁定的 Agent Core/AI 是 <code>0.74.0</code></td>
+<td>少量工具的短任务、已有 Lesson DSL 生成、回退执行</td>
+<td>长期业务任务、统一版本、复杂委派仍需应用实现；不能把最新 Coding SDK 能力直接算成本地 Core 能力</td>
+<td><strong>继续保留，作为基线与短任务执行器</strong></td>
+</tr>
+<tr>
+<td><a href="https://github.com/langchain-ai/deepagents">LangChain Deep Agents Python</a></td>
+<td><code>0.7.13</code>，2026-09-02，MIT；Python <code>&gt;=3.11,&lt;4.0</code></td>
+<td>Python 工具占主导的多步骤任务</td>
+<td>新增 Python 服务、依赖隔离、进程与协议边界</td>
+<td>当前不作为主编排；Python renderer 可先由 JS 工具调用</td>
+</tr>
+<tr>
+<td><a href="https://github.com/OpenHands/software-agent-sdk">OpenHands Software Agent SDK</a></td>
+<td><code>v1.47.0</code>，2026-09-10，MIT；核心 Python <code>&gt;=3.12</code></td>
+<td>隔离工作区内的代码生成、构建、执行测试和修复</td>
+<td>Agent Server/容器、Python 运行环境；TypeScript 客户端 README 明确为 alpha，且只支持远程 conversation</td>
+<td>有新代码执行需求时再试；TS 客户端状态不能推论整个 SDK 不可用</td>
+</tr>
+<tr>
+<td><a href="https://github.com/anthropics/claude-agent-sdk-typescript">Claude Agent SDK TypeScript</a></td>
+<td><code>0.3.269</code>，2026-09-11；Node <code>&gt;=18</code>；README 指明受 Anthropic Commercial Terms 管理</td>
+<td>使用 Claude 进行代码与文件任务的可选执行服务</td>
+<td>Claude 模型渠道、原生程序、会话环境、商业条款与运维边界</td>
+<td>保留候选，不作为任意模型可替换的默认内核</td>
+</tr>
+</tbody>
+</table></div>
+<p>Deep Agents JS 的仓库 latest Release 本次指向 QuickJS 子包，不是 <code>deepagents</code> 主包，因此不能只用 monorepo 的 <code>/releases/latest</code> 得出库版本。JS 和 Python 的版本号也不能用来相互比较成熟度。<sup id="proposal-fnref3:1"><a class="footnote-ref" href="#proposal-fn:1">1</a></sup><sup id="proposal-fnref2:7"><a class="footnote-ref" href="#proposal-fn:7">3</a></sup></p>
+<h4 id="proposal-32-首选的理由与通过条件">3.2 首选的理由与通过条件</h4>
+<p>Deep Agents JS 接受模型对象或模型标识，提供工具、中间件、subagents、backend、checkpointer、store 和 interrupt 配置；这些能力与“复用现有领域服务，补足多步骤创作”较匹配。<sup id="proposal-fnref2:2"><a class="footnote-ref" href="#proposal-fn:2">2</a></sup> 与把核心迁移到 Python 相比，它保留当前服务器的语言边界；与引入通用代码 Agent 相比，它不要求先开放终端来完成标准课件。</p>
+<p>它仍需要实际集成验证。当前 Pi 的 Ark 配置使用 OpenAI-compatible 适配，但不能据此认定切到 LangChain 后图片输入、tool calls、usage、超时、重试和取消完全等价。LangChain 的 ChatOpenAI 文档是适配入口证据，不是 Ark 兼容性验收结果。<sup id="proposal-fnref:11"><a class="footnote-ref" href="#proposal-fn:11">7</a></sup></p>
+<p>库、运行服务和托管产品也应区分。Deep Agents JS 是可在应用中调用的库；异步子 Agent 文档允许使用任何兼容 Agent Protocol 的服务，包括自托管服务。<sup id="proposal-fnref3:2"><a class="footnote-ref" href="#proposal-fn:2">2</a></sup><sup id="proposal-fnref:3"><a class="footnote-ref" href="#proposal-fn:3">8</a></sup> 因此无需把购买某一托管产品写成架构前提，但兼容服务、认证、持久化和运维工作也不会凭空消失。</p>
+<p>Pi 作为回退只适用于<strong>可以安全重执行</strong>的步骤，例如尚未产生外部副作用的 DSL 草稿生成。若付费请求已提交而结果不确定，应查询现有任务或进入核对状态，不能切换框架后再次提交。最终是否扩大 Deep Agents JS 覆盖范围，应由任务成功率、人工修订量、模型兼容性、关键路径时长和费用对照决定，不用 star 数量或固定的未经验证占比代替判断。</p>
+<h3 id="proposal-4-自然语音与最少必要-gui">4. 自然语音与最少必要 GUI</h3>
+<h4 id="proposal-41-核心体验">4.1 核心体验</h4>
+<p>教师可以说：“给八年级做一个斜面与摩擦实验，让学生先预测，再操作，最后回答一道迁移题。”系统回显简短的目标理解，从已有能力中选择表达方式，开始生成并显示真实状态。预览出现后，教师可以继续说：“把滑杆范围收窄”“只简化第一段”“保留第二版并保存”。</p>
+<p>主要输入是自然语音，文字输入始终保留，转写可见可纠正。默认界面包括输入区、附件入口、简短任务状态和当前产物；只有预览需要的操作控件留在画布附近。技术框架、数据库、prompt 和模型参数放入专业设置，不作为正常制作的必经选择。</p>
+<p>GUI 的最小化是减少流程负担，不是取消表达空间信息的控件。参数调节、拖动几何点、选中某个文本块、查看公式、比较候选和分镜顺序都需要可见对象。把这些动作全部改成语音会增加歧义，也降低教师验证结果的效率。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>默认交互</th>
+<th>系统必须携带的上下文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新建课件</td>
+<td>语音/文字教学目标与附件</td>
+<td>用户、学科/学段、来源引用、输出用途</td>
+</tr>
+<tr>
+<td>自动选型</td>
+<td>说明拟采用的教学效果，允许更改</td>
+<td>可用 capability ID、约束、预算与选型理由</td>
+</tr>
+<tr>
+<td>修改“这个角”“第一段”</td>
+<td>高亮已选对象；有歧义时让教师点选</td>
+<td>artifact ID、revision ID、object ID、观察版本</td>
+</tr>
+<tr>
+<td>比较方案</td>
+<td>默认一个推荐结果；有实质差异才显示第二个候选</td>
+<td>候选版本和各自差异，避免仅换样式的伪比较</td>
+</tr>
+<tr>
+<td>操作实验</td>
+<td>直接拖拽、滑杆、播放或键盘操作</td>
+<td>实验参数、单位、不变量、操作状态</td>
+</tr>
+<tr>
+<td>保存</td>
+<td>明确保存当前选中的版本，展示本地/服务器位置</td>
+<td>幂等键、版本号、资产完整性、访问范围</td>
+</tr>
+<tr>
+<td>生成中继续说话</td>
+<td>新指令作为修订或后续任务，可取消当前任务</td>
+<td>正在运行的 run ID、影响步骤、最新目标版本</td>
+</tr>
+</tbody>
+</table></div>
+<p>“停止播报”“暂时关闭预览”“取消生成”应是三种不同动作。教师打断语音播报时，不能默认撤销已提交的视频任务；关闭预览不能丢弃草稿；只有明确取消生成时，任务服务才执行取消链。对无法消歧的精确动作，系统用一句短问句或对象选择器确认目标，避免重复确认已经授权的普通草稿修改。</p>
+<h4 id="proposal-42-手机pad-与桌面">4.2 手机、Pad 与桌面</h4>
+<p>手机以单一焦点为主，对话内预览可展开为全屏；退出全屏后回到相同消息、版本和操作状态。Pad 横屏并排呈现对话与预览，竖屏按可用宽度折叠侧区；不要按设备名称强行挤压复杂实验。桌面可扩展素材与版本侧栏，核心操作和数据与手机、Pad 相同。</p>
+<p>创作中的对话、任务、产物和控制参数属于共同状态。切换布局只是呈现变化，不能重新创建任务、重复付费调用、覆盖参数或恢复旧结果。具体按钮、文字、触摸目标与横竖屏质量由浏览器验收确认；Agent 框架本身不提供这些保证。</p>
+<h3 id="proposal-5-推荐架构与责任分工">5. 推荐架构与责任分工</h3>
+<h4 id="proposal-51-两条独立运行链路">5.1 两条独立运行链路</h4>
+<p>学生实时教学与教师课件创作可以共享资料和产物，但应保留不同的任务生命周期。<code>teacher_turn</code> 继续负责学生回合的学习状态、确定性判分和可信投影，不能等待一个长时间课件编排完成。教师创作使用独立 run，由任务服务接管执行、修改、保存和取消。</p>
+<figure class="report-diagram"><div class="report-diagram-scroll" role="region" tabindex="0" aria-label="架构图，可横向滚动"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1380 1410" width="1380" height="1410" role="img" aria-labelledby="proposal-architecture-title proposal-architecture-desc"><title id="proposal-architecture-title">教师课件创作与学生实时教学的独立运行链路</title><desc id="proposal-architecture-desc">教师输入经创作入口、课件任务服务和后台 Worker，路由到 Pi 或 Deep Agents，再调用受控工具；产物经过质量门进入版本化资产仓库，预览修改回到创作入口。学生实时会话独立进入 teacher_turn，仅共享检索与素材服务，并产生自己的学习状态与可信双投影。</desc><defs><marker id="proposal-architecture-arrow" markerwidth="9" markerheight="9" refx="8" refy="4.5" orient="auto" markerunits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9 Z" fill="#404040"></path></marker></defs><rect width="1380" height="1410" fill="#fff"></rect><text x="70" y="61" fill="#333" font-size="22" font-weight="600">教师课件创作 · 独立任务 run</text><rect x="970" y="424" width="342" height="366" fill="#f5f5f5" stroke="#aaa" stroke-dasharray="6 5"></rect><text x="990" y="448" fill="#333" font-size="20" font-weight="600">学生实时教学 · 独立回合</text><rect x="60" y="1008" width="1230" height="358" fill="#fafafa" stroke="#aaa"></rect><text x="80" y="1040" fill="#444" font-size="20">内容质量与版本化资产</text><path data-edge="T-&gt;V" d="M290 124 H340" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="V-&gt;C" d="M560 124 H610" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="C-&gt;R" d="M900 124 H1000" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="R-&gt;Q" d="M1135 168 V246" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="Q-&gt;D" d="M1000 280 H895" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="D-&gt;P" d="M735 280 H485 V405" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="D-&gt;A" d="M815 330 V365 H805 V405" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="A-&gt;K" d="M805 473 V535" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="A-&gt;U" d="M670 439 H655 V689 H650" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="P-&gt;U" d="M485 473 V620 H500 V655" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="U-&gt;X" d="M500 723 V790 H202 V840" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="U-&gt;L" d="M500 723 V790 H502 V840" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="U-&gt;E" d="M500 723 V790 H802 V840" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="U-&gt;M" d="M500 723 V790 H1120 V840" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="M-&gt;G" d="M1120 928 V986 H710 V1030" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="L-&gt;G" d="M502 928 V986 H710 V1030" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="E-&gt;G" d="M802 928 V986 H710 V1030" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="X-&gt;G" d="M202 928 V986 H710 V1030" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="G-&gt;F" d="M710 1098 V1140" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="F-&gt;UI" d="M710 1208 V1260" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="UI-&gt;C" d="M710 1348 V1380 H1360 V40 H755 V80" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)" stroke-dasharray="8 6"></path><path data-edge="R-&gt;EV" d="M1270 124 H1300 V364 H1270" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)" stroke-dasharray="8 6"></path><path data-edge="EV-&gt;UI" d="M1270 364 H1330 V1304 H890" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)" stroke-dasharray="8 6"></path><path data-edge="S-&gt;TT" d="M1120 528 V570" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="TT-&gt;M" d="M1250 604 H1300 V884 H1270" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><path data-edge="TT-&gt;SP" d="M1120 638 V680" fill="none" stroke="#404040" stroke-width="2" stroke-linejoin="round" marker-end="url(#proposal-architecture-arrow)"></path><g data-node="T" aria-label="教师语音或文字"><rect x="70" y="90" width="220" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="180.0" y="132.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="180.0" dy="0">教师语音或文字</tspan></text></g><g data-node="V" aria-label="输入与转写层"><rect x="340" y="90" width="220" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="450.0" y="132.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="450.0" dy="0">输入与转写层</tspan></text></g><g data-node="C" aria-label="创作命令入口 · 选中对象与版本上下文"><rect x="610" y="80" width="290" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="755.0" y="117.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="755.0" dy="0">创作命令入口</tspan><tspan x="755.0" dy="30">选中对象与版本上下文</tspan></text></g><g data-node="R" aria-label="课件任务服务 · 权限 幂等 预算 状态"><rect x="1000" y="80" width="270" height="88" rx="3" fill="#eeeeee" stroke="#222" stroke-width="2"></rect><text x="1135.0" y="117.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="600"><tspan x="1135.0" dy="0">课件任务服务</tspan><tspan x="1135.0" dy="30">权限 幂等 预算 状态</tspan></text></g><g data-node="Q" aria-label="持久任务与后台 Worker"><rect x="1000" y="246" width="270" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="1135.0" y="273.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="1135.0" dy="0">持久任务与</tspan><tspan x="1135.0" dy="30">后台 Worker</tspan></text></g><g data-node="D" aria-label="任务路线"><polygon points="815,230 895,280 815,330 735,280" fill="#f5f5f5" stroke="#555" stroke-width="2"></polygon><text x="815.0" y="288.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="815.0" dy="0">任务路线</tspan></text></g><g data-node="P" aria-label="Pi 或专用生成器"><rect x="350" y="405" width="270" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="485.0" y="447.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="485.0" dy="0">Pi 或专用生成器</tspan></text></g><g data-node="A" aria-label="Deep Agents JS"><rect x="670" y="405" width="270" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="805.0" y="447.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="805.0" dy="0">Deep Agents JS</tspan></text></g><g data-node="K" aria-label="教学 Skills 与能力注册表"><rect x="670" y="535" width="270" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="805.0" y="572.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="805.0" dy="0">教学 Skills</tspan><tspan x="805.0" dy="30">与能力注册表</tspan></text></g><g data-node="U" aria-label="受控领域工具"><rect x="350" y="655" width="300" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="500.0" y="697.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="500.0" dy="0">受控领域工具</tspan></text></g><g data-node="X" aria-label="可选隔离代码执行器"><rect x="70" y="840" width="265" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="202.5" y="892.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="202.5" dy="0">可选隔离代码执行器</tspan></text></g><g data-node="L" aria-label="Lesson DSL 与几何执行器"><rect x="370" y="840" width="265" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="502.5" y="877.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="502.5" dy="0">Lesson DSL</tspan><tspan x="502.5" dy="30">与几何执行器</tspan></text></g><g data-node="E" aria-label="现有视频项目与任务 API"><rect x="670" y="840" width="265" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="802.5" y="877.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="802.5" dy="0">现有视频项目</tspan><tspan x="802.5" dy="30">与任务 API</tspan></text></g><g data-node="M" aria-label="检索与素材服务"><rect x="970" y="840" width="300" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="1120.0" y="892.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="1120.0" dy="0">检索与素材服务</tspan></text></g><g data-node="G" aria-label="内容与产物质量门"><rect x="500" y="1030" width="420" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="710.0" y="1072.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="710.0" dy="0">内容与产物质量门</tspan></text></g><g data-node="F" aria-label="版本化产物与资产仓库"><rect x="470" y="1140" width="480" height="68" rx="3" fill="#eeeeee" stroke="#222" stroke-width="2"></rect><text x="710.0" y="1182.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="600"><tspan x="710.0" dy="0">版本化产物与资产仓库</tspan></text></g><g data-node="UI" aria-label="对话内预览 选择 修改 保存"><rect x="530" y="1260" width="360" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="710.0" y="1297.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="710.0" dy="0">对话内预览</tspan><tspan x="710.0" dy="30">选择 修改 保存</tspan></text></g><g data-node="EV" aria-label="统一事件流"><rect x="1000" y="335" width="270" height="58" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="1135.0" y="372.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="1135.0" dy="0">统一事件流</tspan></text></g><g data-node="S" aria-label="学生实时会话"><rect x="990" y="460" width="260" height="68" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="1120.0" y="502.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="1120.0" dy="0">学生实时会话</tspan></text></g><g data-node="TT" aria-label="teacher_turn"><rect x="990" y="570" width="260" height="68" rx="3" fill="#eeeeee" stroke="#222" stroke-width="2"></rect><text x="1120.0" y="612.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="600"><tspan x="1120.0" dy="0">teacher_turn</tspan></text></g><g data-node="SP" aria-label="学习状态与可信双投影"><rect x="990" y="680" width="260" height="88" rx="3" fill="#fff" stroke="#777" stroke-width="1.5"></rect><text x="1120.0" y="717.0" text-anchor="middle" fill="#171717" font-size="23" font-weight="400"><tspan x="1120.0" dy="0">学习状态与</tspan><tspan x="1120.0" dy="30">可信双投影</tspan></text></g><text x="610" y="264" text-anchor="middle" fill="#444" font-size="18">已有载体的短任务</text><text x="832" y="379" fill="#444" font-size="18">多步骤创作</text></svg></div><figcaption>教师创作与学生实时教学的目标运行链路。虚线表示事件通知与修改回路。</figcaption></figure>
+<p>这是目标架构。现有视频服务已经具备自己的项目、持久任务、上游 ID 和轮询机制，应作为工具适配，不为接入 Deep Agent 再实现第二套相同状态。互动课件与素材生成需要补的能力，应围绕统一任务契约逐步增加。</p>
+<h4 id="proposal-52-skillmcpexecutor契约分别做什么">5.2 Skill、MCP、Executor、契约分别做什么</h4>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>负责内容</th>
+<th>本系统中的推荐形态</th>
+<th>不应承担</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Skill</td>
+<td>专业教学步骤、选型指南、质量检查清单、示例与辅助资料</td>
+<td>由项目维护、版本固定的技能目录；按需加载相关知识</td>
+<td>决定用户权限、安装依赖、替代程序校验或宣称工具已经可用</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>发现与调用外部 tools/resources/prompts 的标准接口</td>
+<td>对远端素材、外部检索或独立执行服务采用 MCP；同进程函数可以直接适配</td>
+<td>自动授权、沙箱、持久任务、课件包格式</td>
+</tr>
+<tr>
+<td>Executor</td>
+<td>真正计算、生成、渲染、转码或调用上游</td>
+<td>现有 DSL/几何 renderer、素材桥、Ark 客户端和视频合成服务</td>
+<td>解释模糊的保存目标、自行扩大写权限、按模型文本判断业务完成</td>
+</tr>
+<tr>
+<td>产物契约</td>
+<td>可验证的输入输出与渲染能力</td>
+<td>Lesson DSL、几何模型、视频 storyboard、后续整套课件 manifest</td>
+<td>把格式正确等同于内容正确、把快照等同于可编辑原件</td>
+</tr>
+<tr>
+<td>任务服务</td>
+<td>状态、预算、幂等、修订、取消、恢复、事件</td>
+<td>独立于 Pi/Deep Agents 的领域任务层</td>
+<td>依赖模型“记得”task ID 或从自然语言结尾判断成功</td>
+</tr>
+<tr>
+<td>资产仓库</td>
+<td>来源、文件、版本、缩略图、访问范围和复用</td>
+<td>服务端资产与修订表；本地 IndexedDB 可继续作为当前设备收藏/缓存</td>
+<td>保存 framework 内部 checkpoint 即宣称交付成品</td>
+</tr>
+</tbody>
+</table></div>
+<p>Agent Skills 官方规范说明了 <code>SKILL.md</code>、可选脚本/资源和按需加载；MCP 官方区分 tools、resources 和 prompts。<sup id="proposal-fnref:12"><a class="footnote-ref" href="#proposal-fn:12">9</a></sup><sup id="proposal-fnref:13"><a class="footnote-ref" href="#proposal-fn:13">10</a></sup> 这些规范帮助组织和连接能力，但“加载成功”不能作为内容正确、授权充分或执行完成的证据。</p>
+<p>第一阶段默认只允许已验证的领域工具。应核对创建后实际暴露的工具集合，不能仅凭一个空的 <code>subagents</code> 配置就推断所有框架默认委派或文件能力都被禁用。文件 backend 应仅含该 run 需要的工作资料，不含应用源目录、环境密钥或其他教师的数据。<sup id="proposal-fnref4:2"><a class="footnote-ref" href="#proposal-fn:2">2</a></sup><sup id="proposal-fnref:5"><a class="footnote-ref" href="#proposal-fn:5">11</a></sup></p>
+<h4 id="proposal-53-可执行能力注册表">5.3 可执行能力注册表</h4>
+<p>当前教学技术目录用于浏览和选型，不能直接充当模型的无限工具菜单。目标注册表至少记录：能力 ID、领域适用范围、输入输出 schema、实际 executor 及版本、支持的对象/交互/导出形式、验证等级、健康状态、预算、错误分类与降级方式。</p>
+<p>生成顺序优先复用已有课件，再使用既有 DSL 或模板，随后调用专用视频/素材执行器，最后才考虑受控代码生成。候选技术保留研究状态；“源码已经纳入”“已存在调用链”“服务此刻健康”“相同场景验证通过”应是不同状态，不能合成一个模糊的已接入标签。</p>
+<p>例如，“把几何图录成视频”可以是现有交互画布加录制/合成，不必为此启动新代码 Agent；“需要任意几何约束求解”则不能由当前直角三角形模板冒充。路由模型可以提出选择，但任务服务根据注册表验证可执行性。</p>
+<h4 id="proposal-54-建议的-skill-切分与工具契约">5.4 建议的 Skill 切分与工具契约</h4>
+<p>Skill 以可复用教学任务切分，不为“数学”“高中数学”“抛物线”“Three.js”各建一套相互重复的技能。学科和学段是输入条件，技术差异是按需加载的参考资料与执行器选择。例如同一个“变量关系探究”Skill 可以服务函数、力学和化学，具体公式、不变量与边界由领域执行器校验。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>建议 Skill</th>
+<th>输入与输出</th>
+<th>按需调用的能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>教学目标与活动设计</td>
+<td>学生对象、目标、误区 → 可检查的目标和活动顺序</td>
+<td>资料查询、能力目录</td>
+</tr>
+<tr>
+<td>教材依据与素材组织</td>
+<td>授权来源、知识点 → 引用片段、素材清单、缺口</td>
+<td>检索与素材服务</td>
+</tr>
+<tr>
+<td>交互探究设计</td>
+<td>变量、观察量、学段 → 预测—操作—观察—迁移任务</td>
+<td>已验证 DSL、几何/物理执行器</td>
+</tr>
+<tr>
+<td>成套课件组织</td>
+<td>环节、单元产物、时间约束 → 完整场景结构与资产清单</td>
+<td>OpenMAIC/DeepTutor 适配、包校验</td>
+</tr>
+<tr>
+<td>视频讲解设计</td>
+<td>目标、PPT/参考素材、时长 → 分镜、旁白、字幕和生成任务</td>
+<td>图片/视频模型、现有视频任务、合成器</td>
+</tr>
+<tr>
+<td>课件质量检查</td>
+<td>指定产物版本 → 内容、交互、视觉与来源检查结果</td>
+<td>结构校验、确定性计算、渲染检查</td>
+</tr>
+</tbody>
+</table></div>
+<p>每个 Skill 使用一个版本化目录，<code>SKILL.md</code> 只保留使用时机、必要输入、步骤、返回要求和停止条件；<code>references/</code> 放学科规则、技术选择与示例，<code>scripts/</code> 仅放经审查的辅助脚本。先加载名称和描述，命中任务后再读取完整技能；不要把所有学科参考和所有技术文档放进每次系统提示。目录结构是基于 Agent Skills 格式的本项目建议，六个具体名称不是标准规定。<sup id="proposal-fnref2:12"><a class="footnote-ref" href="#proposal-fn:12">9</a></sup></p>
+<p>MCP 按服务所有权切分，而非按学科切分。若资料服务、渲染服务和资产服务分别部署，可以设计三个边界：<code>education-resources</code> 提供受授权检索与素材读取；<code>courseware-execution</code> 提供能力查询、创建任务、查看状态和取消；<code>courseware-assets</code> 提供版本读取与显式保存。仍在同一 Node 服务内的函数直接包装为领域工具即可，无需为了形式统一绕一层网络 MCP。</p>
+<p>建议工具粒度围绕业务动作，例如 <code>search_teaching_sources</code>、<code>describe_capabilities</code>、<code>create_courseware_job</code>、<code>get_courseware_job</code>、<code>cancel_courseware_job</code>、<code>validate_artifact</code>、<code>save_artifact_revision</code>。创建长任务返回 run ID、真实状态与可订阅引用；保存返回仓库确认的版本 ID。所有写操作带业务幂等键及被修改的观察版本，服务端自行取得并校验权限，不能接受模型随意提交的用户角色作为授权依据。</p>
+<p>最小产物清单建议包含下列字段；这是目标契约示意，实施时需冻结 schema，不代表当前保存格式已经具备：</p>
+<pre><code class="language-json">{
+  &quot;artifact_id&quot;: &quot;由资产服务分配&quot;,
+  &quot;revision_id&quot;: &quot;由版本服务分配&quot;,
+  &quot;resource_form&quot;: &quot;knowledge_resource&quot;,
+  &quot;completeness&quot;: &quot;complete&quot;,
+  &quot;renderer&quot;: { &quot;id&quot;: &quot;lesson_dsl&quot;, &quot;version&quot;: &quot;固定版本&quot; },
+  &quot;payload_ref&quot;: &quot;受权限控制的结构引用&quot;,
+  &quot;asset_refs&quot;: [],
+  &quot;source_refs&quot;: [],
+  &quot;affordances&quot;: [&quot;adjust&quot;, &quot;explore&quot;],
+  &quot;validation&quot;: { &quot;schema&quot;: &quot;passed&quot;, &quot;content&quot;: &quot;needs_review&quot; }
+}
+</code></pre>
+<p>对话里渲染的是这份清单对应的指定版本。前端使用白名单 renderer 或隔离预览加载产物，显示其真实 affordances；禁止把工具返回的任意 HTML 直接插进具有主应用权限的 DOM。纯粹的文本修改也应产出新 revision 并说明差异，教师选择保存时才更新课件库里的目标版本。</p>
+<h3 id="proposal-6-持久化修改取消与降级">6. 持久化、修改、取消与降级</h3>
+<h4 id="proposal-61-持久化分四层">6.1 持久化分四层</h4>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>必须记录什么</th>
+<th>恢复时的作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>业务状态</td>
+<td>run/step ID、状态、目标修订、用户与权限、预算、幂等键、provider task ID</td>
+<td>决定当前允许执行什么，以及哪些副作用已经提交</td>
+</tr>
+<tr>
+<td>Agent checkpoint</td>
+<td>图状态、已执行节点、必要上下文与中断位置</td>
+<td>恢复编排，不代替业务授权和副作用核对</td>
+</tr>
+<tr>
+<td>工作文件</td>
+<td>当前任务的素材摘录、中间结构、构建结果与校验输出</td>
+<td>继续任务；按生命周期清理</td>
+</tr>
+<tr>
+<td>成品与版本</td>
+<td>原始结构、依赖资产、renderer 版本、来源、质量结果、revision ID</td>
+<td>预览、修改、复用、回滚与导出</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>StateBackend</code> 的文件随图状态存在，<code>StoreBackend</code> 使用配置的 store；名称中有 State/Store 不等于已具备进程重启后的持久性。官方的 MemorySaver 是内存实现；生产持久方案需要选定并验证真实存储。<sup id="proposal-fnref:4"><a class="footnote-ref" href="#proposal-fn:4">12</a></sup><sup id="proposal-fnref2:5"><a class="footnote-ref" href="#proposal-fn:5">11</a></sup> 初期先选择一套适合当前部署规模的实现，不同时引入多个数据库。</p>
+<p>现有 <code>catalog.version: 2</code> 是发现元数据版本。它与 Lesson DSL 版本、renderer 版本、资产修订和 checkpoint 格式分别管理。读时补分类不重写原始 payload；未来迁移格式也应保留原数据并能识别不兼容 reader，不能静默修改已保存课件。</p>
+<h4 id="proposal-62-产物完整性">6.2 产物完整性</h4>
+<p>建议成品记录明确区分 <code>snapshot</code> 与 <code>complete</code>。标准互动课件保存完整 DSL、运行器版本和所需资产；视频保存真实可访问的成片资产及项目引用；整套课件保存全部场景/页面、动作与题目引用、资产清单和重载所需结构。缺少这些条件的多场景当前画面仍然是快照。</p>
+<p>资源形态、呈现形式和交互能力不相互替代。三维场景的 PNG 快照应标为图文/静态快照，不能继续标记可三维探索；一套课件也可能同时包含图文、实验和视频。前端按 manifest 的可验证能力启用编辑、答题、导出和复用按钮，不从技术名称或模型描述推断能力。</p>
+<p>保存为知识点资源、保存为整套课件与发布到共享空间属于不同业务动作。若教师已明确要求保存当前版本，系统可以在已有权限内执行；没有共享授权时，不应把“保存”解释为向其他教师发布。</p>
+<h4 id="proposal-63-任务状态和修订">6.3 任务状态和修订</h4>
+<p>建议至少区分 <code>queued</code>、<code>running</code>、<code>needs_input</code>、<code>cancel_requested</code>、<code>cancelled</code>、<code>failed</code>、<code>completed</code>。成功必须伴随可验证产物引用；“模型说已完成”或“返回 HTTP 200”不能成为唯一依据。</p>
+<p>每次修改记录新的目标修订及所作用的 artifact revision。旧 run 迟到返回时，可以作为旧目标的候选保存，但不能覆盖新版本。对独立的文字修改可复用已生成素材；对影响上游镜头的修改，明确需要重跑的步骤，并使用既有预算与授权规则。</p>
+<p>JS 异步子 Agent 的 update 会中断前一个 run，再在同线程以新指令运行。<sup id="proposal-fnref2:3"><a class="footnote-ref" href="#proposal-fn:3">8</a></sup> 产品层应明确选择“追加后续任务”“替换尚未开始的步骤”或“取消后新建修订”，不能把这些语义混在一个模糊的继续按钮中。</p>
+<h4 id="proposal-64-取消与断连">6.4 取消与断连</h4>
+<p>后台任务创建与事件订阅分离。页面刷新或切换手机/Pad 布局只是重新订阅任务，不应自动取消后台工作；明确的取消命令再传递到 worker、Agent、执行器与外部 provider。迁移时保留旧同步接口的断连取消语义，避免一批客户端仍按旧接口使用时出现后台残留任务。</p>
+<p>取消请求是中间状态。任务服务应逐层核对：是否仍在排队，模型是否停止下一轮，本地计算是否终止，外部任务能否取消，是否有已完成但尚未交付的结果。无法取消的外部任务应保留关联并停止新副作用，不能伪报已退款或上游已停止。<sup id="proposal-fnref3:3"><a class="footnote-ref" href="#proposal-fn:3">8</a></sup><sup id="proposal-fnref:6"><a class="footnote-ref" href="#proposal-fn:6">13</a></sup><sup id="proposal-fnref2:10"><a class="footnote-ref" href="#proposal-fn:10">6</a></sup></p>
+<h4 id="proposal-65-检索降级重试与框架回退">6.5 检索降级、重试与框架回退</h4>
+<p>数据库连接状态由后端 provider 健康检查和熔断规则维护，模型只读取其结果。Neo4j 失败可跳过图谱扩展；Qdrant 失败可跳过向量召回；若还有可用可信索引则继续对应路径。没有可靠来源时明确标记依据不足，不能把服务错误静默改成“知识库没有相关内容”。</p>
+<p>对教学回合仍遵守既有 <code>teacher_turn</code> 的失败语义；创作场景可在允许无检索草稿时继续，但产物必须保留该状态。前端连接状态是解释和诊断入口，不能通过浏览器本地红绿状态直接决定后台授权或检索开关。</p>
+<p>重试共用 run 总 deadline 和费用预算。框架、provider 客户端与外层任务不能各自无限重复。视频提交结果不确定时，复用现有服务的 <code>provider_task_id</code>、提交状态和核对机制；对不存在外部副作用的可重执行步骤，才允许改用 Pi 或其他 provider 生成。</p>
+<h3 id="proposal-7-分阶段验收">7. 分阶段验收</h3>
+<h4 id="proposal-71-阶段与进入条件">7.1 阶段与进入条件</h4>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>实施范围</th>
+<th>必须通过的验收</th>
+<th>未通过时的处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A：统一创作闭环</td>
+<td>任务标识、真实进度、可操作预览、明确版本、保存能力说明；保留现有执行器</td>
+<td>手机/Pad/桌面状态一致；刷新后可恢复已持久任务；失败和取消不伪报；快照与整套课件不混淆</td>
+<td>继续修任务与产物层，不以更换模型掩盖问题</td>
+</tr>
+<tr>
+<td>B：教师语音入口</td>
+<td>转写、文字兜底、对象指代、停止播报与取消区分，接入相同创作命令</td>
+<td>噪声、修改口误、连续追问、歧义对象均可纠正；无重复命令或误保存</td>
+<td>保留文字主流程，不默认启用未可靠的语音动作</td>
+</tr>
+<tr>
+<td>C：Deep Agents JS 旁路</td>
+<td>相同领域工具上的 Pi 对照；标准 DSL 路线；持久 checkpoint</td>
+<td>Ark 模型接口、工具参数、异常恢复、任务预算、结果质量和回退通过；无任意 shell</td>
+<td>Pi 路线继续默认，修复适配或缩小试点任务</td>
+</tr>
+<tr>
+<td>D：必要的子 Agent</td>
+<td>可独立的素材、策划与验证任务；确有需要才部署异步服务</td>
+<td>相比单 Agent 缩短关键路径或降低人工修订；错误可局部恢复；子任务成本可归因</td>
+<td>不扩大委派，仅保留单 Agent 后台任务</td>
+</tr>
+<tr>
+<td>E：扩展代码和整套课件</td>
+<td>隔离代码执行、完整包 manifest、依赖资产与重载</td>
+<td>构建/交互/数学检查、运行边界、资产完整性、取消及版本恢复通过</td>
+<td>产物留为待检查候选，不冒充正式完整课件</td>
+</tr>
+</tbody>
+</table></div>
+<p>这些阶段是建议依赖顺序，不是工期承诺。A 与部分 B 可以独立于框架迁移开展；是否进入 D、E 由任务需求和 C 的实测结果决定。</p>
+<h4 id="proposal-72-最小试点样本与指标">7.2 最小试点样本与指标</h4>
+<p>试点应包括：现有斜面实验、精准函数图、教材来源约束、多轮局部修改、图片/教材附件、视频分镜与真实任务状态、完整课件与静态快照、Neo4j/Qdrant 不可用、模型超时、提交结果不确定、页面刷新、服务重启、运行中取消和并发修改。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="表格，可横向滚动"><table>
+<thead>
+<tr>
+<th>验收维度</th>
+<th>需要的证据</th>
+<th>不能替代它的现象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>教学正确性</td>
+<td>有标准答案/不变量的样本，来源对应，教师盲评与人工修订量</td>
+<td>仅 schema 通过，或另一模型声称正确</td>
+</tr>
+<tr>
+<td>真实等待</td>
+<td>受理、首次进度、首个可操作预览、最终完成分别统计 p50/p95</td>
+<td>用“已收到请求”的耗时代替生成耗时</td>
+</tr>
+<tr>
+<td>费用</td>
+<td>run 聚合模型、重试、子 Agent、图片/视频及失败成本</td>
+<td>只计算主 Agent 的 token</td>
+</tr>
+<tr>
+<td>保存完整性</td>
+<td>新会话从仓库重载全部结构/资产，预览和交互一致</td>
+<td>当前页面还能显示，或数据库有一条记录</td>
+</tr>
+<tr>
+<td>恢复</td>
+<td>重启后知道已完成步骤和已提交上游任务，副作用不重复</td>
+<td>单纯恢复聊天历史</td>
+</tr>
+<tr>
+<td>取消</td>
+<td>各执行阶段的实际停止与最终状态一致</td>
+<td>UI 马上显示“已取消”但上游仍被重复驱动</td>
+</tr>
+<tr>
+<td>权限与隔离</td>
+<td>越权素材、恶意文档指令、路径逃逸输入和资源预算检查</td>
+<td>MCP 连接成功、Skill 加载成功或模型口头保证</td>
+</tr>
+<tr>
+<td>交互与语音</td>
+<td>触摸/键盘操作、不同宽高比、转写修正、对象选择、打断语义</td>
+<td>静态截图漂亮或能收一段音频</td>
+</tr>
+</tbody>
+</table></div>
+<p>时延和费用门槛应在采集现有基线后冻结。接受请求应迅速返回，但不在未测量前写“必定快几倍”或“必定更便宜”；复杂媒体生成与已有 DSL 使用不同完成预算，并在界面中显示实际阶段。</p>
+<h3 id="proposal-8-方案边界与来源">8. 方案边界与来源</h3>
+<p>当前研究支持选型和架构判断，不提供候选框架已安装、真实模型对照已通过、完整课件保存已实现或自然语音创作已上线的证据。关键版本、许可、运行环境和接口来自官方资料；本地边界来自当前代码。没有为该方案运行付费模型、部署沙箱或新增生产执行器。</p>
+<p>下列编号对应正文引用。在线文档为 2026-09-12 访问版本；GitHub <code>main</code> 页面可能后续变化，已归档关键快照位于 <code>source-snapshots/deep-agent/</code>，完整取证说明见同目录 <code>deep-agent-evidence.md</code>。</p>
+<p>本地基线：<code>public/courseware-assistant.js</code> 的关键词建议和 <code>materialCourseware()</code>；<code>public/courseware-store.js</code> 的 IndexedDB 读写；<code>public/courseware-taxonomy.js</code> 的读时投影；<code>interactive-lesson-http.js</code> 的同步请求/断连取消；<code>pi-teaching-agent.js</code> 的单一受控工具；<code>teacher-agent.js</code> 与 <code>server.js</code> 的教学权威边界；<code>education-video-service.js</code> 与 repository/http 层的视频任务、上游提交与恢复。文件均在 <code>/Users/bytedance/work/项目/vibe coding-教育/豆包双工语音/outputs/doubao-voice-demo/</code>。</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="proposal-fn:1">
+<p>LangChain / npm：<a href="https://github.com/langchain-ai/deepagentsjs/blob/main/libs/deepagents/README.md">Deep Agents JS README</a>、<a href="https://github.com/langchain-ai/deepagentsjs/blob/main/LICENSE">MIT LICENSE</a>、<a href="https://github.com/langchain-ai/deepagentsjs/releases/tag/deepagents%401.13.4">deepagents@1.13.4 Release</a>、<a href="https://registry.npmjs.org/deepagents/latest">npm metadata</a>、<a href="https://api.github.com/repos/langchain-ai/deepagentsjs/releases?per_page=25">monorepo Releases</a>。用于 JS 包定位、版本和许可。&#160;<a class="footnote-backref" href="#proposal-fnref:1" title="Jump back to footnote 1 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:1" title="Jump back to footnote 1 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref3:1" title="Jump back to footnote 1 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:2">
+<p>LangChain：<a href="https://docs.langchain.com/oss/javascript/deepagents/customization">JS customization</a>、<a href="https://github.com/langchain-ai/deepagentsjs/blob/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/agent.ts">createDeepAgent 源码快照 eb288dd</a>。用于模型、工具、子 Agent、中间件、backend 和 checkpoint 接口。接口存在不等于本项目已适配。&#160;<a class="footnote-backref" href="#proposal-fnref:2" title="Jump back to footnote 2 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:2" title="Jump back to footnote 2 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref3:2" title="Jump back to footnote 2 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref4:2" title="Jump back to footnote 2 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:7">
+<p>LangChain / PyPI：<a href="https://github.com/langchain-ai/deepagents/blob/main/README.md">Deep Agents Python README</a>、<a href="https://github.com/langchain-ai/deepagents/blob/main/libs/deepagents/pyproject.toml">manifest</a>、<a href="https://github.com/langchain-ai/deepagents/releases/tag/deepagents%3D%3D0.7.13">0.7.13 Release</a>、<a href="https://pypi.org/pypi/deepagents/json">PyPI metadata</a>、<a href="https://docs.langchain.com/oss/python/deepagents/customization">Python customization</a>。用于 Python 版本、许可、运行要求和配置能力。&#160;<a class="footnote-backref" href="#proposal-fnref:7" title="Jump back to footnote 3 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:7" title="Jump back to footnote 3 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:8">
+<p>Earendil Works：<a href="https://github.com/earendil-works/pi/blob/main/README.md">Pi README</a>、<a href="https://github.com/earendil-works/pi/blob/main/packages/ai/README.md">Pi AI README</a>、<a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md">Coding Agent README</a>、<a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/sdk.md">Coding Agent SDK</a>、<a href="https://github.com/earendil-works/pi/releases/tag/v0.85.1">v0.85.1 Release</a>。用于包分工、扩展、provider、会话、默认权限和版本。&#160;<a class="footnote-backref" href="#proposal-fnref:8" title="Jump back to footnote 4 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:9">
+<p>OpenHands：<a href="https://github.com/OpenHands/software-agent-sdk/blob/main/README.md">Software Agent SDK README</a>、<a href="https://github.com/OpenHands/software-agent-sdk/blob/main/LICENSE">MIT LICENSE</a>、<a href="https://github.com/OpenHands/software-agent-sdk/blob/main/openhands-sdk/pyproject.toml">SDK manifest</a>、<a href="https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.47.0">v1.47.0 Release</a>、<a href="https://github.com/OpenHands/software-agent-sdk/blob/9df0ca59bb8110c5294a508fb6761d91d043e6a3/clients/typescript/README.md">TypeScript client README 快照</a>、<a href="https://docs.openhands.dev/sdk/guides/task-tool-set">Task Tool Set</a>、<a href="https://docs.openhands.dev/sdk/guides/convo-pause-and-resume">Pause and resume</a>。用于核心语言、定位、许可、TS alpha/remote 边界、同步子任务和暂停。&#160;<a class="footnote-backref" href="#proposal-fnref:9" title="Jump back to footnote 5 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:10">
+<p>Anthropic / npm：<a href="https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/README.md">Claude SDK README</a>、<a href="https://github.com/anthropics/claude-agent-sdk-typescript/releases/tag/v0.3.269">v0.3.269 Release</a>、<a href="https://registry.npmjs.org/@anthropic-ai/claude-agent-sdk/latest">npm metadata</a>、<a href="https://code.claude.com/docs/en/agent-sdk/quickstart">Quickstart</a>、<a href="https://code.claude.com/docs/en/agent-sdk/typescript">TypeScript API</a>、<a href="https://code.claude.com/docs/en/agent-sdk/permissions">Permissions</a>、<a href="https://code.claude.com/docs/en/agent-sdk/sessions">Sessions</a>。用于条款声明、运行要求、模型渠道、原生程序、取消和权限边界。&#160;<a class="footnote-backref" href="#proposal-fnref:10" title="Jump back to footnote 6 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:10" title="Jump back to footnote 6 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref3:10" title="Jump back to footnote 6 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:11">
+<p>LangChain：<a href="https://docs.langchain.com/oss/javascript/integrations/chat/openai">ChatOpenAI JS integration</a>。用于兼容模型适配入口；未据此宣称 Ark 实测成功。&#160;<a class="footnote-backref" href="#proposal-fnref:11" title="Jump back to footnote 7 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:3">
+<p>LangChain：<a href="https://docs.langchain.com/oss/javascript/deepagents/async-subagents">JS async subagents</a>、<a href="https://docs.langchain.com/oss/javascript/deepagents/subagents">JS subagents</a>、<a href="https://github.com/langchain-ai/deepagentsjs/blob/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/middleware/async_subagents.ts">async middleware 源码快照</a>。用于同步/异步边界、Agent Protocol 服务、自托管、update 中断语义与取消。&#160;<a class="footnote-backref" href="#proposal-fnref:3" title="Jump back to footnote 8 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:3" title="Jump back to footnote 8 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref3:3" title="Jump back to footnote 8 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref4:3" title="Jump back to footnote 8 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref5:3" title="Jump back to footnote 8 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref6:3" title="Jump back to footnote 8 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:12">
+<p>Agent Skills / LangChain：<a href="https://agentskills.io/home">Agent Skills 官方说明</a>、<a href="https://docs.langchain.com/oss/javascript/deepagents/skills">Deep Agents JS skills</a>。用于 SKILL.md、资源组织与按需加载。&#160;<a class="footnote-backref" href="#proposal-fnref:12" title="Jump back to footnote 9 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:12" title="Jump back to footnote 9 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:13">
+<p>Model Context Protocol：<a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/server-concepts">Server concepts，2026-07-28 版</a>。用于 tools/resources/prompts 的协议分工。&#160;<a class="footnote-backref" href="#proposal-fnref:13" title="Jump back to footnote 10 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:5">
+<p>LangChain：<a href="https://docs.langchain.com/oss/javascript/deepagents/backends">JS backends</a>、<a href="https://docs.langchain.com/oss/javascript/deepagents/sandboxes">sandboxes</a>、<a href="https://github.com/langchain-ai/deepagentsjs/blob/eb288dd53a2a8cf921e25ad93688212ffc1aca72/libs/deepagents/src/backends/local-shell.ts">LocalShellBackend 源码快照</a>。用于文件状态、store、路径约束与 shell 无隔离事实。&#160;<a class="footnote-backref" href="#proposal-fnref:5" title="Jump back to footnote 11 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:5" title="Jump back to footnote 11 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref3:5" title="Jump back to footnote 11 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:4">
+<p>LangChain：<a href="https://docs.langchain.com/oss/javascript/langgraph/checkpointers">LangGraph JS checkpointers</a>、<a href="https://docs.langchain.com/oss/javascript/langgraph/persistence">persistence</a>、<a href="https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop">Deep Agents JS human-in-the-loop</a>。用于持久存储、回放和审批恢复边界。&#160;<a class="footnote-backref" href="#proposal-fnref:4" title="Jump back to footnote 12 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:4" title="Jump back to footnote 12 in the text">返回正文</a></p>
+</li>
+<li id="proposal-fn:6">
+<p>Earendil Works / LangChain：<a href="https://github.com/earendil-works/pi/blob/main/packages/agent/README.md">Pi Agent Core README</a>、<a href="https://github.com/langchain-ai/langchainjs/blob/main/libs/langchain-core/src/runnables/types.ts">RunnableConfig 源码</a>。用于 abort、工具 hooks、signal 和 deadline 相关接口。&#160;<a class="footnote-backref" href="#proposal-fnref:6" title="Jump back to footnote 13 in the text">返回正文</a><a class="footnote-backref" href="#proposal-fnref2:6" title="Jump back to footnote 13 in the text">返回正文</a></p>
+</li>
+</ol>
+</div></article></main>
+</div>
+<script>
+(() => {
+  const contents = document.querySelector('.report-toc');
+  const desktop = window.matchMedia('(min-width: 901px)');
+  contents.open = desktop.matches;
+  desktop.addEventListener('change', event => { contents.open = event.matches; });
+  document.querySelector('[data-print-report]').addEventListener('click', () => window.print());
+  document.querySelectorAll('.report-toc a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (!desktop.matches) contents.open = false;
+      document.querySelectorAll('.report-toc a[aria-current]').forEach(item => item.removeAttribute('aria-current'));
+      link.setAttribute('aria-current', 'location');
+    });
+  });
+})();
+</script>
+</body>
+</html>

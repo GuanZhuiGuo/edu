@@ -1,0 +1,386 @@
+.question-bank-ux {
+  container: question-bank / inline-size;
+  --question-bank-pane-height: min(70dvh, 760px);
+  color: var(--ds-text);
+}
+
+.question-bank-ux .question-bank-shell { width: 100%; max-width: none; align-content: start; }
+.question-bank-ux [hidden],
+.question-bank-ux .question-bank-ux-filter-chips[hidden] { display: none; }
+body[data-portal-role="student"] .question-bank-ux .question-bank-ux-navigation { display: none; }
+
+.question-bank-ux-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  min-height: 44px;
+  margin-bottom: var(--ds-space-3);
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.question-bank-ux .question-bank-view-tabs {
+  display: flex;
+  align-self: stretch;
+  gap: var(--ds-space-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.question-bank-ux .question-bank-view-tabs button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 43px;
+  padding: 0 1px;
+  border: 0;
+  border-radius: 0;
+  color: var(--ds-muted);
+  background: transparent;
+  box-shadow: none;
+  font-size: var(--ds-font-sm);
+  font-weight: 600;
+}
+
+.question-bank-ux .question-bank-view-tabs button::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -1px;
+  height: 2px;
+  background: transparent;
+}
+
+.question-bank-ux .question-bank-view-tabs button:is(.is-active, [aria-selected="true"]) { color: var(--ds-color-primary); }
+.question-bank-ux .question-bank-view-tabs button:is(.is-active, [aria-selected="true"])::after { background: var(--ds-color-primary); }
+.question-bank-ux .question-bank-view-tabs svg { width: 16px; height: 16px; }
+
+.question-bank-ux-teacher-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.question-bank-ux-teacher-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding-inline: 10px;
+  border: 1px solid transparent;
+  color: var(--ds-muted);
+  background: transparent;
+  font-size: var(--ds-font-xs);
+}
+
+.question-bank-ux-teacher-actions button:hover { color: var(--ds-text); border-color: var(--ds-border); background: var(--ds-surface); }
+.question-bank-ux-teacher-actions svg { width: 15px; height: 15px; }
+
+.question-bank-ux :is(.question-bank-ux-browser, .question-bank-ux-practice-start, .question-bank-ux-authoring) {
+  min-width: 0;
+  margin: 0;
+  overflow: visible;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-panel);
+  background: var(--ds-surface);
+  box-shadow: none;
+}
+
+.question-bank-ux-search {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: 118px minmax(240px, 1fr) auto auto;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: var(--ds-space-2);
+  border-bottom: 1px solid var(--ds-border);
+}
+
+.question-bank-ux-search label { min-width: 0; margin: 0; }
+.question-bank-ux-search-query { position: relative; }
+.question-bank-ux-search-query > svg { position: absolute; inset-inline-start: 12px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: var(--ds-muted); pointer-events: none; }
+.question-bank-ux-search-query input { width: 100%; min-height: 36px; padding-inline-start: 38px; border-color: transparent; background: var(--ds-surface-subtle); font-size: var(--ds-font-body); }
+.question-bank-ux-search-scope select { width: 100%; min-height: 36px; font-size: var(--ds-font-sm); }
+.question-bank-ux-search > [data-question-search-submit] { min-height: 36px; padding-inline: 13px; }
+.question-bank-ux-search > [data-question-search-submit] svg { width: 15px; height: 15px; }
+.question-bank-ux-search-hint,
+.question-bank-ux-visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+.question-bank-ux-filter-details { position: relative; min-width: 0; }
+.question-bank-ux-filter-details > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  font-size: var(--ds-font-sm);
+  font-weight: 550;
+  cursor: pointer;
+  list-style: none;
+}
+
+.question-bank-ux-filter-details > summary::-webkit-details-marker { display: none; }
+.question-bank-ux-filter-details > summary svg { width: 15px; height: 15px; color: var(--ds-muted); }
+.question-bank-ux-filter-details > summary svg:last-child { transition: transform 150ms ease-out; }
+.question-bank-ux-filter-details[open] > summary svg:last-child { transform: rotate(180deg); }
+.question-bank-ux-filter-details > summary b {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding-inline: 5px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--ds-color-primary);
+  font-size: 10px;
+}
+
+.question-bank-ux-filter-fields {
+  position: absolute;
+  inset-block-start: calc(100% + 8px);
+  inset-inline-end: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(170px, 1fr));
+  gap: var(--ds-space-3);
+  width: min(520px, calc(100vw - 96px));
+  padding: var(--ds-space-4);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-panel);
+  background: var(--ds-surface);
+  box-shadow: 0 14px 34px rgba(31, 43, 63, .14);
+}
+
+.question-bank-ux-filter-fields label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  margin: 0;
+  color: var(--ds-muted);
+  font-size: var(--ds-font-xs);
+  font-weight: 500;
+}
+
+.question-bank-ux-filter-fields label:first-of-type { grid-column: 1 / -1; }
+.question-bank-ux-filter-fields :is(select, input) { width: 100%; min-width: 0; min-height: 36px; font-size: var(--ds-font-sm); }
+.question-bank-ux-filter-fields > button { justify-self: end; align-self: end; min-height: 34px; }
+
+.question-bank-ux-filter-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-height: 36px;
+  padding: 4px var(--ds-space-3);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--ds-border);
+  scrollbar-width: thin;
+}
+
+.question-bank-ux-result-count { flex: 0 0 auto; margin: 0; color: var(--ds-muted); font-size: var(--ds-font-xs); font-variant-numeric: tabular-nums; }
+.question-bank-ux-filter-chips { display: flex; gap: 5px; min-width: 0; }
+.question-bank-ux-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  max-width: 220px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: var(--ds-text);
+  background: var(--ds-surface-subtle);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.question-bank-ux-filter-chip > span { overflow: hidden; text-overflow: ellipsis; }
+.question-bank-ux-filter-chip > svg { flex: 0 0 auto; width: 12px; height: 12px; }
+
+.question-bank-ux-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  min-height: 0;
+}
+
+.question-bank-ux-tree-pane {
+  display: none;
+  min-width: 0;
+  max-block-size: min(28rem, 60dvh);
+  overflow: auto;
+  border-bottom: 1px solid var(--ds-border);
+  background: var(--ds-surface-subtle);
+}
+.question-bank-ux-tree-pane.is-mobile-open { display: block; }
+.question-bank-ux .question-tree-head { min-height: 54px; padding: 10px 12px; }
+.question-bank-ux .question-tree-head b { font-size: var(--ds-font-sm); }
+.question-bank-ux .question-tree-head small { color: var(--ds-muted); font-size: 11px; white-space: normal; }
+.question-bank-ux .question-tree-head > button { min-width: 32px; min-height: 32px; }
+.question-bank-ux .question-tree-search { padding: 0 10px 8px; }
+.question-bank-ux .question-tree-search input { min-height: 34px; font-size: var(--ds-font-xs); }
+.question-bank-ux .question-tree-all { min-height: 48px; padding: 9px 11px; text-align: left; }
+.question-bank-ux .question-tree-all :is(b, small, em) { font-size: 11px; line-height: 1.45; }
+.question-bank-ux .question-knowledge-tree { max-height: none; overflow: visible; }
+.question-bank-ux .question-tree-domain > header { padding: 9px 11px; color: var(--ds-muted); font-size: var(--ds-font-xs); }
+.question-bank-ux :is(.question-tree-point, .question-tree-theme-row).btn {
+  min-height: 36px;
+  height: auto;
+  padding: 6px 10px;
+  font-size: var(--ds-font-xs);
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+}
+.question-bank-ux :is(.question-tree-point, .question-tree-theme-row) > span { overflow: visible; white-space: normal; }
+
+.question-bank-ux-list-pane { display: block; min-width: 0; min-height: 0; }
+.question-bank-ux .question-list-head { min-height: 38px; height: auto; padding: 8px 12px; gap: 10px; border-bottom: 1px solid var(--ds-border); color: var(--ds-muted); font-size: var(--ds-font-xs); }
+.question-bank-ux .question-list-head > span { color: inherit; font-size: inherit; }
+.question-bank-ux-list { display: grid; align-content: start; min-width: 0; padding: 0 12px 12px; }
+
+.question-bank-ux .question-history-row.btn {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 5px 9px;
+  width: 100%;
+  min-height: 72px;
+  margin: 0;
+  padding: 11px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--ds-border);
+  border-radius: 0;
+  color: var(--ds-text);
+  background: var(--ds-surface);
+  box-shadow: none;
+  text-align: left;
+  white-space: normal;
+}
+
+.question-bank-ux .question-history-row.btn:hover,
+.question-bank-ux .question-history-row.btn.is-selected { background: var(--ds-surface-subtle); }
+.question-bank-ux .question-history-row.btn.is-selected { box-shadow: inset 2px 0 var(--ds-color-primary); }
+.question-bank-ux .question-history-row.btn .question-history-main { grid-column: 2 / -1; display: grid; gap: 2px; }
+.question-bank-ux .question-history-row.btn .question-history-main b { overflow: visible; font-size: var(--ds-font-sm); font-weight: 600; line-height: 1.55; white-space: normal; }
+.question-bank-ux .question-history-row.btn .question-history-main small { overflow: hidden; color: var(--ds-muted); font-size: 11px; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
+.question-bank-ux .question-history-row.btn .question-type-tag { grid-column: 2; justify-self: start; }
+.question-bank-ux .question-history-row.btn .question-source-tag { grid-column: 3; justify-self: end; }
+.question-bank-ux .question-history-row.btn :is(.question-type-tag, .question-source-tag) { padding: 1px 6px; font-size: 10px; line-height: 1.5; }
+.question-bank-ux .question-history-row.btn time { display: block; grid-column: 2 / -1; color: var(--ds-muted); font-size: 10px; text-align: left; }
+
+.question-bank-ux-detail-frame { display: none; min-width: 0; background: var(--ds-surface); }
+.question-bank-ux-detail-back { margin: 10px 12px 0; min-height: 36px; }
+.question-bank-ux-detail-panel { min-width: 0; padding: var(--ds-space-4); }
+.question-bank-ux-detail-panel h3 { margin: var(--ds-space-3) 0; color: var(--ds-text); font-size: 16px; font-weight: 650; line-height: 1.55; }
+.question-bank-ux-detail-panel p { margin-block: 6px; font-size: var(--ds-font-sm); line-height: 1.65; overflow-wrap: anywhere; }
+.question-bank-ux-detail-panel > section { margin-block: var(--ds-space-4); }
+.question-bank-ux-detail-panel :is(header, section > span, small) { color: var(--ds-muted); font-size: var(--ds-font-xs); }
+.question-bank-ux-detail-panel :is(.question-detail-actions, .question-kp-list, .question-detail-portrait > div) { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.question-bank-ux :is(.question-list-empty, .question-detail-empty, .question-generator-empty) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  gap: 6px;
+  padding: var(--ds-space-4);
+  color: var(--ds-muted);
+  text-align: center;
+}
+.question-bank-ux :is(.question-list-empty, .question-detail-empty, .question-generator-empty) b { color: var(--ds-text); font-size: var(--ds-font-body); }
+.question-bank-ux :is(.question-list-empty, .question-detail-empty, .question-generator-empty) p { margin: 0; color: var(--ds-muted); font-size: var(--ds-font-sm); line-height: 1.55; }
+.question-bank-ux-state-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 6px; }
+
+.question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-detail-frame { display: block; }
+.question-bank-ux[data-bank-detail-open="true"] :is(.question-bank-ux-list-pane, .question-bank-ux-tree-pane, .question-bank-ux-search, .question-bank-ux-filter-summary, .question-bank-ux-practice-start) { display: none; }
+
+.question-bank-ux-practice-start { display: grid; gap: var(--ds-space-3); padding: var(--ds-space-4); margin-bottom: var(--ds-space-3); }
+.question-bank-ux-practice-intro h2 { margin: 0; font-size: 18px; line-height: 1.4; }
+.question-bank-ux-practice-intro p { margin: 3px 0 0; color: var(--ds-muted); font-size: var(--ds-font-sm); }
+.question-bank-ux-practice-options { display: grid; gap: var(--ds-space-2); }
+.question-bank-ux-practice-options > button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 58px; padding: 10px; text-align: left; }
+.question-bank-ux-practice-options > button > span { display: grid; flex: 1; gap: 2px; min-width: 0; }
+.question-bank-ux-practice-options > button b { font-size: var(--ds-font-sm); }
+.question-bank-ux-practice-options > button small { color: inherit; font-size: 11px; font-weight: 400; line-height: 1.45; white-space: normal; }
+.question-bank-ux-practice-options > button > svg { flex: 0 0 18px; width: 18px; height: 18px; }
+.question-bank-ux-browser-toggle { display: inline-flex; align-items: center; gap: 7px; justify-self: start; min-height: 36px; padding: 5px 0; border: 0; text-align: left; }
+.question-bank-ux-browser-toggle > span { display: grid; gap: 2px; }
+.question-bank-ux-browser-toggle b { font-size: var(--ds-font-sm); }
+.question-bank-ux-browser-toggle small { color: var(--ds-muted); font-size: 11px; }
+
+.question-bank-ux-authoring { display: grid; grid-template-columns: minmax(0, 1fr); }
+.question-bank-ux-authoring-form { min-width: 0; padding: var(--ds-space-4); }
+.question-bank-ux-authoring-form > header { display: flex; align-items: start; gap: var(--ds-space-3); margin-block: var(--ds-space-3); }
+.question-bank-ux-authoring-form > header h2 { margin: 0; font-size: 18px; }
+.question-bank-ux-authoring-form > header p { margin: 5px 0; color: var(--ds-muted); font-size: var(--ds-font-sm); line-height: 1.55; }
+.question-bank-ux .question-authoring-status { flex-shrink: 0; font-size: var(--ds-font-xs); }
+.question-bank-ux-generator-groups { display: grid; gap: var(--ds-space-4); }
+.question-bank-ux-generator-group { min-width: 0; margin: 0; padding: 0; border: 0; }
+.question-bank-ux-generator-group :is(legend, summary) { width: 100%; margin: 0 0 var(--ds-space-2); padding: 0; color: var(--ds-text); font-size: var(--ds-font-body); font-weight: 600; }
+.question-bank-ux-generator-group > summary { min-height: 36px; padding-block: 8px; border-top: 1px solid var(--ds-border); cursor: pointer; }
+.question-bank-ux-generator-fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--ds-space-3); }
+.question-bank-ux-generator-fields label { display: grid; gap: 4px; margin: 0; color: var(--ds-muted); font-size: var(--ds-font-xs); font-weight: 500; }
+.question-bank-ux-authoring-form > footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; margin-top: var(--ds-space-4); }
+.question-bank-ux-generator-preview { min-width: 0; padding: var(--ds-space-4); border-top: 1px solid var(--ds-border); }
+.question-bank-ux-generator-preview :is(p, li) { font-size: var(--ds-font-sm); line-height: 1.6; }
+.question-bank-ux :is(.form-control, .form-select, .btn) { min-height: max(36px, var(--ds-control-height)); }
+.question-bank-ux :is(.form-control, .form-select) { min-width: 0; }
+.question-bank-ux :is(summary, button, input, select):focus-visible { outline: 2px solid var(--ds-color-primary); outline-offset: 2px; }
+
+@container question-bank (min-width: 640px) {
+  .question-bank-ux-layout { grid-template-columns: minmax(0, 1fr); }
+  .question-bank-ux-list-pane { max-block-size: var(--question-bank-pane-height); overflow: auto; }
+  .question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-layout { grid-template-columns: minmax(0, 1fr) minmax(300px, .85fr); }
+  .question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-detail-frame { display: block; max-block-size: var(--question-bank-pane-height); overflow: auto; border-left: 1px solid var(--ds-border); }
+  .question-bank-ux-detail-back { display: none; }
+  .question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-list-pane { display: block; }
+  .question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-search { display: grid; }
+  .question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-filter-summary { display: flex; }
+  .question-bank-ux-practice-options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .question-bank-ux-generator-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .question-bank-ux-generator-fields .is-wide { grid-column: 1 / -1; }
+}
+
+@container question-bank (min-width: 1024px) {
+  .question-bank-ux-layout { grid-template-columns: 214px minmax(0, 1fr); }
+  .question-bank-ux #questionTreeMobileToggle { display: none; }
+  .question-bank-ux-tree-pane,
+  .question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-tree-pane {
+    display: block;
+    grid-column: auto;
+    max-block-size: var(--question-bank-pane-height);
+    overflow: auto;
+    border-right: 1px solid var(--ds-border);
+    border-bottom: 0;
+  }
+  .question-bank-ux[data-bank-detail-open="true"] .question-bank-ux-layout { grid-template-columns: 214px minmax(0, 1fr) minmax(320px, .82fr); }
+  .question-bank-ux-authoring { grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); }
+  .question-bank-ux-generator-preview { border-top: 0; border-left: 1px solid var(--ds-border); }
+}
+
+@container question-bank (max-width: 700px) {
+  .question-bank-ux-search { grid-template-columns: 104px minmax(0, 1fr) auto; }
+  .question-bank-ux-filter-details { grid-column: 1 / -1; }
+  .question-bank-ux-filter-details > summary { justify-content: center; }
+  .question-bank-ux-filter-details > summary svg:last-child { margin-left: auto; }
+  .question-bank-ux-filter-fields { position: static; grid-template-columns: minmax(0, 1fr); width: auto; margin-top: var(--ds-space-2); box-shadow: none; }
+  .question-bank-ux-navigation { align-items: flex-start; flex-direction: column; }
+  .question-bank-ux-teacher-actions { width: 100%; padding-bottom: 6px; overflow-x: auto; }
+}
+
+@container question-bank (max-width: 520px) {
+  .question-bank-ux-search { grid-template-columns: 96px minmax(0, 1fr); }
+  .question-bank-ux-search > [data-question-search-submit] { grid-column: 1 / -1; }
+  .question-bank-ux-filter-summary { align-items: flex-start; flex-direction: column; }
+  .question-bank-ux .question-history-row.btn { grid-template-columns: 18px minmax(0, 1fr); }
+  .question-bank-ux .question-history-row.btn .question-source-tag { display: none; }
+}

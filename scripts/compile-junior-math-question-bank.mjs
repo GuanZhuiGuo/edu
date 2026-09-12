@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SCRIPT_VERSION = "1.0.0";
-const BANK_VERSION = "2026.08-seed.1";
-const COMPILED_AT = "2026-08-14T00:00:00+08:00";
+const BANK_VERSION = "2026.09-seed.1";
+const COMPILED_AT = "2026-09-12T00:00:00+08:00";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const INPUTS = Object.freeze({
   ontology: path.join(ROOT, "public/data/junior-math-ontology.json"),

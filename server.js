@@ -108,6 +108,10 @@ import {
 import { createEducationRuntimeSettingsRepository } from "./education-runtime-settings.js";
 import { createEducationAgentProxyClient } from "./education-agent-proxy-client.js";
 import { createEducationAgentProxyHttpHandler } from "./education-agent-proxy-http.js";
+import { createCoursewareDeepAgent } from "./courseware-deep-agent.js";
+import { createCoursewareDeepAgentHttpHandler } from "./courseware-deep-agent-http.js";
+import { createCoursewareLibraryRepository } from "./courseware-library-repository.js";
+import { createCoursewareLibraryHttpHandler } from "./courseware-library-http.js";
 import {
   createRuntimeArkClient,
   createRuntimeArkMediaClient,
@@ -203,6 +207,18 @@ function isLoopbackHostname(hostname) {
 
 const port = Number(process.env.PORT || 3042);
 const educationRuntimeSettings = createEducationRuntimeSettingsRepository({ env: process.env });
+const coursewareDeepAgent = createCoursewareDeepAgent({
+  runtimeSettings: educationRuntimeSettings,
+});
+const handleCoursewareDeepAgentHttp = createCoursewareDeepAgentHttpHandler({
+  agent: coursewareDeepAgent,
+  authorizeRequest: isLoopbackRequest,
+});
+const coursewareLibraryRepository = createCoursewareLibraryRepository();
+const handleCoursewareLibraryHttp = createCoursewareLibraryHttpHandler({
+  repository: coursewareLibraryRepository,
+  authorizeRequest: isLoopbackRequest,
+});
 const educationAgentProxyClient = createEducationAgentProxyClient({
   getConfig: () => educationRuntimeSettings.getAgentProxyConfig(),
 });
@@ -514,6 +530,7 @@ const server = createServer(async (req, res) => {
       },
       textTts: textTtsConfig,
       textAgent: piLearningAgent.configSummary(),
+      coursewareAgent: coursewareDeepAgent.configSummary(),
       agentProxy: publicRuntimeSettings.agent_proxy,
       educationBot: {
         ...educationBotClient.configSummary(),
@@ -586,6 +603,14 @@ const server = createServer(async (req, res) => {
   }
 
   if (await handleEducationAgentSkillHttp(req, res, requestUrl)) {
+    return;
+  }
+
+  if (await handleCoursewareDeepAgentHttp(req, res, requestUrl)) {
+    return;
+  }
+
+  if (await handleCoursewareLibraryHttp(req, res, requestUrl)) {
     return;
   }
 

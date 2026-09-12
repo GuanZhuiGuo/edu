@@ -1,0 +1,18 @@
+{
+  "full_name": "plotly/plotly.js",
+  "html_url": "https://github.com/plotly/plotly.js",
+  "description": "Open-source JavaScript charting library behind Plotly and Dash",
+  "homepage": "https://plotly.com/javascript/",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/plotly/plotly.js",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

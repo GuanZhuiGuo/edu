@@ -1,0 +1,18 @@
+{
+  "full_name": "cclank/cell-architecture-studio",
+  "html_url": "https://github.com/cclank/cell-architecture-studio",
+  "description": "Interactive 3D cell architecture gallery built with React and Three.js",
+  "homepage": "https://cell-architecture-studio.lanshuagent.com/",
+  "default_branch": "main",
+  "archived": false,
+  "license": {
+    "key": "mit",
+    "name": "MIT License",
+    "spdx_id": "MIT",
+    "url": "https://api.github.com/licenses/mit",
+    "node_id": "MDc6TGljZW5zZTEz"
+  },
+  "source_url": "https://api.github.com/repos/cclank/cell-architecture-studio",
+  "retrieved": "2026-09-12",
+  "ok": true
+}

@@ -15,6 +15,12 @@ import { initEducationSkillWorkbench } from "./education-skill-workbench.js";
 import { initOntologyWorkbench } from "./ontology-workbench.js";
 import { initSystemReleaseCenter } from "./system-release-center.js";
 import { initVideoExplanationWorkbench } from "./video-explanation-workbench.js";
+import { mountCoursewareAssistant } from "./courseware-assistant.js";
+import { mountCoursewareLibrary } from "./courseware-library.js";
+import { mountSkillHub } from "./skill-hub.js";
+import { initAssessmentWorkbench } from "./assessment-workbench.js";
+import { initLearningBuddyCommunity } from "./learning-buddy-community.js";
+import { PLATFORM_CONTEXT } from "./platform-context.js";
 import { consumeAgentNdjsonResponse } from "./agent-stream-protocol.js";
 import { consumeTextSpeechNdjson } from "./volcengine-text-speech-client.js";
 import {
@@ -50,6 +56,8 @@ import {
   resolvePortalWorkspace
 } from "./portal-runtime.js";
 import { refreshCurrentEducationStudent } from "./education-data-client.js";
+
+document.documentElement.dataset.platformProfile = PLATFORM_CONTEXT.activeProfile;
 
 const els = {
   status: document.querySelector("#status"),
@@ -491,16 +499,23 @@ els.clearLogBtn?.addEventListener("click", () => {
 });
 initializeIndustry();
 initializeCardLibrary();
-initKnowledgeMaterialStudio();
+const materialStudio = initKnowledgeMaterialStudio();
 initInteractiveLessonLab();
 initTechnologyLandscape();
 initLearningWorkbench();
+initAssessmentWorkbench(document.querySelector("#assessmentWorkspace"));
+initLearningBuddyCommunity(document.querySelector("#learningBuddyWorkspace"));
 initPortalRuntime({ activateWorkspace: switchWorkspace });
 initEducationSettingsWorkbench();
 initEducationSkillWorkbench(document.querySelector("#educationSkillWorkbench"));
 initOntologyWorkbench();
 initSystemReleaseCenter();
 initVideoExplanationWorkbench(document.querySelector("#videoExplanationWorkbench"));
+mountCoursewareAssistant({ materials: materialStudio });
+mountCoursewareLibrary();
+mountSkillHub();
+document.addEventListener("workspace:navigate", event => switchWorkspace(event.detail?.view));
+document.addEventListener("courseware:open-assistant", () => switchWorkspace("courseware-assistant"));
 initializeTextConversationThread();
 window.lucide?.createIcons?.({
   attrs: {
@@ -560,6 +575,11 @@ function switchWorkspace(view) {
       title: "我的题库",
       chip: "历史作答 · 错题整理"
     },
+    assessment: {
+      breadcrumb: "智能评测",
+      title: "智能评测",
+      chip: "评测方法 · 任务 · 证据复盘"
+    },
     plan: {
       breadcrumb: "学习计划",
       title: "学习计划",
@@ -592,13 +612,14 @@ function switchWorkspace(view) {
   const app = document.querySelector(".app");
   app?.classList.toggle("is-graph-immersive", targetView === "graph");
   app?.classList.toggle("is-agent-view", targetView === "agent");
+  app?.classList.toggle("is-authoring-view", ["courseware-assistant", "courseware-library", "skill-hub", "assessment"].includes(targetView));
   els.workspaceMenuButtons.forEach((button) => {
     const selected = button.dataset.workspaceView === targetView
       && (!button.dataset.portalRole || button.dataset.portalRole === role);
     button.classList.toggle("is-active", selected);
     button.setAttribute("aria-selected", String(selected));
   });
-  els.workspacePanels.forEach((panel) => {
+  document.querySelectorAll("[data-workspace-panel]").forEach((panel) => {
     panel.hidden = panel.dataset.workspacePanel !== targetView;
   });
   const meta = getPortalWorkspacePresentation(targetView, role)
@@ -612,6 +633,11 @@ function switchWorkspace(view) {
   }
   queueMicrotask(() => window.lucide?.createIcons?.());
   document.dispatchEvent(new CustomEvent("learning-workspace:change", { detail: { view: targetView, role } }));
+  if (role === "teacher") {
+    const tools = { "video-explanation": "video", "lesson-lab": "interactive", materials: "materials" };
+    if (tools[view]) document.dispatchEvent(new CustomEvent("courseware:select-tool", { detail: { tool: tools[view] } }));
+    if (view === "tech-landscape" || view === "agent-skills") document.dispatchEvent(new CustomEvent("skill-hub:select-tab", { detail: { tab: view === "tech-landscape" ? "technology" : "skills" } }));
+  }
 }
 
 function setTextInputSheet(open) {

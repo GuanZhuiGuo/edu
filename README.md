@@ -193,6 +193,7 @@ iframe 中展示，不会注入主页面，也不会进入 A2UI renderer。
 git clone --recurse-submodules https://github.com/GuanZhuiGuo/edu.git
 cd edu
 npm ci
+npm run build:design
 cp .env.example .env
 # 在 .env 中填写需要的服务端密钥；不要提交 .env。
 npm start
@@ -236,6 +237,35 @@ npm run control
 
 服务启停页地址为 `http://localhost:3043`；它只负责启动、停止和查看
 `http://localhost:3042` 的运行状态，不用于录入 Ark Key。
+
+## 设计资源构建与维护
+
+界面采用固定版本 **Tabler Core 1.5.0** 的原生 DOM 样式组件，保留现有业务
+事件和原生 `dialog` / `details`，不绑定 Tabler JS。安装依赖后生成本地资源：
+
+```bash
+npm run build:design
+```
+
+`scripts/build-design-system.mjs` 使用 PostCSS 从官方 CSS 按组件选择器提取
+按钮、表单及相关状态规则，保留官方声明和所需变量，输出
+`public/vendor/tabler/controls.css`。页面使用本地文件；上游 MIT 许可证保留在
+同目录 `LICENSE` 中。不要手改生成文件，修改提取范围或升级依赖后重新构建。
+
+统一入口为 `public/design-system.css`，层级顺序为
+`tabler, legacy, design, workspace`；共享变量位于 `public/design-tokens.css`。
+基础样式不能覆盖业务按设备、角色或状态隐藏控件的规则。旧 CSS 在 `legacy`
+层隔离保留，本轮改善题库、图谱筛选、实验室和公共控件，尚不代表全应用完成
+适配或原生体验认证。
+
+新功能应复用设计系统，并验证桌面、App 和 Pad；不要追加补丁文件堆叠。
+完整的控件、响应边界、高度分配与验收规范见 [DESIGN.md](DESIGN.md)。
+
+## 教师课件工作台
+
+教师侧栏提供课件助手、课件库与 Skill hub。课件助手合并现有视频、素材、互动教材制作流程，几何模板使用已有 SVG 渲染能力，支持直角三角形、圆与扇形。视频仍需真实任务完成后才能保存，未接入的候选技术不会成为生成能力。
+
+课件库收录可运行的内置示例，支持搜索及学科、类型、技术栈、标签和交互性筛选。保存内容写入当前浏览器的 IndexedDB，保留 Lesson DSL / visualArtifact 参数；清理浏览器站点数据会清除保存内容，目前没有云端同步。
 
 ## 安全说明
 
